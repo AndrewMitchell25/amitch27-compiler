@@ -13,3 +13,9 @@ bminor.o: bminor.c
 bminor: bminor.o encoder.o
 	$(CC) -Wall -std=gnu99 $^ -o $@
 
+
+test: bminor
+	./runtest.sh
+
+clean: 
+	rm -f bminor *.o
