@@ -9,6 +9,7 @@ int string_decode( const char *es, char *s ) {
 
     while(*es != 0) {
         if(*es < 32 || *es > 126) {
+            fprintf(stderr, "Invalid character - %c\n", *es);
             return 0;
         }
 
@@ -62,19 +63,103 @@ int string_decode( const char *es, char *s ) {
                     
                 */                
                 default:
-                    fprintf(stderr, "Invalid escape code\n");
+                    fprintf(stderr, "Invalid escape code.\n");
                     return 0;
             }
+        } else {
+            if(*es == '\"') {
+                es++;
+                if(*es != 0) {
+                    fprintf(stderr, "Quotations must be escaped.\n");
+                    return 0;
+                } else {
+                    continue;
+                }
+            }
+
+            *s = *es;
         }
-
-
+        es++;
+        s++;
     }
 
+    *s = 0;
     return 1;
 }
 
 int string_encode( const char *s, char *es ) {
+    *es = '\"';
+    es++;
+    while(*s != 0) {
+        switch(*s){
+            case '\a':
+                *es = '\\';
+                es++;
+                *es = 'a';
+                break;
+            case '\b':
+                *es = '\\';
+                es++;
+                *es = 'b';
+                break;
+            case '\e':
+                *es = '\\';
+                es++;
+                *es = 'e';
+                break;
+            case '\f':
+                *es = '\\';
+                es++;
+                *es = 'f';
+                break;
+            case '\n':
+                *es = '\\';
+                es++;
+                *es = 'n';
+                break;
+            case '\r':
+                *es = '\\';
+                es++;
+                *es = 'r';
+                break;
+            case '\t':
+                *es = '\\';
+                es++;
+                *es = 't';
+                break;
+            case '\v':
+                *es = '\\';
+                es++;
+                *es = 'v';
+                break;
+            case '\\':
+                *es = '\\';
+                es++;
+                *es = '\\';
+                break;
+            case '\'':
+                *es = '\\';
+                es++;
+                *es = '\'';
+                break;
+            case '\"':
+                *es = '\\';
+                es++;
+                *es = '\"';
+                break;
 
+            default:
+                *es = *s;
+                break;
+        }
+
+        es++;
+        s++;
+    }
+
+    *es = '\"';
+    es++;
+    *es = 0;
 
     return 1;
 }
