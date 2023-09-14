@@ -80,7 +80,11 @@ int string_decode( const char *es, char *s ) {
                                 break;
                             }
                         }
-                    } 
+                    } else {
+                        *s = '\0';
+                        es--;
+                        break;
+                    }
                     fprintf(stderr, "Invalid hex.\n");
                     return 0;
                 default:
@@ -89,8 +93,7 @@ int string_decode( const char *es, char *s ) {
             }
         } else {
             if(*es == '\'') {
-                fprintf(stderr, "Quotes must be escaped.\n");
-                return 0;
+                *s = '\'';
             }
 
             if(*es == '\"') {
@@ -189,4 +192,115 @@ int string_encode( const char *s, char *es ) {
     *es = 0;
 
     return 1;
+}
+
+int char_decode(const char *es, char *c){
+    if(*es != '\'') {
+        fprintf(stderr, "Char must be in quotes.\n");
+        return 0;
+    }
+
+    es++;
+    
+    if(*es < 32 || *es > 126) {
+            fprintf(stderr, "Invalid character - %c\n", *es);
+            return 0;
+    }
+
+    if(*es == '\\') {
+        es++;
+        switch(*es) {
+            case 'a': //bell
+                *c = '\a';
+                break;
+            case 'b': //backspace
+                *c = '\b';
+                break;
+            case 'e': //escape
+                *c = '\e';
+                break;
+            case 'f': //form feed (clear)
+                *c = '\f';
+                break;
+            case 'n': //new line
+                *c = '\n';
+                break;
+            case 'r': //return
+                *c = '\r';
+                break;
+            case 't': //tab
+                *c = '\t';
+                break;
+            case 'v': //vertical tab
+                *c = '\v';
+                break;
+            case '\\': //backslash
+                *c = '\\';
+                break;
+            case '\'': //single quote
+                *c = '\'';
+                break;
+            case '\"': //double quote
+                *c = '\"';
+                break;                
+            case '0': //hex
+                es++;
+                if(*es != 'x') {
+                    es--;
+                    *c = '\0';
+                    break;
+                } else {
+                    es++;
+                    if((*es >= '0' && *es <= '9') || (*es >= 'A' && *es <= 'F') || (*es >= 'a' && *es <= 'f')) {
+                        unsigned char c1 = *es;
+                        es++;
+                        if((*es >= '0' && *es <= '9') || (*es >= 'A' && *es <= 'F') || (*es >= 'a' && *es <= 'f')) {
+                            unsigned char c2 = *es;
+                            if(c1 <= '9') {
+                                c1 = c1 - '0';
+                            } else if(c1 <= 'F') {
+                                c1 = c1 - 'A' + 10;
+                            } else {
+                                c1 = c1 - 'a' + 10;
+                            }
+
+                            if(c2 <= '9') {
+                                c2 = c2 - '0';
+                            } else if(c2 <= 'F') {
+                                c2 = c2 - 'A' + 10;
+                            } else {
+                                c2 = c2 - 'a' + 10;
+                            }
+                            
+                            unsigned char hex = c1<<4 | c2;
+                            *c = hex;
+                            break;
+                        }
+                    }
+                }
+                fprintf(stderr, "Invalid hex.\n");
+                return 0;
+            default:
+                fprintf(stderr, "Invalid escape code.\n");
+                return 0;
+        }
+    } else {
+        if(*es == '\'') {
+            fprintf(stderr, "Quotes must be escaped.\n");
+            return 0;
+        }
+
+
+        *c = *es;
+    }      
+
+    es++;
+
+    if(*es != '\''){
+        fprintf(stderr, "Char must end with single quote.\n");
+        return 0;
+    }
+
+    return 1;
+
 }

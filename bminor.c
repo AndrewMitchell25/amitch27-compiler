@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "encoder.h"
+#include "token.h"
 
 enum process {
     encode,
@@ -13,6 +14,9 @@ int main(int argc, char *argv[]) {
     while(i < argc && argv[i][0] == '-') {
         if(!strcmp(argv[i], "--encode")) {
             curr_process = encode;
+        }
+        if(!strcmp(argv[i], "--scan")) {
+            curr_process = scan;
         }
         i++;
     }
@@ -40,6 +44,45 @@ int main(int argc, char *argv[]) {
         }
 
         printf("%s\n", es);
+        return 0;
+
+    } else if (curr_process == scan) {
+        extern FILE* yyin;
+        extern int yylex();
+        extern char yytext[];
+
+        FILE* fp = fopen(argv[i], "r");
+        if(!fp) {
+            fprintf(stderr, "Can't open file %s\n", argv[i]);
+            return 1;
+        }
+
+        yyin = fp;
+        //yyin = stdin;
+        int token;
+        while(1){
+            token = yylex();
+            if(token == ERROR) {
+                fprintf(stderr, "Scan Error\n");
+                return 1;
+            }
+
+            if(token == EOF) {
+                break;
+            }
+
+            char name[100];
+            tokenToName(token, name);
+            
+            if(token >= 300){
+                printf("%s %s\n", name, yytext);
+            } else {
+                printf("%s\n", name);
+            }
+        }
+        
+        fclose(fp);
+
         return 0;
     }
 

@@ -1,0 +1,1 @@
+print "The temperature is: ", temp, " degrees\n";

@@ -1,8 +1,8 @@
 #!/bin/sh
 
-for testfile in test/encode/good*.bminor
+for testfile in test/scanner/good*.bminor
 do
-	if ./bminor --encode $testfile
+	if ./bminor --scan $testfile
 	then
 		echo "$testfile success (SUCCESS)"
 	else
@@ -10,9 +10,9 @@ do
 	fi
 done
 
-for testfile in test/encode/bad*.bminor
+for testfile in test/scanner/bad*.bminor
 do
-	if ./bminor --encode $testfile
+	if ./bminor --scan $testfile
 	then
 		echo "$testfile success (FAILURE)"
 	else
