@@ -4,6 +4,7 @@
 #include "symbol.h"
 
 typedef enum {
+	EXPR_VALUE,
 	EXPR_ADD,
 	EXPR_SUB,
 	EXPR_MUL,

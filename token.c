@@ -1,160 +1,157 @@
-#include "token.h"
+#include "token2.h"
 #include <stdio.h>
 
 int tokenToName(int t, char *name){
     switch(t){
-        case LEFT_PARENTHESES:
-            sprintf(name, "LEFT_PARENTHESES");
+        case TOKEN_LEFT_PARENTHESES:
+            sprintf(name, "TOKEN_LEFT_PARENTHESES");
             break;
-        case RIGHT_PARENTHESES:
-            sprintf(name, "RIGHT_PARENTHESES");
+        case TOKEN_RIGHT_PARENTHESES:
+            sprintf(name, "TOKEN_RIGHT_PARENTHESES");
             break;
-        case LEFT_BRACKET:
-            sprintf(name, "LEFT_BRACKET");
+        case TOKEN_LEFT_BRACKET:
+            sprintf(name, "TOKEN_LEFT_BRACKET");
             break;
-        case RIGHT_BRACKET:
-            sprintf(name, "RIGHT_BRACKET");
+        case TOKEN_RIGHT_BRACKET:
+            sprintf(name, "TOKEN_RIGHT_BRACKET");
             break;
-        case LEFT_CURLY_BRACKET:
-            sprintf(name, "LEFT_CURLY_BRACKET");
+        case TOKEN_LEFT_CURLY_BRACKET:
+            sprintf(name, "TOKEN_LEFT_CURLY_BRACKET");
             break;
-        case RIGHT_CURLY_BRACKET:
-            sprintf(name, "RIGHT_CURLY_BRACKET");
+        case TOKEN_RIGHT_CURLY_BRACKET:
+            sprintf(name, "TOKEN_RIGHT_CURLY_BRACKET");
             break;
-        case COMMA:
-            sprintf(name, "COMMA");
+        case TOKEN_COMMA:
+            sprintf(name, "TOKEN_COMMA");
             break;
-        case SEMICOLON:
-            sprintf(name, "SEMICOLON");
+        case TOKEN_SEMICOLON:
+            sprintf(name, "TOKEN_SEMICOLON");
             break;
-        case COLON:
-            sprintf(name, "COLON");
+        case TOKEN_COLON:
+            sprintf(name, "TOKEN_COLON");
             break;
-        case PLUS_PLUS:
-            sprintf(name, "PLUS_PLUS");
+        case TOKEN_PLUS_PLUS:
+            sprintf(name, "TOKEN_PLUS_PLUS");
             break;
-        case MINUS_MINUS:
-            sprintf(name, "MINUS_MINUS");
+        case TOKEN_MINUS_MINUS:
+            sprintf(name, "TOKEN_MINUS_MINUS");
             break;
-        case EQUALS_EQUALS:
-            sprintf(name, "EQUALS_EQUALS");
+        case TOKEN_EQUALS_EQUALS:
+            sprintf(name, "TOKEN_EQUALS_EQUALS");
             break;
-        case NOT_EQUALS:
-            sprintf(name, "NOT_EQUALS");
+        case TOKEN_NOT_EQUALS:
+            sprintf(name, "TOKEN_NOT_EQUALS");
             break;
-        case NOT:
-            sprintf(name, "NOT");
+        case TOKEN_NOT:
+            sprintf(name, "TOKEN_NOT");
             break;
-        case PLUS:
-            sprintf(name, "PLUS");
+        case TOKEN_PLUS:
+            sprintf(name, "TOKEN_PLUS");
             break;
-        case MINUS:
-            sprintf(name, "MINUS");
+        case TOKEN_MINUS:
+            sprintf(name, "TOKEN_MINUS");
             break;
-        case DIVIDE:
-            sprintf(name, "DIVIDE");
+        case TOKEN_DIVIDE:
+            sprintf(name, "TOKEN_DIVIDE");
             break;
-        case MULTIPLY:
-            sprintf(name, "MULTIPLY");
+        case TOKEN_MULTIPLY:
+            sprintf(name, "TOKEN_MULTIPLY");
             break;
-        case MOD:
-            sprintf(name, "MOD");
+        case TOKEN_MOD:
+            sprintf(name, "TOKEN_MOD");
             break;
-        case EXPONENT:
-            sprintf(name, "EXPONENT");
+        case TOKEN_EXPONENT:
+            sprintf(name, "TOKEN_EXPONENT");
             break;
-        case EQUALS:
-            sprintf(name, "EQUALS");
+        case TOKEN_EQUALS:
+            sprintf(name, "TOKEN_EQUALS");
             break;
-        case GREATER_EQUAL:
-            sprintf(name, "GREATER_EQUAL");
+        case TOKEN_GREATER_EQUAL:
+            sprintf(name, "TOKEN_GREATER_EQUAL");
             break;
-        case LESS_EQUAL:
-            sprintf(name, "LESS_EQUAL");
+        case TOKEN_LESS_EQUAL:
+            sprintf(name, "TOKEN_LESS_EQUAL");
             break;
-        case GREATER:
-            sprintf(name, "GREATER");
+        case TOKEN_GREATER:
+            sprintf(name, "TOKEN_GREATER");
             break;
-        case LESS:
-            sprintf(name, "LESS");
+        case TOKEN_LESS:
+            sprintf(name, "TOKEN_LESS");
             break;
-        case AND:
-            sprintf(name, "AND");
+        case TOKEN_AND:
+            sprintf(name, "TOKEN_AND");
             break;
-        case OR:
-            sprintf(name, "OR");
+        case TOKEN_OR:
+            sprintf(name, "TOKEN_OR");
             break;
-        case KW_ARRAY:
-            sprintf(name, "KW_ARRAY");
+        case TOKEN_KW_ARRAY:
+            sprintf(name, "TOKEN_KW_ARRAY");
             break;
-        case KW_AUTO:
-            sprintf(name, "KW_AUTO");
+        case TOKEN_KW_AUTO:
+            sprintf(name, "TOKEN_KW_AUTO");
             break;
-        case KW_BOOLEAN:
-            sprintf(name, "KW_BOOLEAN");
+        case TOKEN_KW_BOOLEAN:
+            sprintf(name, "TOKEN_KW_BOOLEAN");
             break;
-        case KW_CHAR:
-            sprintf(name, "KW_CHAR");
+        case TOKEN_KW_CHAR:
+            sprintf(name, "TOKEN_KW_CHAR");
             break;
-        case KW_ELSE:
-            sprintf(name, "KW_ELSE");
+        case TOKEN_KW_ELSE:
+            sprintf(name, "TOKEN_KW_ELSE");
             break;
-        case KW_FALSE:
-            sprintf(name, "KW_FALSE");
+        case TOKEN_KW_FALSE:
+            sprintf(name, "TOKEN_KW_FALSE");
             break;
-        case KW_FLOAT:
-            sprintf(name, "KW_FLOAT");
+        case TOKEN_KW_FLOAT:
+            sprintf(name, "TOKEN_KW_FLOAT");
             break;
-        case KW_FOR:
-            sprintf(name, "KW_FOR");
+        case TOKEN_KW_FOR:
+            sprintf(name, "TOKEN_KW_FOR");
             break;
-        case KW_FUNCTION:
-            sprintf(name, "KW_FUNCTION");
+        case TOKEN_KW_FUNCTION:
+            sprintf(name, "TOKEN_KW_FUNCTION");
             break;
-        case KW_IF:
-            sprintf(name, "KW_IF");
+        case TOKEN_KW_IF:
+            sprintf(name, "TOKEN_KW_IF");
             break;
-        case KW_INTEGER:
-            sprintf(name, "KW_INTEGER");
+        case TOKEN_KW_INTEGER:
+            sprintf(name, "TOKEN_KW_INTEGER");
             break;
-        case KW_PRINT:
-            sprintf(name, "KW_PRINT");
+        case TOKEN_KW_PRINT:
+            sprintf(name, "TOKEN_KW_PRINT");
             break;
-        case KW_RETURN:
-            sprintf(name, "KW_RETURN");
+        case TOKEN_KW_RETURN:
+            sprintf(name, "TOKEN_KW_RETURN");
             break;
-        case KW_STRING:
-            sprintf(name, "KW_STRING");
+        case TOKEN_KW_STRING:
+            sprintf(name, "TOKEN_KW_STRING");
             break;
-        case KW_TRUE:
-            sprintf(name, "KW_TRUE");
+        case TOKEN_KW_TRUE:
+            sprintf(name, "TOKEN_KW_TRUE");
             break;
-        case KW_VOID:
-            sprintf(name, "KW_VOID");
+        case TOKEN_KW_VOID:
+            sprintf(name, "TOKEN_KW_VOID");
             break;
-        case KW_WHILE:
-            sprintf(name, "KW_WHILE");
+        case TOKEN_KW_WHILE:
+            sprintf(name, "TOKEN_KW_WHILE");
             break;
-        case IDENTIFIER:
-            sprintf(name, "IDENTIFIER");
+        case TOKEN_IDENTIFIER:
+            sprintf(name, "TOKEN_IDENTIFIER");
             break;
-        case COMMENT:
-            sprintf(name, "COMMENT");
+        case TOKEN_INTEGER:
+            sprintf(name, "TOKEN_INTEGER");
             break;
-        case INTEGER:
-            sprintf(name, "INTEGER");
+        case TOKEN_FLOAT:
+            sprintf(name, "TOKEN_FLOAT");
             break;
-        case FLOAT:
-            sprintf(name, "FLOAT");
+        case TOKEN_CHAR:
+            sprintf(name, "TOKEN_CHAR");
             break;
-        case CHAR:
-            sprintf(name, "CHAR");
+        case TOKEN_STRING:
+            sprintf(name, "TOKEN_STRING");
             break;
-        case STRING:
-            sprintf(name, "STRING");
-            break;
-        case ERROR:
-            sprintf(name, "ERROR");
+        case TOKEN_ERROR:
+            sprintf(name, "TOKEN_ERROR");
             break;
         default:
             fprintf(stderr, "Error: Unrecognized Token - %d\n", t);

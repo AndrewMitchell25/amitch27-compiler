@@ -4,6 +4,15 @@ CFLAGS=		-g -Wall -std=gnu99 -Iinclude -c
 all:		bminor
 
 
+expr.o:	expr.c expr.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+parser.c:	parser.bison
+	bison --defines=token2.h --output=parser.c -v parser.bison
+
+parser.o:	parser.c expr.o scanner.o
+	$(CC) $(CFLAGS) -o parser.o parser.c
+
 scanner.c:	scanner.flex
 	flex -oscanner.c scanner.flex
 
@@ -19,7 +28,7 @@ encoder.o: 	encoder.c encoder.h
 bminor.o: bminor.c 
 	$(CC) $(CFLAGS) -o $@ $<
 
-bminor: bminor.o encoder.o scanner.o token.o
+bminor: bminor.o encoder.o scanner.o token.o expr.o parser.o 
 	$(CC) -Wall -std=gnu99 $^ -o $@
 
 

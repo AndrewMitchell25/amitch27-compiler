@@ -1,84 +1,86 @@
 %{
-    #include "token.h"
+    #include "token2.h"
     #include "encoder.h"
     #include <stdlib.h>
-    int line_count = 1;
+    extern int line_count;
     #define YYLMAX 255
     
 %}
 
 %array
+%option nounput
+%option noinput
 
 %%
 
-\(                                    {return LEFT_PARENTHESES;}
-\)                                    {return RIGHT_PARENTHESES;}
-\[                                    {return LEFT_BRACKET;}
-\]                                    {return RIGHT_BRACKET;}
-\{                                    {return LEFT_CURLY_BRACKET;}
-\}                                    {return RIGHT_CURLY_BRACKET;}
-,                                     {return COMMA;}
-;                                     {return SEMICOLON;}
-:                                     {return COLON;}
+\(                                    {return TOKEN_LEFT_PARENTHESES;}
+\)                                    {return TOKEN_RIGHT_PARENTHESES;}
+\[                                    {return TOKEN_LEFT_BRACKET;}
+\]                                    {return TOKEN_RIGHT_BRACKET;}
+\{                                    {return TOKEN_LEFT_CURLY_BRACKET;}
+\}                                    {return TOKEN_RIGHT_CURLY_BRACKET;}
+,                                     {return TOKEN_COMMA;}
+;                                     {return TOKEN_SEMICOLON;}
+:                                     {return TOKEN_COLON;}
 
-\+\+                                  {return PLUS_PLUS;}
---                                    {return MINUS_MINUS;}
-==                                    {return EQUALS_EQUALS;}
-!=                                    {return NOT_EQUALS;} 
-!                                     {return NOT;}
+\+\+                                  {return TOKEN_PLUS_PLUS;}
+--                                    {return TOKEN_MINUS_MINUS;}
+==                                    {return TOKEN_EQUALS_EQUALS;}
+!=                                    {return TOKEN_NOT_EQUALS;} 
+!                                     {return TOKEN_NOT;}
 
-\+                                    {return PLUS;}
--                                     {return MINUS;}
-\/                                    {return DIVIDE;}
-\*                                    {return MULTIPLY;}
-%                                     {return MOD;}
-\^                                    {return EXPONENT;}
-=                                     {return EQUALS;}
+\+                                    {return TOKEN_PLUS;}
+-                                     {return TOKEN_MINUS;}
+\/                                    {return TOKEN_DIVIDE;}
+\*                                    {return TOKEN_MULTIPLY;}
+%                                     {return TOKEN_MOD;}
+\^                                    {return TOKEN_EXPONENT;}
+=                                     {return TOKEN_EQUALS;}
 
->=                                    {return GREATER_EQUAL;}
-\<=                                   {return LESS_EQUAL;}
->                                     {return GREATER;}
-\<                                    {return LESS;}
+>=                                    {return TOKEN_GREATER_EQUAL;}
+\<=                                   {return TOKEN_LESS_EQUAL;}
+>                                     {return TOKEN_GREATER;}
+\<                                    {return TOKEN_LESS;}
 
-&&                                    {return AND;}
-\|\|                                  {return OR;}
+&&                                    {return TOKEN_AND;}
+\|\|                                  {return TOKEN_OR;}
 
-array                                 {return KW_ARRAY;}
-auto                                  {return KW_AUTO;}
-boolean                               {return KW_BOOLEAN;}
-char                                  {return KW_CHAR;}
-else                                  {return KW_ELSE;}
-false                                 {return KW_FALSE;}
-float                                 {return KW_FLOAT;}
-for                                   {return KW_FOR;}
-function                              {return KW_FUNCTION;}
-if                                    {return KW_IF;}
-integer                               {return KW_INTEGER;}
-print                                 {return KW_PRINT;}
-return                                {return KW_RETURN;}
-string                                {return KW_STRING;}
-true                                  {return KW_TRUE;}
-void                                  {return KW_VOID;}
-while                                 {return KW_WHILE;}
+array                                 {return TOKEN_KW_ARRAY;}
+auto                                  {return TOKEN_KW_AUTO;}
+boolean                               {return TOKEN_KW_BOOLEAN;}
+char                                  {return TOKEN_KW_CHAR;}
+else                                  {return TOKEN_KW_ELSE;}
+false                                 {return TOKEN_KW_FALSE;}
+float                                 {return TOKEN_KW_FLOAT;}
+for                                   {return TOKEN_KW_FOR;}
+function                              {return TOKEN_KW_FUNCTION;}
+if                                    {return TOKEN_KW_IF;}
+integer                               {return TOKEN_KW_INTEGER;}
+print                                 {return TOKEN_KW_PRINT;}
+return                                {return TOKEN_KW_RETURN;}
+string                                {return TOKEN_KW_STRING;}
+true                                  {return TOKEN_KW_TRUE;}
+void                                  {return TOKEN_KW_VOID;}
+while                                 {return TOKEN_KW_WHILE;}
 
 (\+|-)?[0-9]*                         {
                                         //check if the integer is too long
                                         long int l = strtol(yytext, 0, 10);
                                         if(l >= 9223372036854775807 || l < -9223372036854775807) {
                                             fprintf(stderr, "Integer exceeds 64 bits\n");
-                                            return ERROR;
+                                            return TOKEN_ERROR;
                                         }
-                                        return INTEGER;
+                                        return TOKEN_INTEGER;
                                       }
-([0-9]*\.[0-9]+)|([0-9]*(\.[0-9]+)?(e|E)[+-]?[0-9]+) {return FLOAT;}
+([0-9]*\.[0-9]+)|([0-9]*(\.[0-9]+)?(e|E)[+-]?[0-9]+) {return TOKEN_FLOAT;}
 '(.|\\.|\\0x..?)'                     {char c = '0'; 
                                         int res = char_decode(yytext, &c); 
                                         if(res){
                                             sprintf(yytext, "%c", c); 
-                                            return CHAR;
+                                            return TOKEN_CHAR;
                                         } else {
                                             fprintf(stderr, "Scan Error: %s is not a valid character\n", yytext);
-                                            return ERROR;
+                                            return TOKEN_ERROR;
                                         }
                                       }  
 
@@ -86,23 +88,22 @@ while                                 {return KW_WHILE;}
                                         int res = string_decode(yytext, s); 
                                         if(res){
                                             sprintf(yytext, "%s", s);
-                                            return STRING;
+                                            return TOKEN_STRING;
                                         } else {
                                             fprintf(stderr, "Scan Error: %s is not a valid string\n", yytext);
-                                            return ERROR;
+                                            return TOKEN_ERROR;
                                         }
                                       }
-\"                                    {fprintf(stderr, "Invalid String\n"); return ERROR;}
-[a-zA-Z_][a-zA-Z0-9_]*                {return IDENTIFIER;}
+\"                                    {fprintf(stderr, "Invalid String\n"); return TOKEN_ERROR;}
+[a-zA-Z_][a-zA-Z0-9_]*                {return TOKEN_IDENTIFIER;}
 (\/\*([^*]|(\*+([^*\/])))*\*+\/)|(\/\/[^\n]*) {/*Eat up comments*/}
-\/\*                                  {fprintf(stderr, "Invalid Comment\n"); return ERROR;}
+\/\*                                  {fprintf(stderr, "Invalid Comment\n"); return TOKEN_ERROR;}
 
 (\ |\t|\r)                            {/*white space*/}
 \n                                    {line_count += 1;}
 
-.                                     {fprintf(stderr, "Scan Error: %s is not valid.\n", yytext); return ERROR;}
+.                                     {fprintf(stderr, "Scan Error: %s is not valid.\n", yytext); return TOKEN_ERROR;}
 
-<<EOF>>                               {return EOF;}
 
 %%
 

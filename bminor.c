@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include "encoder.h"
+#include "token2.h"
 #include "token.h"
 
 enum process {
     encode,
-    scan
+    scan,
+    parse
 };
 
 int main(int argc, char *argv[]) {
@@ -17,6 +19,9 @@ int main(int argc, char *argv[]) {
         }
         if(!strcmp(argv[i], "--scan")) {
             curr_process = scan;
+        }
+        if(!strcmp(argv[i], "--parse")) {
+            curr_process = parse;
         }
         i++;
     }
@@ -62,19 +67,20 @@ int main(int argc, char *argv[]) {
         int token;
         while(1){
             token = yylex();
-            if(token == ERROR) {
+
+            if(token == TOKEN_ERROR) {
                 fprintf(stderr, "Scan Error\n");
                 return 1;
             }
 
-            if(token == EOF) {
+            if(token == 0) {
                 break;
             }
 
             char name[100];
             tokenToName(token, name);
             
-            if(token >= 300){
+            if(token >= 302){
                 printf("%s %s\n", name, yytext);
             } else {
                 printf("%s\n", name);
@@ -84,6 +90,24 @@ int main(int argc, char *argv[]) {
         fclose(fp);
 
         return 0;
+    } else if (curr_process == parse) {
+        extern int yyparse();
+        extern FILE* yyin;
+
+        FILE* fp = fopen(argv[i], "r");
+        if(!fp) {
+            fprintf(stderr, "Can't open file %s\n", argv[i]);
+            return 1;
+        }
+        yyin = fp;
+
+        if(!yyparse()) {
+            printf("parse successful\n");
+            return 0;
+        } else {
+            return 1;
+        }
+        
     }
 
     return 0;

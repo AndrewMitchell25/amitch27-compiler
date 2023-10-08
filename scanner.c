@@ -560,13 +560,14 @@ char yytext[YYLMAX];
 char *yytext_ptr;
 #line 1 "scanner.flex"
 #line 2 "scanner.flex"
-    #include "token.h"
+    #include "token2.h"
     #include "encoder.h"
     #include <stdlib.h>
-    int line_count = 1;
+    extern int line_count;
     #define YYLMAX 255
     
-#line 570 "scanner.c"
+#define YY_NO_INPUT 1
+#line 571 "scanner.c"
 
 #define INITIAL 0
 
@@ -626,8 +627,6 @@ extern int yywrap (void );
 #endif
 
 #ifndef YY_NO_UNPUT
-    
-    static void yyunput (int c,char *buf_ptr  );
     
 #endif
 
@@ -784,10 +783,10 @@ YY_DECL
 		}
 
 	{
-#line 12 "scanner.flex"
+#line 14 "scanner.flex"
 
 
-#line 791 "scanner.c"
+#line 790 "scanner.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -846,318 +845,316 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "scanner.flex"
-{return LEFT_PARENTHESES;}
+#line 16 "scanner.flex"
+{return TOKEN_LEFT_PARENTHESES;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "scanner.flex"
-{return RIGHT_PARENTHESES;}
+#line 17 "scanner.flex"
+{return TOKEN_RIGHT_PARENTHESES;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 16 "scanner.flex"
-{return LEFT_BRACKET;}
+#line 18 "scanner.flex"
+{return TOKEN_LEFT_BRACKET;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 17 "scanner.flex"
-{return RIGHT_BRACKET;}
+#line 19 "scanner.flex"
+{return TOKEN_RIGHT_BRACKET;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 18 "scanner.flex"
-{return LEFT_CURLY_BRACKET;}
+#line 20 "scanner.flex"
+{return TOKEN_LEFT_CURLY_BRACKET;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 19 "scanner.flex"
-{return RIGHT_CURLY_BRACKET;}
+#line 21 "scanner.flex"
+{return TOKEN_RIGHT_CURLY_BRACKET;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 20 "scanner.flex"
-{return COMMA;}
+#line 22 "scanner.flex"
+{return TOKEN_COMMA;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 21 "scanner.flex"
-{return SEMICOLON;}
+#line 23 "scanner.flex"
+{return TOKEN_SEMICOLON;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 22 "scanner.flex"
-{return COLON;}
+#line 24 "scanner.flex"
+{return TOKEN_COLON;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "scanner.flex"
-{return PLUS_PLUS;}
+#line 26 "scanner.flex"
+{return TOKEN_PLUS_PLUS;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 "scanner.flex"
-{return MINUS_MINUS;}
+#line 27 "scanner.flex"
+{return TOKEN_MINUS_MINUS;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 26 "scanner.flex"
-{return EQUALS_EQUALS;}
+#line 28 "scanner.flex"
+{return TOKEN_EQUALS_EQUALS;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 27 "scanner.flex"
-{return NOT_EQUALS;} 
+#line 29 "scanner.flex"
+{return TOKEN_NOT_EQUALS;} 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 28 "scanner.flex"
-{return NOT;}
+#line 30 "scanner.flex"
+{return TOKEN_NOT;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 30 "scanner.flex"
-{return PLUS;}
+#line 32 "scanner.flex"
+{return TOKEN_PLUS;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 31 "scanner.flex"
-{return MINUS;}
+#line 33 "scanner.flex"
+{return TOKEN_MINUS;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 32 "scanner.flex"
-{return DIVIDE;}
+#line 34 "scanner.flex"
+{return TOKEN_DIVIDE;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 33 "scanner.flex"
-{return MULTIPLY;}
+#line 35 "scanner.flex"
+{return TOKEN_MULTIPLY;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 34 "scanner.flex"
-{return MOD;}
+#line 36 "scanner.flex"
+{return TOKEN_MOD;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 35 "scanner.flex"
-{return EXPONENT;}
+#line 37 "scanner.flex"
+{return TOKEN_EXPONENT;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 36 "scanner.flex"
-{return EQUALS;}
+#line 38 "scanner.flex"
+{return TOKEN_EQUALS;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 38 "scanner.flex"
-{return GREATER_EQUAL;}
+#line 40 "scanner.flex"
+{return TOKEN_GREATER_EQUAL;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 39 "scanner.flex"
-{return LESS_EQUAL;}
+#line 41 "scanner.flex"
+{return TOKEN_LESS_EQUAL;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 40 "scanner.flex"
-{return GREATER;}
+#line 42 "scanner.flex"
+{return TOKEN_GREATER;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 41 "scanner.flex"
-{return LESS;}
+#line 43 "scanner.flex"
+{return TOKEN_LESS;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 43 "scanner.flex"
-{return AND;}
+#line 45 "scanner.flex"
+{return TOKEN_AND;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 44 "scanner.flex"
-{return OR;}
+#line 46 "scanner.flex"
+{return TOKEN_OR;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 46 "scanner.flex"
-{return KW_ARRAY;}
+#line 48 "scanner.flex"
+{return TOKEN_KW_ARRAY;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 47 "scanner.flex"
-{return KW_AUTO;}
+#line 49 "scanner.flex"
+{return TOKEN_KW_AUTO;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 48 "scanner.flex"
-{return KW_BOOLEAN;}
+#line 50 "scanner.flex"
+{return TOKEN_KW_BOOLEAN;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 49 "scanner.flex"
-{return KW_CHAR;}
+#line 51 "scanner.flex"
+{return TOKEN_KW_CHAR;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 50 "scanner.flex"
-{return KW_ELSE;}
+#line 52 "scanner.flex"
+{return TOKEN_KW_ELSE;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 51 "scanner.flex"
-{return KW_FALSE;}
+#line 53 "scanner.flex"
+{return TOKEN_KW_FALSE;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 52 "scanner.flex"
-{return KW_FLOAT;}
+#line 54 "scanner.flex"
+{return TOKEN_KW_FLOAT;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 53 "scanner.flex"
-{return KW_FOR;}
+#line 55 "scanner.flex"
+{return TOKEN_KW_FOR;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 54 "scanner.flex"
-{return KW_FUNCTION;}
+#line 56 "scanner.flex"
+{return TOKEN_KW_FUNCTION;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 55 "scanner.flex"
-{return KW_IF;}
+#line 57 "scanner.flex"
+{return TOKEN_KW_IF;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 56 "scanner.flex"
-{return KW_INTEGER;}
+#line 58 "scanner.flex"
+{return TOKEN_KW_INTEGER;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 57 "scanner.flex"
-{return KW_PRINT;}
+#line 59 "scanner.flex"
+{return TOKEN_KW_PRINT;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 58 "scanner.flex"
-{return KW_RETURN;}
+#line 60 "scanner.flex"
+{return TOKEN_KW_RETURN;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 59 "scanner.flex"
-{return KW_STRING;}
+#line 61 "scanner.flex"
+{return TOKEN_KW_STRING;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 60 "scanner.flex"
-{return KW_TRUE;}
+#line 62 "scanner.flex"
+{return TOKEN_KW_TRUE;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 61 "scanner.flex"
-{return KW_VOID;}
+#line 63 "scanner.flex"
+{return TOKEN_KW_VOID;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 62 "scanner.flex"
-{return KW_WHILE;}
+#line 64 "scanner.flex"
+{return TOKEN_KW_WHILE;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 64 "scanner.flex"
+#line 66 "scanner.flex"
 {
                                         //check if the integer is too long
                                         long int l = strtol(yytext, 0, 10);
                                         if(l >= 9223372036854775807 || l < -9223372036854775807) {
                                             fprintf(stderr, "Integer exceeds 64 bits\n");
-                                            return ERROR;
+                                            return TOKEN_ERROR;
                                         }
-                                        return INTEGER;
+                                        return TOKEN_INTEGER;
                                       }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 73 "scanner.flex"
-{return FLOAT;}
+#line 75 "scanner.flex"
+{return TOKEN_FLOAT;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 74 "scanner.flex"
+#line 76 "scanner.flex"
 {char c = '0'; 
                                         int res = char_decode(yytext, &c); 
                                         if(res){
                                             sprintf(yytext, "%c", c); 
-                                            return CHAR;
+                                            return TOKEN_CHAR;
                                         } else {
                                             fprintf(stderr, "Scan Error: %s is not a valid character\n", yytext);
-                                            return ERROR;
+                                            return TOKEN_ERROR;
                                         }
                                       }  
 	YY_BREAK
 case 48:
 /* rule 48 can match eol */
 YY_RULE_SETUP
-#line 85 "scanner.flex"
+#line 87 "scanner.flex"
 {char s[255]; 
                                         int res = string_decode(yytext, s); 
                                         if(res){
                                             sprintf(yytext, "%s", s);
-                                            return STRING;
+                                            return TOKEN_STRING;
                                         } else {
                                             fprintf(stderr, "Scan Error: %s is not a valid string\n", yytext);
-                                            return ERROR;
+                                            return TOKEN_ERROR;
                                         }
                                       }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 95 "scanner.flex"
-{fprintf(stderr, "Invalid String\n"); return ERROR;}
+#line 97 "scanner.flex"
+{fprintf(stderr, "Invalid String\n"); return TOKEN_ERROR;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 96 "scanner.flex"
-{return IDENTIFIER;}
+#line 98 "scanner.flex"
+{return TOKEN_IDENTIFIER;}
 	YY_BREAK
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 97 "scanner.flex"
+#line 99 "scanner.flex"
 {/*Eat up comments*/}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 98 "scanner.flex"
-{fprintf(stderr, "Invalid Comment\n"); return ERROR;}
+#line 100 "scanner.flex"
+{fprintf(stderr, "Invalid Comment\n"); return TOKEN_ERROR;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 100 "scanner.flex"
+#line 102 "scanner.flex"
 {/*white space*/}
 	YY_BREAK
 case 54:
 /* rule 54 can match eol */
 YY_RULE_SETUP
-#line 101 "scanner.flex"
+#line 103 "scanner.flex"
 {line_count += 1;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 103 "scanner.flex"
-{fprintf(stderr, "Scan Error: %s is not valid.\n", yytext); return ERROR;}
-	YY_BREAK
-case YY_STATE_EOF(INITIAL):
 #line 105 "scanner.flex"
-{return EOF;}
+{fprintf(stderr, "Scan Error: %s is not valid.\n", yytext); return TOKEN_ERROR;}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 107 "scanner.flex"
+#line 108 "scanner.flex"
 ECHO;
 	YY_BREAK
-#line 1161 "scanner.c"
+#line 1156 "scanner.c"
+case YY_STATE_EOF(INITIAL):
+	yyterminate();
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1486,43 +1483,6 @@ static int yy_get_next_buffer (void)
 }
 
 #ifndef YY_NO_UNPUT
-
-    static void yyunput (int c, char * yy_bp )
-{
-	char *yy_cp;
-    
-    yy_cp = (yy_c_buf_p);
-
-	/* undo effects of setting up yytext */
-	*yy_cp = (yy_hold_char);
-
-	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-		{ /* need to shift things up to make room */
-		/* +2 for EOB chars. */
-		int number_to_move = (yy_n_chars) + 2;
-		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
-					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
-		char *source =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
-
-		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
-			*--dest = *--source;
-
-		yy_cp += (int) (dest - source);
-		yy_bp += (int) (dest - source);
-		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
-			(yy_n_chars) = (int) YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
-
-		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
-		}
-
-	*--yy_cp = (char) c;
-
-	(yytext_ptr) = yy_bp;
-	(yy_hold_char) = *yy_cp;
-	(yy_c_buf_p) = yy_cp;
-}
 
 #endif
 
@@ -2156,7 +2116,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 107 "scanner.flex"
+#line 108 "scanner.flex"
 
 
 
