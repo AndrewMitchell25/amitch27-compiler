@@ -68,11 +68,11 @@
 #include "expr.h"
 #define YYSTYPE struct expr *
 struct expr * parser_result = 0;
-int line_count = 1;
+extern int yylineno;
 extern int yylex();
 
 int yyerror( const char *s ) {
-    printf("parse error on line %d: %s\n",line_count, s);
+    printf("parse error on line %d: %s\n",yylineno, s);
     return 1;
 }
 

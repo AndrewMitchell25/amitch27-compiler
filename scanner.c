@@ -163,8 +163,27 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
 
-    #define YY_LESS_LINENO(n)
-    #define YY_LINENO_REWIND_TO(ptr)
+    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+     *       access to the local variable yy_act. Since yyless() is a macro, it would break
+     *       existing scanners that call yyless() from OUTSIDE yylex. 
+     *       One obvious solution it to make yy_act a global. I tried that, and saw
+     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
+     *       normally declared as a register variable-- so it is not worth it.
+     */
+    #define  YY_LESS_LINENO(n) \
+            do { \
+                yy_size_t yyl;\
+                for ( yyl = n; yyl < yyleng; ++yyl )\
+                    if ( yytext[yyl] == '\n' )\
+                        --yylineno;\
+            }while(0)
+    #define YY_LINENO_REWIND_TO(dst) \
+            do {\
+                const char *p;\
+                for ( p = yy_cp-1; p >= (dst); --p)\
+                    if ( *p == '\n' )\
+                        --yylineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -360,8 +379,8 @@ static void yynoreturn yy_fatal_error (yyconst char* msg  );
 	yy_flex_strncpy( yytext, (yytext_ptr), yyleng + 1 ); \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 56
-#define YY_END_OF_BUFFER 57
+#define YY_NUM_RULES 55
+#define YY_END_OF_BUFFER 56
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -371,11 +390,11 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[150] =
     {   0,
-       45,   45,   57,   55,   53,   54,   14,   49,   19,   55,
-       55,    1,    2,   18,   15,    7,   16,   55,   17,   45,
+       45,   45,   56,   54,   53,   53,   14,   49,   19,   54,
+       54,    1,    2,   18,   15,    7,   16,   54,   17,   45,
         9,    8,   25,   21,   24,   50,   50,    3,    4,   20,
        50,   50,   50,   50,   50,   50,   50,   50,   50,   50,
-       50,   50,    5,   55,    6,   13,    0,   48,    0,   26,
+       50,   50,    5,   54,    6,   13,    0,   48,    0,   26,
         0,    0,   10,   45,   11,   46,   52,   51,    0,   45,
         0,   23,   12,   22,   50,    0,   46,   50,   50,   50,
        50,   50,   50,   50,   50,   50,   37,   50,   50,   50,
@@ -539,6 +558,13 @@ static yyconst flex_int16_t yy_chk[269] =
       149,  149,  149,  149,  149,  149,  149,  149
     } ;
 
+/* Table of booleans, true if rule could match eol. */
+static yyconst flex_int32_t yy_rule_can_match_eol[56] =
+    {   0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0,     };
+
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
 
@@ -563,11 +589,10 @@ char *yytext_ptr;
     #include "token2.h"
     #include "encoder.h"
     #include <stdlib.h>
-    extern int line_count;
     #define YYLMAX 255
     
 #define YY_NO_INPUT 1
-#line 571 "scanner.c"
+#line 596 "scanner.c"
 
 #define INITIAL 0
 
@@ -786,7 +811,7 @@ YY_DECL
 #line 14 "scanner.flex"
 
 
-#line 790 "scanner.c"
+#line 815 "scanner.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -831,6 +856,16 @@ yy_find_action:
 			}
 
 		YY_DO_BEFORE_ACTION;
+
+		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
+			{
+			yy_size_t yyl;
+			for ( yyl = 0; yyl < yyleng; ++yyl )
+				if ( yytext[yyl] == '\n' )
+					   
+    yylineno++;
+;
+			}
 
 do_action:	/* This label is used only to access EOF actions. */
 
@@ -1132,27 +1167,22 @@ YY_RULE_SETUP
 {fprintf(stderr, "Invalid Comment\n"); return TOKEN_ERROR;}
 	YY_BREAK
 case 53:
+/* rule 53 can match eol */
 YY_RULE_SETUP
 #line 102 "scanner.flex"
 {/*white space*/}
 	YY_BREAK
 case 54:
-/* rule 54 can match eol */
 YY_RULE_SETUP
-#line 103 "scanner.flex"
-{line_count += 1;}
+#line 104 "scanner.flex"
+{fprintf(stderr, "Scan Error: %s is not valid.\n", yytext); return TOKEN_ERROR;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 105 "scanner.flex"
-{fprintf(stderr, "Scan Error: %s is not valid.\n", yytext); return TOKEN_ERROR;}
-	YY_BREAK
-case 56:
-YY_RULE_SETUP
-#line 108 "scanner.flex"
+#line 107 "scanner.flex"
 ECHO;
 	YY_BREAK
-#line 1156 "scanner.c"
+#line 1186 "scanner.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1555,6 +1585,11 @@ static int yy_get_next_buffer (void)
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve yytext */
 	(yy_hold_char) = *++(yy_c_buf_p);
+
+	if ( c == '\n' )
+		   
+    yylineno++;
+;
 
 	return c;
 }
@@ -2022,6 +2057,9 @@ static int yy_init_globals (void)
      * This function is called from yylex_destroy(), so don't allocate here.
      */
 
+    /* We do not touch yylineno unless the option is enabled. */
+    yylineno =  1;
+    
     (yy_buffer_stack) = NULL;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -2116,7 +2154,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 108 "scanner.flex"
+#line 107 "scanner.flex"
 
 
 

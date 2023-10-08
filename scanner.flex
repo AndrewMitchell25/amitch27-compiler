@@ -2,7 +2,6 @@
     #include "token2.h"
     #include "encoder.h"
     #include <stdlib.h>
-    extern int line_count;
     #define YYLMAX 255
     
 %}
@@ -10,6 +9,7 @@
 %array
 %option nounput
 %option noinput
+%option yylineno
 
 %%
 
@@ -99,8 +99,7 @@ while                                 {return TOKEN_KW_WHILE;}
 (\/\*([^*]|(\*+([^*\/])))*\*+\/)|(\/\/[^\n]*) {/*Eat up comments*/}
 \/\*                                  {fprintf(stderr, "Invalid Comment\n"); return TOKEN_ERROR;}
 
-(\ |\t|\r)                            {/*white space*/}
-\n                                    {line_count += 1;}
+(\ |\t|\r|\n)                         {/*white space*/}
 
 .                                     {fprintf(stderr, "Scan Error: %s is not valid.\n", yytext); return TOKEN_ERROR;}
 
