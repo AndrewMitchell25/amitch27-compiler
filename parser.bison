@@ -111,6 +111,7 @@ expr7: expr7 TOKEN_EXPONENT expr8
      ;
 
 expr8: TOKEN_MINUS expr9
+     | TOKEN_PLUS expr9
      | TOKEN_NOT expr9
      | expr9
      ;
@@ -128,9 +129,14 @@ atomic
      | TOKEN_CHAR
      | TOKEN_KW_TRUE
      | TOKEN_KW_FALSE
-     | TOKEN_LEFT_PARENTHESES expr TOKEN_RIGHT_PARENTHESES
-     | TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET opt_expr TOKEN_RIGHT_BRACKET
+     | TOKEN_LEFT_PARENTHESES expr TOKEN_RIGHT_PARENTHESES 
+     | TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET opt_expr TOKEN_RIGHT_BRACKET array_subscript
      | TOKEN_IDENTIFIER TOKEN_LEFT_PARENTHESES opt_expr_list TOKEN_RIGHT_PARENTHESES
+     ;
+
+array_subscript
+     : TOKEN_LEFT_BRACKET expr TOKEN_RIGHT_BRACKET array_subscript
+     | {/* nothing */}
      ;
 
 opt_expr

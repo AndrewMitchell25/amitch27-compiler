@@ -63,7 +63,7 @@ true                                  {return TOKEN_KW_TRUE;}
 void                                  {return TOKEN_KW_VOID;}
 while                                 {return TOKEN_KW_WHILE;}
 
-(\+|-)?[0-9]*                         {
+[0-9]*                         {
                                         //check if the integer is too long
                                         long int l = strtol(yytext, 0, 10);
                                         if(l >= 9223372036854775807 || l < -9223372036854775807) {
