@@ -1,0 +1,5 @@
+//param lists with trailing ,
+main:function void(hello:string, ) =
+{
+	return;
+}

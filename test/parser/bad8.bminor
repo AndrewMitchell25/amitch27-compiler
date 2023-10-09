@@ -1,0 +1,4 @@
+//can't initialize array to {}
+main : function void() = {
+    b: array [2] boolean = {};
+}

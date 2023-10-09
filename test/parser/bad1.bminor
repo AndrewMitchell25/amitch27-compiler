@@ -1,0 +1,3 @@
+//leaving the function open
+main: function void() = {
+    x : integer = 5;

@@ -1,0 +1,12 @@
+//function calls
+main: function void ()=
+{
+	x:integer = 4;
+	y:char = 'c';
+	z:string = "hello";
+	func2('c');
+	func2(y);
+	func1(42, y);
+	func1(x, 'c');
+	func3(4, y, z);
+}

@@ -1,0 +1,4 @@
+//checking if else without statements
+main: function void() = {
+    if(4 < 7) else (7>3)
+}

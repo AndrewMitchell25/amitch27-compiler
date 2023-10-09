@@ -1,0 +1,14 @@
+//for loops
+main : function  void () =
+{
+	for( i=0; i<100; i++ ) {
+        print i;
+    }
+    for(;;) print i;
+
+    for(x = 0; x < 5; x++)
+        if( 4 < 5 )
+            print "helloo\n";
+        else
+            print "hello\n";
+} 

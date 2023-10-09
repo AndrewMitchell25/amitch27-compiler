@@ -1,0 +1,4 @@
+//no function type
+main : function () = {
+    print;
+}

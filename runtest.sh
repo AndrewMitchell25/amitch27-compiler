@@ -1,8 +1,9 @@
 #!/bin/sh
+make
 
-for testfile in test/scanner/good*.bminor
+for testfile in test/parser/good*.bminor
 do
-	if ./bminor --scan $testfile
+	if ./bminor --parse $testfile
 	then
 		echo "$testfile success (SUCCESS)"
 	else
@@ -10,9 +11,9 @@ do
 	fi
 done
 
-for testfile in test/scanner/bad*.bminor
+for testfile in test/parser/bad*.bminor
 do
-	if ./bminor --scan $testfile
+	if ./bminor --parse $testfile
 	then
 		echo "$testfile success (FAILURE)"
 	else

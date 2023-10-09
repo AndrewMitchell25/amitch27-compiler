@@ -1,0 +1,6 @@
+//not ending with a semicolon
+main:function void()=
+{
+	x++;
+	x++
+}

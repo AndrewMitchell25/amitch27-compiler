@@ -1,0 +1,3 @@
+//starting with something other than declaration
+x = 5 + 5;
+x: integer = 5;

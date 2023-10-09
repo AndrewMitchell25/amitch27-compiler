@@ -1,0 +1,15 @@
+//function parameter lists
+fxn: function integer (x:integer)=
+{
+	return x;
+}
+
+fxn2: function char (x:integer, y:char, z:boolean)=
+{
+	return x;
+}
+
+fxn3: function char (x: array [] integer, y:char, z: array [] array [] boolean)=
+{
+	return x;
+}

@@ -1,0 +1,9 @@
+//chained expressions
+z:boolean  = true || -(4*x^5) + (4 - 4) >= 16 - 6 * 3 + x && y^2 == 16;
+
+main: function void() = {
+    if(!((4*x^5 + 4) - 4 >= 1))
+    {
+	    x = 6;		
+    }
+}
