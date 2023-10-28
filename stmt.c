@@ -23,16 +23,19 @@ void stmt_print( struct stmt *s, int indent ){
     int semi = 1;
     
     switch(s->kind) {
-        case STMT_DECL: decl_print(s->decl, indent); break;
-        case STMT_EXPR: print_indent(indent); expr_print(s->expr); break;
+        case STMT_DECL: decl_print(s->decl, indent); semi = 0; break;
+        case STMT_EXPR: 
+            print_indent(indent); 
+            expr_print(s->expr); 
+            break;
         case STMT_RETURN: 
             print_indent(indent); 
-                printf("return"); 
-                if(s->expr){
-                    printf(" ");
-                    expr_print(s->expr); 
-                }
-                break;
+            printf("return"); 
+            if(s->expr){
+                printf(" ");
+                expr_print(s->expr); 
+            }
+            break;
         case STMT_PRINT: 
             print_indent(indent);
             printf("print");
@@ -57,23 +60,41 @@ void stmt_print( struct stmt *s, int indent ){
             printf("; ");
             expr_print(s->next_expr);
             printf(") ");
+            if(s->body->kind != STMT_BLOCK) {
+                struct stmt *new = stmt_create(STMT_BLOCK, 0, 0, 0, 0, s->body, 0, 0);
+                s->body = new;
+            }
             stmt_print(s->body, indent);
             printf("\n");
             semi = 0;
             break;
         case STMT_IF_ELSE:
-            semi = 0;
-            print_indent(indent);
-            printf("if (");
+            if(s->prev != STMT_IF_ELSE) {
+                print_indent(indent);
+            }
+            printf("if(");
             expr_print(s->expr);
             printf(") ");
+            if(s->body->kind != STMT_BLOCK) {
+                struct stmt *new = stmt_create(STMT_BLOCK, 0, 0, 0, 0, s->body, 0, 0);
+                s->body = new;
+            }
             stmt_print(s->body, indent);
             if(s->else_body) {
                 printf(" else ");
+                if(s->else_body->kind == STMT_IF_ELSE) {
+                    s->else_body->prev = STMT_IF_ELSE;
+                } else if(s->else_body->kind != STMT_BLOCK) {
+                    struct stmt *new = stmt_create(STMT_BLOCK, 0, 0, 0, 0, s->else_body, 0, 0);
+                    s->else_body = new;
+                }
                 stmt_print(s->else_body, indent);
             }
-            printf("\n");
+            if(s->prev != STMT_IF_ELSE){
+                printf("\n");
+            }
             semi = 0;
+            break;
         default: break;
     }
     if(semi) {

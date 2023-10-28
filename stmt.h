@@ -16,6 +16,7 @@ typedef enum {
 
 struct stmt {
 	stmt_t kind;
+	stmt_t prev;
 	struct decl *decl;
 	struct expr *init_expr;
 	struct expr *expr;

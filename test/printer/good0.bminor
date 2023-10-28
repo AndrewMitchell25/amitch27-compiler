@@ -17,14 +17,23 @@ main : function  void ( x: integer, x: integer ) = {
     arr[3*2 % 4][2] = 5;
     for( i=0; i<100; i++ ) {
         print i;
-    }
+    
     
     if(!((4*x^5 + 4) - 4 >= 1))
     {
 	    x = 6;		
-    } else {
+    } else if(x<3) {
         x = 8;
+    } else if(x<3) {
+        x = 8;
+    } else {
+        print x;
+    }
+    if(!((4*x^5 + 4) - 4 >= 1))
+    {
+	    x = 6;		
     }
 
     f(a, b, c);
+    }
 }

@@ -77,12 +77,11 @@ int expr_evaluate( struct expr *e ) {
 
 void expr_print( struct expr *e ) {
     if(!e) return;
-    //printf("%d", e->kind);
     if(e->kind == EXPR_NOT) {
         printf("!"); 
         printf("(");
         expr_print(e->left);
-        printf(") ");
+        printf(")");
         return;
     }
     if(e->kind == EXPR_NEGATIVE) {
