@@ -8,6 +8,7 @@ typedef enum {
 	TYPE_BOOLEAN,
 	TYPE_CHARACTER,
 	TYPE_INTEGER,
+	TYPE_FLOAT,
 	TYPE_STRING,
 	TYPE_ARRAY,
 	TYPE_FUNCTION,
@@ -15,11 +16,12 @@ typedef enum {
 
 struct type {
 	type_t kind;
-	struct param_list *params;
 	struct type *subtype;
+	struct param_list *params;
+	struct expr *expr;
 };
 
-struct type * type_create( type_t kind, struct type *subtype, struct param_list *params );
+struct type * type_create( type_t kind, struct type *subtype, struct param_list *params, struct expr *expr );
 void          type_print( struct type *t );
 
 #endif

@@ -2,11 +2,13 @@
 #include "encoder.h"
 #include "token2.h"
 #include "token.h"
+#include "decl.h"
 
 enum process {
     encode,
     scan,
-    parse
+    parse,
+    print
 };
 
 int main(int argc, char *argv[]) {
@@ -22,6 +24,9 @@ int main(int argc, char *argv[]) {
         }
         if(!strcmp(argv[i], "--parse")) {
             curr_process = parse;
+        }
+        if(!strcmp(argv[i], "--print")) {
+            curr_process = print;
         }
         i++;
     }
@@ -108,6 +113,26 @@ int main(int argc, char *argv[]) {
             return 1;
         }
         
+    } else if (curr_process == print) {
+        extern int yyparse();
+        extern FILE* yyin;
+
+        FILE* fp = fopen(argv[i], "r");
+        if(!fp) {
+            fprintf(stderr, "Can't open file %s\n", argv[i]);
+            return 1;
+        }
+        yyin = fp;
+
+        int res = yyparse();
+        
+        if(!res) {
+            extern struct decl * parser_result;
+            decl_print(parser_result, 0);
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     return 0;

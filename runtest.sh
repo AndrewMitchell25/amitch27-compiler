@@ -3,7 +3,7 @@ make
 
 for testfile in test/parser/good*.bminor
 do
-	if ./bminor --parse $testfile
+	if ./bminor --print $testfile
 	then
 		echo "$testfile success (SUCCESS)"
 	else
@@ -13,7 +13,7 @@ done
 
 for testfile in test/parser/bad*.bminor
 do
-	if ./bminor --parse $testfile
+	if ./bminor --print $testfile
 	then
 		echo "$testfile success (FAILURE)"
 	else

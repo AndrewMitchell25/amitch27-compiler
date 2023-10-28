@@ -1,0 +1,30 @@
+//try all types and simple declarations
+x: integer;
+y: integer = -123;
+f: float = 45e10;
+f: float = 4.4321;
+b: boolean = false;
+c: char    = 'q';
+s: string  = "hello bminor\n";
+a: array [5] integer;
+a: array [5*3] integer = {1,2,3,4,5};
+arr: array[i] array[5] integer;
+iarr: array [a[5]] array [] integer = {1,2,3,4};
+z: array [] array [] string = { {"a","b","c"}, {"x","y","z"} };
+barr: array [4-4+4] boolean = {true, false, true, true};
+iaar: array [4] array [4] integer = {iarr, iarr, iarr, iarr};
+main : function  void ( x: integer, x: integer ) = {
+    arr[3*2 % 4][2] = 5;
+    for( i=0; i<100; i++ ) {
+        print i;
+    }
+    
+    if(!((4*x^5 + 4) - 4 >= 1))
+    {
+	    x = 6;		
+    } else {
+        x = 8;
+    }
+
+    f(a, b, c);
+}

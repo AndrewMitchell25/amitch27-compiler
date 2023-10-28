@@ -5,8 +5,6 @@
 #include "type.h"
 #include <stdio.h>
 
-struct expr;
-
 struct param_list {
 	char *name;
 	struct type *type;

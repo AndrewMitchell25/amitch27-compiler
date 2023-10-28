@@ -1,0 +1,2 @@
+//print out special characters
+carr: array [4] char = {'\a', '\b', '\e', '\f', '\n', '\r', '\t', '\v', '\\', '\'', '\"', '\0x2b'};
