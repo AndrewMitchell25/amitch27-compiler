@@ -1,0 +1,4 @@
+/* statement without semicolon */
+main: function void () = {
+    x = 3
+}

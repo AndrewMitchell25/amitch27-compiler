@@ -44,6 +44,14 @@ void stmt_print( struct stmt *s, int indent ){
                 expr_print(s->expr);
             }
             break;
+        case STMT_STANDING_BLOCK:
+            print_indent(indent);
+            printf("{\n");
+            stmt_print(s->body, indent+1);
+            print_indent(indent);
+            printf("}\n");
+            semi = 0;
+            break;
         case STMT_BLOCK:
             printf("{\n");
             stmt_print(s->body, indent+1);
@@ -55,12 +63,14 @@ void stmt_print( struct stmt *s, int indent ){
             print_indent(indent);
             printf("for ("); 
             expr_print(s->init_expr);
-            printf("; ");
+            printf(";");
             expr_print(s->expr);
-            printf("; ");
+            printf(";");
             expr_print(s->next_expr);
             printf(") ");
-            if(s->body->kind != STMT_BLOCK) {
+            if(s->body->kind == STMT_STANDING_BLOCK) {
+                s->body->kind = STMT_BLOCK;
+            } else if(s->body->kind != STMT_BLOCK) {
                 struct stmt *new = stmt_create(STMT_BLOCK, 0, 0, 0, 0, s->body, 0, 0);
                 s->body = new;
             }
@@ -75,7 +85,9 @@ void stmt_print( struct stmt *s, int indent ){
             printf("if(");
             expr_print(s->expr);
             printf(") ");
-            if(s->body->kind != STMT_BLOCK) {
+            if(s->body->kind == STMT_STANDING_BLOCK) {
+                s->body->kind = STMT_BLOCK;
+            } else if(s->body->kind != STMT_BLOCK) {
                 struct stmt *new = stmt_create(STMT_BLOCK, 0, 0, 0, 0, s->body, 0, 0);
                 s->body = new;
             }
@@ -84,6 +96,8 @@ void stmt_print( struct stmt *s, int indent ){
                 printf(" else ");
                 if(s->else_body->kind == STMT_IF_ELSE) {
                     s->else_body->prev = STMT_IF_ELSE;
+                } else if (s->else_body->kind == STMT_STANDING_BLOCK) {
+                    s->else_body->kind = STMT_BLOCK;
                 } else if(s->else_body->kind != STMT_BLOCK) {
                     struct stmt *new = stmt_create(STMT_BLOCK, 0, 0, 0, 0, s->else_body, 0, 0);
                     s->else_body = new;

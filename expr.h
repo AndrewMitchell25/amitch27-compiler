@@ -4,13 +4,15 @@
 #include "symbol.h"
 
 typedef enum {
-	EXPR_VALUE,
 	EXPR_ADD,
 	EXPR_SUB,
 	EXPR_MUL,
 	EXPR_DIV,
 	EXPR_MOD,
 	EXPR_EXP,
+	EXPR_OR,
+	EXPR_AND,
+	EXPR_VALUE,
 	EXPR_NAME,
 	EXPR_ASSIGN,
 	EXPR_INTEGER_LITERAL,
@@ -26,8 +28,6 @@ typedef enum {
 	EXPR_GREATER_EQUAL,
 	EXPR_EQUALS_EQUALS,
 	EXPR_NOT_EQUALS,
-	EXPR_OR,
-	EXPR_AND,
 	EXPR_PLUS_PLUS,
 	EXPR_MINUS_MINUS,
 	EXPR_NEGATIVE,
@@ -50,9 +50,11 @@ struct expr {
 	float float_literal;
 	const char * string_literal;
 	struct symbol *symbol;
+	int has_parens;
+	int level;
 };
 
-struct expr * expr_create( expr_t kind, struct expr *left, struct expr *right );
+struct expr * expr_create( expr_t kind, struct expr *left, struct expr *right, int level );
 
 struct expr * expr_create_name( const char *n );
 struct expr * expr_create_integer_literal( int c );

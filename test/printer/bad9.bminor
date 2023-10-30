@@ -1,0 +1,5 @@
+/* bad print statement */
+
+main: function void () = {
+    print x y z;
+}

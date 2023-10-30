@@ -1,0 +1,6 @@
+/* incorrect for loop expressions */
+main: function void() =
+{
+        i: integer;
+	for(i=0; i<1) print i;
+}

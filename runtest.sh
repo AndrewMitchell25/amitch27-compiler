@@ -1,7 +1,7 @@
 #!/bin/sh
 make
 
-for testfile in test/parser/good*.bminor
+for testfile in test/printer/good*.bminor
 do
 	if ./bminor --print $testfile
 	then
@@ -11,7 +11,7 @@ do
 	fi
 done
 
-for testfile in test/parser/bad*.bminor
+for testfile in test/printer/bad*.bminor
 do
 	if ./bminor --print $testfile
 	then

@@ -1,0 +1,21 @@
+/* Try decls and stmts and exprs together. */
+
+main: function boolean ( x: integer, y: integer ) = {
+
+     // A declaration
+     z: integer = (x + y) * y^2;
+
+     // An expression with a semicolon
+     z = (16 + x) / y;
+
+     // Print statement
+     print "input is: ", x, " and ", y, "\n";
+
+     // Simple if-else statement
+     if( x < y && y > 0 ) {
+         return true;
+     } else {
+         return false;
+     }
+
+}

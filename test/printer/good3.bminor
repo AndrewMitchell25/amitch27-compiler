@@ -1,0 +1,16 @@
+/* Function prototypes and declarations */
+
+main: function char ( c: char );
+
+func: function integer ( s: string, i: integer );
+
+foo: function integer ( x: integer, y: integer ) =
+{
+	return x * y;
+}
+
+bar: function void () = {
+    x: integer;
+    y: integer = 20;
+    s: string = "hello world\n";
+}

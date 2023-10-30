@@ -1,0 +1,6 @@
+/* incorrect if and else statements */
+
+main: function void (x: integer) = {
+
+    if(x<y) if(y > 10 && y<15) print "a"; else print "b"; else print "c"; else print "d";
+}

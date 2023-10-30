@@ -41,4 +41,5 @@ void decl_print( struct decl *d, int indent ) {
     }
     printf("\n");
     decl_print(d->next, indent);
+
 }

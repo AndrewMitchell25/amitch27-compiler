@@ -102,77 +102,77 @@ expr : expr1
      ;
 
 expr1: expr2 TOKEN_EQUALS expr1
-          {$$ = expr_create(EXPR_ASSIGN, $1, $3);}
+          {$$ = expr_create(EXPR_ASSIGN, $1, $3, 1);}
      | expr2
           {$$ = $1;}
      ;
 
 expr2: expr2 TOKEN_OR expr3
-          {$$ = expr_create(EXPR_OR, $1, $3);}
+          {$$ = expr_create(EXPR_OR, $1, $3, 2);}
      | expr3
           {$$ = $1;}
      ;
 
 expr3: expr3 TOKEN_AND expr4
-          {$$ = expr_create(EXPR_AND, $1, $3);}
+          {$$ = expr_create(EXPR_AND, $1, $3, 3);}
      | expr4
           {$$ = $1;}
      ;
 
 expr4: expr4 TOKEN_LESS expr5
-          {$$ = expr_create(EXPR_LESS, $1, $3);}
+          {$$ = expr_create(EXPR_LESS, $1, $3, 4);}
      | expr4 TOKEN_LESS_EQUAL expr5
-          {$$ = expr_create(EXPR_LESS_EQUAL, $1, $3);}
+          {$$ = expr_create(EXPR_LESS_EQUAL, $1, $3, 4);}
      | expr4 TOKEN_GREATER expr5
-          {$$ = expr_create(EXPR_GREATER, $1, $3);}
+          {$$ = expr_create(EXPR_GREATER, $1, $3, 4);}
      | expr4 TOKEN_GREATER_EQUAL expr5
-          {$$ = expr_create(EXPR_GREATER_EQUAL, $1, $3);}
+          {$$ = expr_create(EXPR_GREATER_EQUAL, $1, $3, 4);}
      | expr4 TOKEN_EQUALS_EQUALS expr5
-          {$$ = expr_create(EXPR_EQUALS_EQUALS, $1, $3);}
+          {$$ = expr_create(EXPR_EQUALS_EQUALS, $1, $3, 4);}
      | expr4 TOKEN_NOT_EQUALS expr5
-          {$$ = expr_create(EXPR_NOT_EQUALS, $1, $3);}
+          {$$ = expr_create(EXPR_NOT_EQUALS, $1, $3, 4);}
      | expr5
           {$$ = $1;}
      ;
 
 expr5: expr5 TOKEN_PLUS expr6
-          {$$ = expr_create(EXPR_ADD, $1, $3);}
+          {$$ = expr_create(EXPR_ADD, $1, $3, 5);}
      | expr5 TOKEN_MINUS expr6
-          {$$ = expr_create(EXPR_SUB, $1, $3);}
+          {$$ = expr_create(EXPR_SUB, $1, $3, 5);}
      | expr6
           {$$ = $1;}
      ;
 
 expr6: expr6 TOKEN_MULTIPLY expr7
-          {$$ = expr_create(EXPR_MUL, $1, $3);}
+          {$$ = expr_create(EXPR_MUL, $1, $3, 6);}
      | expr6 TOKEN_DIVIDE expr7
-          {$$ = expr_create(EXPR_DIV, $1, $3);}
+          {$$ = expr_create(EXPR_DIV, $1, $3, 6);}
      | expr6 TOKEN_MOD expr7
-          {$$ = expr_create(EXPR_MOD, $1, $3);}
+          {$$ = expr_create(EXPR_MOD, $1, $3, 6);}
      | expr7
           {$$ = $1;}
      ;
 
 expr7: expr7 TOKEN_EXPONENT expr8
-          {$$ = expr_create(EXPR_EXP, $1, $3);}
+          {$$ = expr_create(EXPR_EXP, $1, $3, 7);}
      | expr8
           {$$ = $1;}
      ;
 
 expr8: TOKEN_MINUS expr9
-          {$$ = expr_create(EXPR_NEGATIVE, $2, 0);}
+          {$$ = expr_create(EXPR_NEGATIVE, $2, 0, 8);}
      | TOKEN_PLUS expr9
-          {$$ = expr_create(EXPR_POSITIVE, $2, 0);}
+          {$$ = expr_create(EXPR_POSITIVE, $2, 0, 8);}
      | TOKEN_NOT expr9
-          {$$ = expr_create(EXPR_NOT, $2, 0);}
+          {$$ = expr_create(EXPR_NOT, $2, 0, 8);}
      | expr9
           {$$ = $1;}
      ;
 
 expr9: atomic TOKEN_PLUS_PLUS
-          {$$ = expr_create(EXPR_PLUS_PLUS, $1, 0);}
+          {$$ = expr_create(EXPR_PLUS_PLUS, $1, 0, 9);}
      | atomic TOKEN_MINUS_MINUS
-          {$$ = expr_create(EXPR_MINUS_MINUS, $1, 0);}
+          {$$ = expr_create(EXPR_MINUS_MINUS, $1, 0, 9);}
      | atomic
           {$$ = $1;}
      ;
@@ -197,20 +197,20 @@ atomic
      | TOKEN_KW_FALSE
           {$$ = expr_create_boolean_literal(0);}
      | TOKEN_LEFT_PARENTHESES expr TOKEN_RIGHT_PARENTHESES 
-          {$$ = $2; /*TODO GET PARENTHESES*/}
+          {$$ = $2; $2->has_parens = 1;}
      | name TOKEN_LEFT_BRACKET opt_expr TOKEN_RIGHT_BRACKET array_subscript
           {if(!$5) {
-               $$ = expr_create(EXPR_SUBSCRIPT, expr_create_name($1), $3);
+               $$ = expr_create(EXPR_SUBSCRIPT, expr_create_name($1), $3, 10);
           } else {
                struct expr * curr = $5;
                while(curr->left) {
                     curr = curr->left;
                }
-               curr->left = expr_create(EXPR_SUBSCRIPT, expr_create_name($1), $3);
+               curr->left = expr_create(EXPR_SUBSCRIPT, expr_create_name($1), $3, 10);
                $$ = $5;
           }}
      | name TOKEN_LEFT_PARENTHESES opt_expr_list TOKEN_RIGHT_PARENTHESES
-          {$$ = expr_create(EXPR_CALL, expr_create_name($1), $3);}
+          {$$ = expr_create(EXPR_CALL, expr_create_name($1), $3, 10);}
      ;
 
 name : TOKEN_IDENTIFIER
@@ -220,13 +220,13 @@ name : TOKEN_IDENTIFIER
 array_subscript
      : TOKEN_LEFT_BRACKET expr TOKEN_RIGHT_BRACKET array_subscript
           {if(!$4) {
-               $$ = expr_create(EXPR_SUBSCRIPT, 0, $2);
+               $$ = expr_create(EXPR_SUBSCRIPT, 0, $2, 10);
           } else {
                struct expr * curr = $4;
                while(curr->left) {
                     curr = curr->left;
                }
-               curr->left = expr_create(EXPR_SUBSCRIPT, 0, $2);
+               curr->left = expr_create(EXPR_SUBSCRIPT, 0, $2, 10);
                $$ = $4;
           }}
      | {/* nothing */}
@@ -249,9 +249,9 @@ opt_expr_list
 
 expr_list
      : expr
-          {$$ = expr_create(EXPR_ARG, $1, 0);}
+          {$$ = expr_create(EXPR_ARG, $1, 0, 10);}
      | expr TOKEN_COMMA expr_list
-          {$$ = expr_create(EXPR_ARG, $1, $3);}
+          {$$ = expr_create(EXPR_ARG, $1, $3, 10);}
      ;
 
 type : TOKEN_KW_INTEGER
@@ -321,7 +321,7 @@ stmt : decl
      | expr TOKEN_SEMICOLON
           {$$ = stmt_create(STMT_EXPR, 0, 0, $1, 0, 0, 0, 0);}
      | TOKEN_LEFT_CURLY_BRACKET stmt_list TOKEN_RIGHT_CURLY_BRACKET
-          {$$ = stmt_create(STMT_BLOCK, 0, 0, 0, 0, $2, 0, 0);}
+          {$$ = stmt_create(STMT_STANDING_BLOCK, 0, 0, 0, 0, $2, 0, 0);}
      | TOKEN_KW_FOR TOKEN_LEFT_PARENTHESES opt_expr TOKEN_SEMICOLON opt_expr TOKEN_SEMICOLON opt_expr TOKEN_RIGHT_PARENTHESES stmt
           {$$ = stmt_create(STMT_FOR, 0, $3, $5, $7, $9, 0, 0);}
      | TOKEN_KW_IF TOKEN_LEFT_PARENTHESES expr TOKEN_RIGHT_PARENTHESES stmt

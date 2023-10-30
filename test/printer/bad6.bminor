@@ -1,0 +1,5 @@
+/* incorrect function decleration, no type */
+
+main: function () = {
+    print x;
+}

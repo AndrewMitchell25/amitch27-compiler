@@ -1,0 +1,3 @@
+/* starting with stmt instead of decl */
+
+x = 30 + 40;

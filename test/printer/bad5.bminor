@@ -1,0 +1,4 @@
+/* scan error */
+main: function void() = {
+    x = y | z;
+}

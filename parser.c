@@ -1453,7 +1453,7 @@ yyreduce:
 
   case 5:
 #line 105 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_ASSIGN, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_ASSIGN, (yyvsp[-2].expr), (yyvsp[0].expr), 1);}
 #line 1458 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1465,7 +1465,7 @@ yyreduce:
 
   case 7:
 #line 111 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_OR, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_OR, (yyvsp[-2].expr), (yyvsp[0].expr), 2);}
 #line 1470 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1477,7 +1477,7 @@ yyreduce:
 
   case 9:
 #line 117 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_AND, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_AND, (yyvsp[-2].expr), (yyvsp[0].expr), 3);}
 #line 1482 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1489,37 +1489,37 @@ yyreduce:
 
   case 11:
 #line 123 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_LESS, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_LESS, (yyvsp[-2].expr), (yyvsp[0].expr), 4);}
 #line 1494 "parser.c" /* yacc.c:1646  */
     break;
 
   case 12:
 #line 125 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_LESS_EQUAL, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_LESS_EQUAL, (yyvsp[-2].expr), (yyvsp[0].expr), 4);}
 #line 1500 "parser.c" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 127 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_GREATER, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_GREATER, (yyvsp[-2].expr), (yyvsp[0].expr), 4);}
 #line 1506 "parser.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 129 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_GREATER_EQUAL, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_GREATER_EQUAL, (yyvsp[-2].expr), (yyvsp[0].expr), 4);}
 #line 1512 "parser.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 131 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_EQUALS_EQUALS, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_EQUALS_EQUALS, (yyvsp[-2].expr), (yyvsp[0].expr), 4);}
 #line 1518 "parser.c" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 133 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_NOT_EQUALS, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_NOT_EQUALS, (yyvsp[-2].expr), (yyvsp[0].expr), 4);}
 #line 1524 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1531,13 +1531,13 @@ yyreduce:
 
   case 18:
 #line 139 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_ADD, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_ADD, (yyvsp[-2].expr), (yyvsp[0].expr), 5);}
 #line 1536 "parser.c" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 141 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_SUB, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_SUB, (yyvsp[-2].expr), (yyvsp[0].expr), 5);}
 #line 1542 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1549,19 +1549,19 @@ yyreduce:
 
   case 21:
 #line 147 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_MUL, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_MUL, (yyvsp[-2].expr), (yyvsp[0].expr), 6);}
 #line 1554 "parser.c" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 149 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_DIV, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_DIV, (yyvsp[-2].expr), (yyvsp[0].expr), 6);}
 #line 1560 "parser.c" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 151 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_MOD, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_MOD, (yyvsp[-2].expr), (yyvsp[0].expr), 6);}
 #line 1566 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1573,7 +1573,7 @@ yyreduce:
 
   case 25:
 #line 157 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_EXP, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_EXP, (yyvsp[-2].expr), (yyvsp[0].expr), 7);}
 #line 1578 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1585,19 +1585,19 @@ yyreduce:
 
   case 27:
 #line 163 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_NEGATIVE, (yyvsp[0].expr), 0);}
+    {(yyval.expr) = expr_create(EXPR_NEGATIVE, (yyvsp[0].expr), 0, 8);}
 #line 1590 "parser.c" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 165 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_POSITIVE, (yyvsp[0].expr), 0);}
+    {(yyval.expr) = expr_create(EXPR_POSITIVE, (yyvsp[0].expr), 0, 8);}
 #line 1596 "parser.c" /* yacc.c:1646  */
     break;
 
   case 29:
 #line 167 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_NOT, (yyvsp[0].expr), 0);}
+    {(yyval.expr) = expr_create(EXPR_NOT, (yyvsp[0].expr), 0, 8);}
 #line 1602 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1609,13 +1609,13 @@ yyreduce:
 
   case 31:
 #line 173 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_PLUS_PLUS, (yyvsp[-1].expr), 0);}
+    {(yyval.expr) = expr_create(EXPR_PLUS_PLUS, (yyvsp[-1].expr), 0, 9);}
 #line 1614 "parser.c" /* yacc.c:1646  */
     break;
 
   case 32:
 #line 175 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_MINUS_MINUS, (yyvsp[-1].expr), 0);}
+    {(yyval.expr) = expr_create(EXPR_MINUS_MINUS, (yyvsp[-1].expr), 0, 9);}
 #line 1620 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1673,20 +1673,20 @@ yyreduce:
 
   case 41:
 #line 200 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = (yyvsp[-1].expr); /*TODO GET PARENTHESES*/}
+    {(yyval.expr) = (yyvsp[-1].expr); (yyvsp[-1].expr)->has_parens = 1;}
 #line 1678 "parser.c" /* yacc.c:1646  */
     break;
 
   case 42:
 #line 202 "parser.bison" /* yacc.c:1646  */
     {if(!(yyvsp[0].expr)) {
-               (yyval.expr) = expr_create(EXPR_SUBSCRIPT, expr_create_name((yyvsp[-4].name)), (yyvsp[-2].expr));
+               (yyval.expr) = expr_create(EXPR_SUBSCRIPT, expr_create_name((yyvsp[-4].name)), (yyvsp[-2].expr), 10);
           } else {
                struct expr * curr = (yyvsp[0].expr);
                while(curr->left) {
                     curr = curr->left;
                }
-               curr->left = expr_create(EXPR_SUBSCRIPT, expr_create_name((yyvsp[-4].name)), (yyvsp[-2].expr));
+               curr->left = expr_create(EXPR_SUBSCRIPT, expr_create_name((yyvsp[-4].name)), (yyvsp[-2].expr), 10);
                (yyval.expr) = (yyvsp[0].expr);
           }}
 #line 1693 "parser.c" /* yacc.c:1646  */
@@ -1694,7 +1694,7 @@ yyreduce:
 
   case 43:
 #line 213 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_CALL, expr_create_name((yyvsp[-3].name)), (yyvsp[-1].expr));}
+    {(yyval.expr) = expr_create(EXPR_CALL, expr_create_name((yyvsp[-3].name)), (yyvsp[-1].expr), 10);}
 #line 1699 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1707,13 +1707,13 @@ yyreduce:
   case 45:
 #line 222 "parser.bison" /* yacc.c:1646  */
     {if(!(yyvsp[0].expr)) {
-               (yyval.expr) = expr_create(EXPR_SUBSCRIPT, 0, (yyvsp[-2].expr));
+               (yyval.expr) = expr_create(EXPR_SUBSCRIPT, 0, (yyvsp[-2].expr), 10);
           } else {
                struct expr * curr = (yyvsp[0].expr);
                while(curr->left) {
                     curr = curr->left;
                }
-               curr->left = expr_create(EXPR_SUBSCRIPT, 0, (yyvsp[-2].expr));
+               curr->left = expr_create(EXPR_SUBSCRIPT, 0, (yyvsp[-2].expr), 10);
                (yyval.expr) = (yyvsp[0].expr);
           }}
 #line 1720 "parser.c" /* yacc.c:1646  */
@@ -1769,13 +1769,13 @@ yyreduce:
 
   case 54:
 #line 252 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_ARG, (yyvsp[0].expr), 0);}
+    {(yyval.expr) = expr_create(EXPR_ARG, (yyvsp[0].expr), 0, 10);}
 #line 1774 "parser.c" /* yacc.c:1646  */
     break;
 
   case 55:
 #line 254 "parser.bison" /* yacc.c:1646  */
-    {(yyval.expr) = expr_create(EXPR_ARG, (yyvsp[-2].expr), (yyvsp[0].expr));}
+    {(yyval.expr) = expr_create(EXPR_ARG, (yyvsp[-2].expr), (yyvsp[0].expr), 10);}
 #line 1780 "parser.c" /* yacc.c:1646  */
     break;
 
@@ -1937,7 +1937,7 @@ yyreduce:
 
   case 82:
 #line 324 "parser.bison" /* yacc.c:1646  */
-    {(yyval.stmt) = stmt_create(STMT_BLOCK, 0, 0, 0, 0, (yyvsp[-1].stmt), 0, 0);}
+    {(yyval.stmt) = stmt_create(STMT_STANDING_BLOCK, 0, 0, 0, 0, (yyvsp[-1].stmt), 0, 0);}
 #line 1942 "parser.c" /* yacc.c:1646  */
     break;
 

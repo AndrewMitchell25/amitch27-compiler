@@ -3,51 +3,53 @@
 #include <string.h>
 #include "expr.h"
 
-struct expr * expr_create( expr_t kind, struct expr *left, struct expr *right ) {
+struct expr * expr_create( expr_t kind, struct expr *left, struct expr *right, int level ) {
     struct expr *e = malloc(sizeof(*e));
     e->kind = kind;
     e->literal_value = 0;
     e->left = left;
     e->right = right;
+    e->has_parens = 0;
+    e->level = level;
     return e;
 }
 
 struct expr * expr_create_value( int value ) {
-    struct expr *e = expr_create(EXPR_VALUE,0,0);
+    struct expr *e = expr_create(EXPR_VALUE,0,0, 10);
     e->literal_value = value;
     return e;
 }
 
 struct expr * expr_create_name( const char *n ){
-    struct expr *e = expr_create(EXPR_NAME,0,0);
+    struct expr *e = expr_create(EXPR_NAME,0,0, 10);
     e->name = n;
     return e;
 }
 
 struct expr * expr_create_integer_literal( int c ){
-    struct expr *e = expr_create(EXPR_INTEGER_LITERAL,0,0);
+    struct expr *e = expr_create(EXPR_INTEGER_LITERAL,0,0, 10);
     e->literal_value = c;
     return e;
 }
 
 struct expr * expr_create_float_literal( float c ){
-    struct expr *e = expr_create(EXPR_FLOAT_LITERAL,0,0);
+    struct expr *e = expr_create(EXPR_FLOAT_LITERAL,0,0, 10);
     e->float_literal = c;
     return e;
 }
 
 struct expr * expr_create_boolean_literal( int c ){
-    struct expr *e = expr_create(EXPR_BOOLEAN_LITERAL,0,0);
+    struct expr *e = expr_create(EXPR_BOOLEAN_LITERAL,0,0, 10);
     e->literal_value = c;
     return e;
 }
 struct expr * expr_create_char_literal( char c ){
-    struct expr *e = expr_create(EXPR_CHAR_LITERAL,0,0);
+    struct expr *e = expr_create(EXPR_CHAR_LITERAL,0,0, 10);
     e->literal_value = c;
     return e;
 }
 struct expr * expr_create_string_literal( const char *str ){
-    struct expr *e = expr_create(EXPR_STRING_LITERAL,0,0);
+    struct expr *e = expr_create(EXPR_STRING_LITERAL,0,0, 10);
     e->string_literal = str;
     return e;
 }
@@ -77,34 +79,55 @@ int expr_evaluate( struct expr *e ) {
 
 void expr_print( struct expr *e ) {
     if(!e) return;
+    int left_parens = 0;
+    int right_parens = 0;
     if(e->kind == EXPR_NOT) {
         printf("!"); 
-        printf("(");
-        expr_print(e->left);
-        printf(")");
+        if(e->left->has_parens){
+            printf("(");
+            expr_print(e->left);
+            printf(")");
+        } else {
+            expr_print(e->left);
+        }
         return;
-    }
-    if(e->kind == EXPR_NEGATIVE) {
+    } else if(e->kind == EXPR_NEGATIVE) {
         printf("-");
-        expr_print(e->left);
+        if(e->left->has_parens){
+            printf("(");
+            expr_print(e->left);
+            printf(")");
+        } else {
+            expr_print(e->left);
+        }
         return;
-    }
-    if(e->kind == EXPR_POSITIVE) {
+    } else if(e->kind == EXPR_POSITIVE) {
         printf("+");
         expr_print(e->left);
         return;
-    }
-    if(e->kind == EXPR_ARRAY_INIT) {
+    } else if(e->kind == EXPR_ARRAY_INIT) {
         printf("{");
         expr_print(e->left);
         if(e->right){
-            printf(", ");
+            printf(",");
             expr_print(e->right);
         }
         printf("}");
         return;
+    } 
+    if(e->left && e->level < 10 && e->left->level < 10 && e->left->has_parens && (e->level > e->left->level)) {
+        left_parens = 1;
     }
-    expr_print(e->left);
+    if(e->right && e->level < 10 && e->right->level < 10 && e->right->has_parens && (e->level >= e->right->level)) {
+        right_parens = 1;
+    }
+    if(left_parens) {
+        printf("(");
+        expr_print(e->left);
+        printf(")");
+    } else {
+        expr_print(e->left);
+    }
     switch(e->kind) {
         case EXPR_VALUE: printf("%d",e->literal_value); break;
         case EXPR_ADD: printf("+"); break;
@@ -152,16 +175,22 @@ void expr_print( struct expr *e ) {
             return;
         case EXPR_ARG: 
             if(e->right){
-                printf(", ");
+                printf(",");
                 expr_print(e->right);
             }
             return;
         case EXPR_SUBSCRIPT:
-            printf(" [");
+            printf("[");
             expr_print(e->right);
             printf("]");
             return;
         default: break;
     }
-    expr_print(e->right);
+    if(right_parens) {
+        printf("(");
+        expr_print(e->right);
+        printf(")");
+    } else {
+        expr_print(e->right);
+    }
 }

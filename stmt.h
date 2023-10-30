@@ -11,7 +11,8 @@ typedef enum {
 	STMT_FOR,
 	STMT_PRINT,
 	STMT_RETURN,
-	STMT_BLOCK
+	STMT_BLOCK,
+	STMT_STANDING_BLOCK
 } stmt_t;
 
 struct stmt {

@@ -14,26 +14,5 @@ z: array [] array [] string = { {"a","b","c"}, {"x","y","z"} };
 barr: array [4-4+4] boolean = {true, false, true, true};
 iaar: array [4] array [4] integer = {iarr, iarr, iarr, iarr};
 main : function  void ( x: integer, x: integer ) = {
-    arr[3*2 % 4][2] = 5;
-    for( i=0; i<100; i++ ) {
-        print i;
-    
-    
-    if(!((4*x^5 + 4) - 4 >= 1))
-    {
-	    x = 6;		
-    } else if(x<3) {
-        x = 8;
-    } else if(x<3) {
-        x = 8;
-    } else {
-        print x;
-    }
-    if(!((4*x^5 + 4) - 4 >= 1))
-    {
-	    x = 6;		
-    }
-
-    f(a, b, c);
-    }
+    x = 6;	
 }

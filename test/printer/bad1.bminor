@@ -1,0 +1,6 @@
+/* unclosed braces */
+
+main: function void () = {
+    if(10<20) {
+        print "hello";
+    }

@@ -1,0 +1,4 @@
+/* no closing parentheses */
+main: function void () = {
+    x = ((y+x) * 3;
+}
