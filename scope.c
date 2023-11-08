@@ -1,6 +1,7 @@
 #include "scope.h"
 #include "hash_table.h"
 #include <stdlib.h>
+#include "type.h"
 
 struct scope *scope;
 int level = 0;
@@ -48,6 +49,12 @@ void scope_bind( const char *name, struct symbol *sym ){
         sym->which = scope->param;
     }
     if(!hash_table_insert(scope->h, name, sym)) {
+        if(sym->type->kind == TYPE_FUNCTION) {
+            struct symbol *sym2 = scope_lookup(name);
+            if(type_equals(sym->type, sym2->type)){
+                return;
+            }
+        }
         error = 1;
         printf("resolve error: %s already defined\n", name);
     }

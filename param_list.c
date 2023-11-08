@@ -29,3 +29,9 @@ void param_list_resolve(struct param_list *a ){
     scope_bind(a->name, a->symbol);
     param_list_resolve(a->next);
 }
+
+int param_list_equals(struct param_list *a, struct param_list *b) {
+    if(!a && !b) return 1;
+    if(!type_equals(a->type, b->type)) return 0;
+    return param_list_equals(a->next, b->next);
+}

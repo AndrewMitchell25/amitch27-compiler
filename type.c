@@ -40,3 +40,16 @@ void type_print( struct type *t ){
     }
 
 }
+
+int type_equals(struct type *a, struct type *b) {
+    if(!a && !b) return 1;
+    if(!a || !b) return 0;
+    if(a->kind != b->kind) return 0;
+    if(a->kind == TYPE_ARRAY) {
+        return type_equals(a->subtype, b->subtype);
+    }
+    if(a->kind == TYPE_FUNCTION) {
+        return (type_equals(a->subtype, b->subtype) && param_list_equals(a->params, b->params));
+    }
+    return 1;
+}
