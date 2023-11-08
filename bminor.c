@@ -8,7 +8,8 @@ enum process {
     encode,
     scan,
     parse,
-    print
+    print,
+    resolve
 };
 
 int main(int argc, char *argv[]) {
@@ -27,6 +28,9 @@ int main(int argc, char *argv[]) {
         }
         if(!strcmp(argv[i], "--print")) {
             curr_process = print;
+        }
+        if(!strcmp(argv[i], "--resolve")) {
+            curr_process = resolve;
         }
         i++;
     }
@@ -133,7 +137,26 @@ int main(int argc, char *argv[]) {
         } else {
             return 1;
         }
-    }
+    } else if (curr_process == resolve) {
+        extern int yyparse();
+        extern FILE* yyin;
 
+        FILE* fp = fopen(argv[i], "r");
+        if(!fp) {
+            fprintf(stderr, "Can't open file %s\n", argv[i]);
+            return 1;
+        }
+        yyin = fp;
+
+        int res = yyparse();
+        
+        if(!res) {
+            extern struct decl * parser_result;
+            decl_resolve(parser_result);
+            return 0;
+        } else {
+            return 1;
+        }
+    }
     return 0;
 }

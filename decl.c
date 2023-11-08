@@ -5,6 +5,8 @@
 #include "type.h"
 #include "stmt.h"
 #include "indent.h"
+#include "symbol.h"
+#include "scope.h"
 
 struct decl * decl_create( char *name, struct type *type, struct expr *value, struct stmt *code, struct decl *next ) {
     struct decl * d = malloc(sizeof(*d));
@@ -42,4 +44,24 @@ void decl_print( struct decl *d, int indent ) {
     printf("\n");
     decl_print(d->next, indent);
 
+}
+
+void decl_resolve( struct decl *d ) { 
+    if(!d) return;
+    if(scope_level() == 0) {
+        scope_enter();
+    }
+    symbol_t kind = scope_level() > 1 ? SYMBOL_LOCAL : SYMBOL_GLOBAL;
+    d->symbol = symbol_create(kind,d->type,d->name);
+    expr_resolve(d->value);
+    scope_bind(d->name, d->symbol);
+    if(d->code) {
+        scope_enter();
+        param_list_resolve(d->type->params);
+        scope_enter();
+        stmt_resolve(d->code);
+        scope_exit();
+        scope_exit();
+    }
+    decl_resolve(d->next);
 }
