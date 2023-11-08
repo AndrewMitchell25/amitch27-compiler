@@ -201,13 +201,6 @@ void expr_resolve( struct expr *e ) {
     if(!e) return;
     if(e->kind == EXPR_NAME) {
         e->symbol = scope_lookup(e->name);
-        if(e->symbol){
-            printf("%s resolves to ", e->name);
-            symbol_print(e->symbol);
-            printf("\n");
-        } else {
-            printf("resolve error: %s is not defined\n", e->name);
-        }
     } else {
         expr_resolve( e->left );
         expr_resolve( e->right );

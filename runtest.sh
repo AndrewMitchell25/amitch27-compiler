@@ -1,9 +1,9 @@
 #!/bin/sh
 make
 
-for testfile in test/printer/good*.bminor
+for testfile in test/resolve/good*.bminor
 do
-	if ./bminor --print $testfile
+	if ./bminor --resolve $testfile
 	then
 		echo "$testfile success (SUCCESS)"
 	else
@@ -11,9 +11,9 @@ do
 	fi
 done
 
-for testfile in test/printer/bad*.bminor
+for testfile in test/resolve/bad*.bminor
 do
-	if ./bminor --print $testfile
+	if ./bminor --resolve $testfile
 	then
 		echo "$testfile success (FAILURE)"
 	else

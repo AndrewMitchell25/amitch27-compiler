@@ -3,6 +3,7 @@
 #include "token2.h"
 #include "token.h"
 #include "decl.h"
+#include "scope.h"
 
 enum process {
     encode,
@@ -153,7 +154,7 @@ int main(int argc, char *argv[]) {
         if(!res) {
             extern struct decl * parser_result;
             decl_resolve(parser_result);
-            return 0;
+            return scope_error();
         } else {
             return 1;
         }

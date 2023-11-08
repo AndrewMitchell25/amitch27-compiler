@@ -4,6 +4,7 @@
 
 struct scope *scope;
 int level = 0;
+int error = 0;
 
 void scope_enter(){
     struct hash_table *h = hash_table_create(0, 0);
@@ -47,6 +48,7 @@ void scope_bind( const char *name, struct symbol *sym ){
         sym->which = scope->param;
     }
     if(!hash_table_insert(scope->h, name, sym)) {
+        error = 1;
         printf("resolve error: %s already defined\n", name);
     }
 }
@@ -56,13 +58,22 @@ struct symbol *scope_lookup( const char *name ){
     while(curr){
         struct symbol *sym = hash_table_lookup(curr->h, name);
         if(sym) {
+            printf("%s resolves to ", name);
+            symbol_print(sym);
+            printf("\n");
             return sym;
         }
         curr = curr->prev;
     }
+    error = 1;
+    printf("resolve error: %s is not defined\n", name);
     return NULL;
 }
 
 struct symbol *scope_lookup_current( const char *name ){
     return hash_table_lookup(scope->h, name);
+}
+
+int scope_error() {
+    return error;
 }
