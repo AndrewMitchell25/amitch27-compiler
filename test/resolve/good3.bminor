@@ -1,0 +1,10 @@
+//function calls
+foo: function integer (a: integer) = {
+    a = a + 2;
+    return a;
+}
+
+main: function void () = {
+    x: integer = 0;
+    x = foo(x);
+}

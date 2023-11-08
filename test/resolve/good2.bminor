@@ -1,0 +1,14 @@
+//using the same variable in different scopes
+x: integer;
+y: integer = x;
+
+main: function void (x: integer) = {
+    print x;
+    y: integer;
+    x: integer;
+    print x;
+    if(1 > 0) {
+        x: integer;
+        print x;
+    }
+}

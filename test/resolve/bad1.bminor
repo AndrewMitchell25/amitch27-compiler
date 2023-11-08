@@ -1,0 +1,3 @@
+//declaring some variable twice in same scope
+x: integer;
+x: integer;

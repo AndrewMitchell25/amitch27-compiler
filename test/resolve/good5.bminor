@@ -1,0 +1,11 @@
+//scope of for loop
+
+main: function void () = {
+    y: integer;
+    x: integer;
+    print x;
+    for(;;) {
+        x: integer;
+        print x;
+    }
+}

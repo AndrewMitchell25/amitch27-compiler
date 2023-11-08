@@ -1,0 +1,17 @@
+//resolution with {} scope
+
+main: function void () = {
+	y: integer;
+	x: integer;
+	{
+		x: integer;
+		y: integer;
+		{
+			y: integer;
+			x: integer;
+            print x, y;
+		}
+		print x, y;
+	}
+    print x, y;
+}

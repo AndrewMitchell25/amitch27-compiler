@@ -1,0 +1,16 @@
+//function with mismatching prototypes should not resolve
+main: function integer (x: integer);
+foo: function void (x: integer, y:char);
+bar: function void (x: integer, y:integer);
+
+main: function void (x: integer) = {
+    print x;
+}
+
+foo: function integer (x: integer, y:char) = {
+    print x, y;
+}
+
+bar: function void (x: char, y:char) = {
+    print x, y;
+}

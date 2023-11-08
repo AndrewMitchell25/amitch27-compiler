@@ -1,0 +1,12 @@
+//function prototypes and recursion
+main: function void (x: integer);
+foo: function integer (x: integer, y:char);
+
+main: function void (x: integer) = {
+    main(x+1);
+
+}
+
+foo: function integer (x: integer, y:char) = {
+    foo(x+1, y);
+}

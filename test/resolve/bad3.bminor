@@ -1,0 +1,9 @@
+//accessing variable outside of the defined scope
+
+main: function void () = {
+    if(1) {
+        x: integer;
+        print x;
+    }
+    print x;
+}

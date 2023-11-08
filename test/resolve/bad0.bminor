@@ -1,0 +1,4 @@
+//accessing undeclared variable
+main: function void () = {
+    x + 2;
+}

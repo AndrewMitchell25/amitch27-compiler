@@ -1,0 +1,5 @@
+//calling a function without declaring it
+
+main: function void () = {
+    f(1, 2, 3);
+}

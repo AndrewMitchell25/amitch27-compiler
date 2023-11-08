@@ -1,0 +1,6 @@
+//same variable as a param and local
+main: function void (a: integer) = {
+    a + 5;
+    a: float;
+    a + 2;
+}

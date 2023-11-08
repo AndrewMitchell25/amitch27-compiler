@@ -1,0 +1,5 @@
+//can't have two variables of same name in params
+
+main: function integer (x: integer, x: char) = {
+    print x;
+}

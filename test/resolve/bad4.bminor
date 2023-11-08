@@ -1,0 +1,8 @@
+//same variable name can't be used even if new type
+
+main: function void () = {
+    x: integer;
+    print x;
+    x: char;
+    print x;
+}

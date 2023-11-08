@@ -1,0 +1,7 @@
+//testing numbering of parameters and locals
+main: function void (x: integer, y: integer, z: integer) = {
+    a: integer;
+    b: integer;
+    c: integer;
+    print x, y, z, a, b, c;
+}

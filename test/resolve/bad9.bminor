@@ -1,0 +1,7 @@
+//can't resolve variable before it's declared
+
+main: function integer () = {
+    print x;
+    x: integer;
+    print x;
+}

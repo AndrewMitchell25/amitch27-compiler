@@ -1,0 +1,8 @@
+//function order matters
+main: function void () = {
+    foo(1);
+}
+
+foo: function void (x: integer) = {
+    print x;
+}

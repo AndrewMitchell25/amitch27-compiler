@@ -1,0 +1,7 @@
+//try a simple name resolution for global, local and param
+x: integer;
+
+main: function void (y: integer) = {
+    z: integer;
+    print x, y, z;
+}

@@ -1,0 +1,10 @@
+//if statement scopes
+
+main: function void () = {
+    y: integer;
+    x: integer;
+    if(x) {
+        x: integer;
+        print x;
+    }
+}

@@ -1,0 +1,8 @@
+//use global variable in local variable decleration
+
+x: integer;
+
+main: function void () = {
+    x: integer = x + 1;
+    print x;
+}

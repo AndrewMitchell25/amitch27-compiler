@@ -1,0 +1,11 @@
+//declaring same variable in same scope with other scopes in between (testing popping hash tables)
+main: function integer () = {
+    y:integer;
+    x: integer;
+    {
+        x: integer;
+        print x;
+    }
+    x: integer;
+    print x;
+}
