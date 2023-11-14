@@ -1,0 +1,1178 @@
+=====STUDENT TESTS=====
+====Good Tests====
+===[good0.bminor Input]===
+//try a simple name resolution for global, local and param
+x: integer;
+
+main: function void (y: integer) = {
+    z: integer;
+    print x, y, z;
+}
+===[good0.bminor Output]===
+Success!
+
+x resolves to global x
+y resolves to param 1
+z resolves to local 1
+
+
+return code: 0
+
+
+===[good1.bminor Input]===
+//same variable as a param and local
+main: function void (a: integer) = {
+    a + 5;
+    a: float;
+    a + 2;
+}
+===[good1.bminor Output]===
+Success!
+
+a resolves to param 1
+a resolves to local 1
+
+
+return code: 0
+
+
+===[good2.bminor Input]===
+//using the same variable in different scopes
+x: integer;
+y: integer = x;
+
+main: function void (x: integer) = {
+    print x;
+    y: integer;
+    x: integer;
+    print x;
+    if(1 > 0) {
+        x: integer;
+        print x;
+    }
+}
+===[good2.bminor Output]===
+Success!
+
+x resolves to global x
+x resolves to param 1
+x resolves to local 2
+x resolves to local 1
+
+
+return code: 0
+
+
+===[good3.bminor Input]===
+//function calls
+foo: function integer (a: integer) = {
+    a = a + 2;
+    return a;
+}
+
+main: function void () = {
+    x: integer = 0;
+    x = foo(x);
+}
+
+===[good3.bminor Output]===
+Success!
+
+a resolves to param 1
+a resolves to param 1
+a resolves to param 1
+x resolves to local 1
+foo resolves to global foo
+x resolves to local 1
+
+
+return code: 0
+
+
+===[good4.bminor Input]===
+//if statement scopes
+
+main: function void () = {
+    y: integer;
+    x: integer;
+    if(x) {
+        x: integer;
+        print x;
+    }
+}
+===[good4.bminor Output]===
+Success!
+
+x resolves to local 2
+x resolves to local 1
+
+
+return code: 0
+
+
+===[good5.bminor Input]===
+//scope of for loop
+
+main: function void () = {
+    y: integer;
+    x: integer;
+    print x;
+    for(;;) {
+        x: integer;
+        print x;
+    }
+}
+===[good5.bminor Output]===
+Success!
+
+x resolves to local 2
+x resolves to local 1
+
+
+return code: 0
+
+
+===[good6.bminor Input]===
+//use global variable in local variable decleration
+
+x: integer;
+
+main: function void () = {
+    x: integer = x + 1;
+    print x;
+}
+===[good6.bminor Output]===
+Success!
+
+x resolves to global x
+x resolves to local 1
+
+
+return code: 0
+
+
+===[good7.bminor Input]===
+//resolution with {} scope
+
+main: function void () = {
+	y: integer;
+	x: integer;
+	{
+		x: integer;
+		y: integer;
+		{
+			y: integer;
+			x: integer;
+            print x, y;
+		}
+		print x, y;
+	}
+    print x, y;
+}
+===[good7.bminor Output]===
+Success!
+
+x resolves to local 2
+y resolves to local 1
+x resolves to local 1
+y resolves to local 2
+x resolves to local 2
+y resolves to local 1
+
+
+return code: 0
+
+
+===[good8.bminor Input]===
+//testing numbering of parameters and locals
+main: function void (x: integer, y: integer, z: integer) = {
+    a: integer;
+    b: integer;
+    c: integer;
+    print x, y, z, a, b, c;
+}
+===[good8.bminor Output]===
+Success!
+
+x resolves to param 1
+y resolves to param 2
+z resolves to param 3
+a resolves to local 1
+b resolves to local 2
+c resolves to local 3
+
+
+return code: 0
+
+
+===[good9.bminor Input]===
+//function prototypes and recursion
+main: function void (x: integer);
+foo: function integer (x: integer, y:char);
+
+main: function void (x: integer) = {
+    main(x+1);
+
+}
+
+foo: function integer (x: integer, y:char) = {
+    foo(x+1, y);
+}
+===[good9.bminor Output]===
+Success!
+
+main resolves to global main
+main resolves to global main
+x resolves to param 1
+foo resolves to global foo
+foo resolves to global foo
+x resolves to param 1
+y resolves to param 2
+
+
+return code: 0
+
+
+====Bad Tests====
+===[bad0.bminor Input]===
+//accessing undeclared variable
+main: function void () = {
+    x + 2;
+}
+===[bad0.bminor Output]===
+Success!
+
+resolve error: x is not defined
+
+
+return code: 1
+
+
+===[bad1.bminor Input]===
+//declaring some variable twice in same scope
+x: integer;
+x: integer;
+===[bad1.bminor Output]===
+Success!
+
+resolve error: x already defined
+
+
+return code: 1
+
+
+===[bad2.bminor Input]===
+//calling a function without declaring it
+
+main: function void () = {
+    f(1, 2, 3);
+}
+===[bad2.bminor Output]===
+Success!
+
+resolve error: f is not defined
+
+
+return code: 1
+
+
+===[bad3.bminor Input]===
+//accessing variable outside of the defined scope
+
+main: function void () = {
+    if(1) {
+        x: integer;
+        print x;
+    }
+    print x;
+}
+===[bad3.bminor Output]===
+Success!
+
+x resolves to local 1
+resolve error: x is not defined
+
+
+return code: 1
+
+
+===[bad4.bminor Input]===
+//same variable name can't be used even if new type
+
+main: function void () = {
+    x: integer;
+    print x;
+    x: char;
+    print x;
+}
+===[bad4.bminor Output]===
+Success!
+
+x resolves to local 1
+resolve error: x already defined
+x resolves to local 1
+
+
+return code: 1
+
+
+===[bad5.bminor Input]===
+//function order matters
+main: function void () = {
+    foo(1);
+}
+
+foo: function void (x: integer) = {
+    print x;
+}
+===[bad5.bminor Output]===
+Success!
+
+resolve error: foo is not defined
+x resolves to param 1
+
+
+return code: 1
+
+
+===[bad6.bminor Input]===
+//function with mismatching prototypes should not resolve
+main: function integer (x: integer);
+foo: function void (x: integer, y:char);
+bar: function void (x: integer, y:integer);
+
+main: function void (x: integer) = {
+    print x;
+}
+
+foo: function integer (x: integer, y:char) = {
+    print x, y;
+}
+
+bar: function void (x: char, y:char) = {
+    print x, y;
+}
+===[bad6.bminor Output]===
+Success!
+
+main resolves to global main
+resolve error: main already defined
+x resolves to param 1
+foo resolves to global foo
+resolve error: foo already defined
+x resolves to param 1
+y resolves to param 2
+bar resolves to global bar
+resolve error: bar already defined
+x resolves to param 1
+y resolves to param 2
+
+
+return code: 1
+
+
+===[bad7.bminor Input]===
+//can't have two variables of same name in params
+
+main: function integer (x: integer, x: char) = {
+    print x;
+}
+===[bad7.bminor Output]===
+Success!
+
+resolve error: x already defined
+x resolves to param 1
+
+
+return code: 1
+
+
+===[bad8.bminor Input]===
+//declaring same variable in same scope with other scopes in between (testing popping hash tables)
+main: function integer () = {
+    y:integer;
+    x: integer;
+    {
+        x: integer;
+        print x;
+    }
+    x: integer;
+    print x;
+}
+===[bad8.bminor Output]===
+Success!
+
+x resolves to local 1
+resolve error: x already defined
+x resolves to local 2
+
+
+return code: 1
+
+
+===[bad9.bminor Input]===
+//can't resolve variable before it's declared
+
+main: function integer () = {
+    print x;
+    x: integer;
+    print x;
+}
+===[bad9.bminor Output]===
+Success!
+
+resolve error: x is not defined
+x resolves to local 1
+
+
+return code: 1
+
+
+=====HIDDEN TESTS=====
+====Good Tests====
+===[good1.bminor Input]===
+/* Correct: x used but not defined. */
+
+x: integer = 10;
+
+===[good1.bminor Output]===
+Success!
+
+
+
+return code: 0
+
+
+===[good10.bminor Input]===
+/* Correct: Many variables to resolve. */
+
+D: function integer() = {
+        d1: integer = 5;
+        d2: integer = d1 + 1; //6
+        {
+                d3: integer = 9;
+                d2: integer = d3 + d1 - 3; //11
+                d4: integer = -1;
+                d2 = d2 + d3; //20
+                print d2 - d4, "\n";
+        }
+        d4: integer = 16;
+        print d2 - d4, '\n';
+        {
+                d4: integer = -2;
+                d3: integer = 1000;
+                print d3 + 10;
+                print "\n";
+                print d4;
+                print '\n';
+        }
+        print d4;
+        return 3;
+}
+
+main: function integer () = {
+        return D();
+}
+
+===[good10.bminor Output]===
+Success!
+
+d1 resolves to local 1
+d3 resolves to local 1
+d1 resolves to local 1
+d2 resolves to local 2
+d2 resolves to local 2
+d3 resolves to local 1
+d2 resolves to local 2
+d4 resolves to local 3
+d2 resolves to local 2
+d4 resolves to local 3
+d3 resolves to local 2
+d4 resolves to local 1
+d4 resolves to local 3
+D resolves to global D
+
+
+return code: 0
+
+
+===[good2.bminor Input]===
+/* Correct: redefining a name at the local scope. */
+
+x: integer = 10;
+
+f: function void () = {
+     x: integer = 20;
+     print x, "\n";
+}
+
+
+===[good2.bminor Output]===
+Success!
+
+x resolves to local 1
+
+
+return code: 0
+
+
+===[good3.bminor Input]===
+/* Correct: redefining a name at the local scope. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer ) = {
+     x: integer = 20;
+     if(a<b) {
+          x: integer = 30;
+          print x, "\n";
+     } else {
+          print "a>=b\n";
+     }
+}
+
+
+
+===[good3.bminor Output]===
+Success!
+
+a resolves to param 1
+b resolves to param 2
+x resolves to local 1
+
+
+return code: 0
+
+
+===[good4.bminor Input]===
+/* Correct: Accessing names in different scopes. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = 20;
+     if(a<b) {
+          z: integer = 30;
+          print x, " ", y, " ", z, "\n";
+     } else {
+          print "a>=b\n";
+     }
+
+}
+
+
+===[good4.bminor Output]===
+Success!
+
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+z resolves to local 1
+
+
+return code: 0
+
+
+===[good5.bminor Input]===
+/* Correct: f is called multiple times from main. */
+/* (Should resolve the expression before adding the decl of y. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = a * 20;
+     if(a<b) {
+          z: integer = 30;
+          print x, " ", y, " ", z, "\n";
+     } else {
+          print "a>=b\n";
+     }
+}
+
+main: function integer ( argc: integer, argv: array [] string ) = {
+     f(10,20);
+     f(40,30);
+}
+
+
+
+===[good5.bminor Output]===
+Success!
+
+a resolves to param 1
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+z resolves to local 1
+f resolves to global f
+f resolves to global f
+
+
+return code: 0
+
+
+===[good6.bminor Input]===
+/* Correct: f is prototyped, then defined, then called. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer );
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = a * 20;
+     if(a<b) {
+          z: integer = 30;
+          print x, " ", y, " ", z, "\n";
+     } else {
+          print "a>=b\n";
+     }
+}
+
+main: function integer ( argc: integer, argv: array [] string ) = {
+     f(10,20);
+     f(40,30);
+}
+
+
+
+
+===[good6.bminor Output]===
+Success!
+
+f resolves to global f
+a resolves to param 1
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+z resolves to local 1
+f resolves to global f
+f resolves to global f
+
+
+return code: 0
+
+
+===[good7.bminor Input]===
+/* Correct: f is prototyped, then called, then defined. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer );
+
+main: function integer ( argc: integer, argv: array [] string ) = {
+     f(10,20);
+     f(40,30);
+}
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = a * 20;
+     if(a<b) {
+          z: integer = 30;
+          print x, " ", y, " ", z, "\n";
+     } else {
+          print "a>=b\n";
+     }
+}
+
+
+
+===[good7.bminor Output]===
+Success!
+
+f resolves to global f
+f resolves to global f
+f resolves to global f
+a resolves to param 1
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+z resolves to local 1
+
+
+return code: 0
+
+
+===[good8.bminor Input]===
+/* Correct: Resolver should work all the way down the tree. */
+
+f: function void ( n:integer, s: string ) =
+{
+	i:integer;
+
+	for(i=0;i<n;i++) { 
+		if( i%2 == 0 ) {
+			print i, "is even\n";
+		} else {
+			print i, "is odd\n";
+		}
+	}
+
+	/* We can open a new scope with braces */
+	{
+		i: integer;
+		j: integer;
+		for(i=0;i<n;i++) {
+			for(j=0;j<n;j++) {
+				print i, ":", j, " -> ", i*j, " ", s, "\n";
+			}
+		}
+	}
+}
+
+===[good8.bminor Output]===
+Success!
+
+i resolves to local 1
+i resolves to local 1
+n resolves to param 1
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+n resolves to param 1
+i resolves to local 1
+j resolves to local 2
+j resolves to local 2
+n resolves to param 1
+j resolves to local 2
+i resolves to local 1
+j resolves to local 2
+i resolves to local 1
+j resolves to local 2
+s resolves to param 2
+
+
+return code: 0
+
+
+===[good9.bminor Input]===
+/* Correct: Different functions can define variables with same params and locals. */
+
+x: integer = 10;
+
+f: function integer ( x: integer ) =
+{
+	y: integer = 20;
+	return x*y;
+}
+
+g: function void ( x: integer ) =
+{
+	y: integer = 30;
+	return x*y;
+}
+
+main: function integer ( argc: integer, argv: array [] string ) =
+{
+	return f(x) + g(x);
+}
+
+===[good9.bminor Output]===
+Success!
+
+x resolves to param 1
+y resolves to local 1
+x resolves to param 1
+y resolves to local 1
+f resolves to global f
+x resolves to global x
+g resolves to local 1
+x resolves to global x
+
+
+return code: 0
+
+
+===[good11.bminor Input]===
+e: function integer () = {
+        e: integer = 100;
+	return e;
+}
+
+main: function integer () = {
+        return e();
+}
+
+===[good11.bminor Output]===
+Success!
+
+e resolves to local 1
+e resolves to global e
+
+
+return code: 0
+
+
+====Bad Tests====
+===[bad1.bminor Input]===
+/* Error: name already used in the global scope. */
+x: integer = 10;
+x: integer = 20;
+
+
+===[bad1.bminor Output]===
+Success!
+
+resolve error: x already defined
+
+
+return code: 1
+
+
+===[bad10.bminor Input]===
+/* Error: Function has the same name as a declared variable. */
+
+str: string = "hello";
+
+str: function string ( s: string ) = 
+{
+	return "goodbye";
+}
+
+
+===[bad10.bminor Output]===
+Success!
+
+str resolves to global str
+resolve error: str already defined
+
+
+return code: 1
+
+
+===[bad2.bminor Input]===
+/* Error: Variable z went out of scope. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = 20;
+     if(a<b) {
+          z: integer = 30;
+	  print "a<b\n";
+     }
+     print x, " ", y, " ", z, "\n";
+}
+
+
+===[bad2.bminor Output]===
+Success!
+
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+resolve error: z is not defined
+
+
+return code: 1
+
+
+===[bad3.bminor Input]===
+/* Error: Cannot refer to variable y in its own definition. */
+/* (Should resolve the expression before adding the decl of y. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = y * 20;
+     if(a<b) {
+          z: integer = 30;
+	  print "a<b\n";
+     } else {
+          print "a>=b\n";
+     }
+     print x, " ", y, " ", z, "\n";
+}
+
+
+===[bad3.bminor Output]===
+Success!
+
+resolve error: y is not defined
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+resolve error: z is not defined
+
+
+return code: 1
+
+
+===[bad4.bminor Input]===
+/* Error: f has multiple definitions. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = y * 20;
+     if(a<b) {
+          z: integer = 30;
+          print x, " ", y, " ", z, "\n";
+     } else {
+          print "a>=b\n";
+     }
+}
+
+f: function string ( s: string ) = {
+    print "hello";
+    return "goodbye";
+}
+
+
+===[bad4.bminor Output]===
+Success!
+
+resolve error: y is not defined
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+z resolves to local 1
+f resolves to global f
+resolve error: f already defined
+
+
+return code: 1
+
+
+===[bad5.bminor Input]===
+/* Error: f is called prior to definition. */
+
+x: integer = 10;
+
+main: function integer ( argc: integer, argv: array [] string ) = {
+     f(10,20);
+     f(40,30);
+}
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = y * 20;
+     if(a<b) {
+          z: integer = 30;
+          print x, " ", y, " ", z, "\n";
+     } else {
+          print "a>=b\n";
+     }
+}
+
+
+
+===[bad5.bminor Output]===
+Success!
+
+resolve error: f is not defined
+resolve error: f is not defined
+resolve error: y is not defined
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+z resolves to local 1
+
+
+return code: 1
+
+
+===[bad6.bminor Input]===
+/* Error: g is not defined. */
+
+x: integer = 10;
+
+f: function void ( a: integer, b: integer ) = {
+     y: integer = y * 20;
+     if(a<b) {
+          z: integer = 30;
+          print x, " ", y, " ", z, "\n";
+     } else {
+          print "a>=b\n";
+     }
+}
+
+main: function integer ( argc: integer, argv: array [] string ) = {
+     f(10,20);
+     g(40,30);
+}
+
+
+===[bad6.bminor Output]===
+Success!
+
+resolve error: y is not defined
+a resolves to param 1
+b resolves to param 2
+x resolves to global x
+y resolves to local 1
+z resolves to local 1
+f resolves to global f
+resolve error: g is not defined
+
+
+return code: 1
+
+
+===[bad7.bminor Input]===
+/* Error: Two parameters have the same name */
+/* Also, b is not defined. */
+
+f: function void ( a: integer, a: integer ) = {
+     y: integer = y * 20;
+     if(a<b) {
+          z: integer = 30;
+          print x, " ", y, " ", z, "\n";
+     } else {
+          print "a>=b\n";
+     }
+}
+
+===[bad7.bminor Output]===
+Success!
+
+resolve error: a already defined
+resolve error: y is not defined
+a resolves to param 1
+resolve error: b is not defined
+resolve error: x is not defined
+y resolves to local 1
+z resolves to local 1
+
+
+return code: 1
+
+
+===[bad8.bminor Input]===
+/* Error: x not defined, deep down in the expression. */
+
+a: integer;
+
+f: function integer ( b: integer ) =
+{
+	c: integer;
+	for(c=0;c<b;c++) {
+		if(a<b) {
+			print a + b * (c / (a+x)), "\n"; 
+		}
+	}
+	return b;
+}
+
+===[bad8.bminor Output]===
+Success!
+
+c resolves to local 1
+c resolves to local 1
+b resolves to param 1
+c resolves to local 1
+a resolves to global a
+b resolves to param 1
+a resolves to global a
+b resolves to param 1
+c resolves to local 1
+a resolves to global a
+resolve error: x is not defined
+b resolves to param 1
+
+
+return code: 1
+
+
+===[bad9.bminor Input]===
+/* Error: x redefined after several intervening scopes. */
+
+a: integer;
+
+f: function integer ( b: integer ) =
+{
+	x: integer = 20;
+	{
+		i: integer;
+		for(i=0;i<x;i++) print i;
+	}
+	{
+		j: integer;
+		for(j=0;j<x;j++) print j;
+	}
+	x: integer = 30;
+
+	return x;
+}
+
+===[bad9.bminor Output]===
+Success!
+
+i resolves to local 1
+i resolves to local 1
+x resolves to local 1
+i resolves to local 1
+i resolves to local 1
+j resolves to local 1
+j resolves to local 1
+x resolves to local 1
+j resolves to local 1
+j resolves to local 1
+resolve error: x already defined
+x resolves to local 1
+
+
+return code: 1
+
+
+===== SUMMARIZED PARSER RESULTS =====
+{
+  "student_tests": {
+    "Good": {
+      "correct": 10,
+      "incorrect": 0
+    },
+    "Bad": {
+      "correct": 10,
+      "incorrect": 0
+    }
+  },
+  "hidden_tests": {
+    "Good": {
+      "correct": 11,
+      "incorrect": 0
+    },
+    "Bad": {
+      "correct": 10,
+      "incorrect": 0
+    }
+  }
+}
+
+Resolver Project Grade
+-------------------
+
+General Structure: 25/25
+---------------------------------
+Overall structure is correct.
+
+Resolver - Manual Checks 20/25 
+--------------------------------------------
+It looks like you begin counting local variables from 0 
+each time a new scope is defined. We need to get a total count
+of all local variables in the function regardless of scope to make
+the proper space on the stack.
+
+Student Tests: 20/20
+---------------------------
+Passes all your tests.
+
+Hidden Tests: 20/20
+---------------------------
+Passes all hidden tests
+
+Code Style: 10/10
+------------------------
+Looks good
+
+Total: 95/100
+------------------------------------------
