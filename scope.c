@@ -5,7 +5,7 @@
 
 struct scope *scope;
 int level = 0;
-int error = 0;
+int scope_error = 0;
 
 void scope_enter(){
     struct hash_table *h = hash_table_create(0, 0);
@@ -13,7 +13,11 @@ void scope_enter(){
         struct scope *new_scope = malloc(sizeof(struct scope));
         new_scope->h = h;
         new_scope->prev = scope;
-        new_scope->local = 0;
+        if(level == 1){
+            new_scope->local = 0;
+        } else {
+            new_scope->local = scope->local;
+        }
         new_scope->param = 0;
         scope->next = new_scope;
         scope = new_scope;
@@ -34,6 +38,7 @@ void scope_exit(){
     scope = old_scope->prev;
     hash_table_delete(old_scope->h);
     free(old_scope);
+    level--;
 }
 
 int scope_level(){
@@ -55,7 +60,7 @@ void scope_bind( const char *name, struct symbol *sym ){
                 return;
             }
         }
-        error = 1;
+        scope_error = 1;
         printf("resolve error: %s already defined\n", name);
     }
 }
@@ -72,7 +77,7 @@ struct symbol *scope_lookup( const char *name ){
         }
         curr = curr->prev;
     }
-    error = 1;
+    scope_error = 1;
     printf("resolve error: %s is not defined\n", name);
     return NULL;
 }
@@ -81,6 +86,6 @@ struct symbol *scope_lookup_current( const char *name ){
     return hash_table_lookup(scope->h, name);
 }
 
-int scope_error() {
-    return error;
+int scope_get_error() {
+    return scope_error;
 }

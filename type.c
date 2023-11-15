@@ -37,6 +37,7 @@ void type_print( struct type *t ){
             param_list_print(t->params);
             printf(")");
             break;
+        case TYPE_UNDEFINED: printf("undefined"); break;
     }
 
 }
@@ -52,4 +53,12 @@ int type_equals(struct type *a, struct type *b) {
         return (type_equals(a->subtype, b->subtype) && param_list_equals(a->params, b->params));
     }
     return 1;
+}
+
+struct type *type_copy(struct type *t) {
+
+}
+
+void type_delete(struct type *t) {
+    if(!t) return;
 }

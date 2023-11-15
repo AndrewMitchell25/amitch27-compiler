@@ -10,7 +10,8 @@ enum process {
     scan,
     parse,
     print,
-    resolve
+    resolve,
+    typecheck
 };
 
 int main(int argc, char *argv[]) {
@@ -32,6 +33,9 @@ int main(int argc, char *argv[]) {
         }
         if(!strcmp(argv[i], "--resolve")) {
             curr_process = resolve;
+        }
+        if(!strcmp(argv[i], "--typecheck")) {
+            curr_process = typecheck;
         }
         i++;
     }
@@ -154,10 +158,35 @@ int main(int argc, char *argv[]) {
         if(!res) {
             extern struct decl * parser_result;
             decl_resolve(parser_result);
-            return scope_error();
+            return scope_get_error();
         } else {
             return 1;
         }
+    } else if (curr_process == typecheck) {
+        extern int yyparse();
+        extern FILE* yyin;
+
+        FILE* fp = fopen(argv[i], "r");
+        if(!fp) {
+            fprintf(stderr, "Can't open file %s\n", argv[i]);
+            return 1;
+        }
+        yyin = fp;
+
+        int res = yyparse();
+        
+        if(!res) {
+            extern struct decl * parser_result;
+            decl_resolve(parser_result);
+            decl_typecheck(parser_result);
+            if( scope_get_error() || 
+                expr_type_error() || 
+                decl_type_error() || 
+                stmt_type_error()) 
+                return 1; //TODO: OR TYPECHECK ERRORS
+        } else {
+            return 1;
+        }
+        return 0;
     }
-    return 0;
 }

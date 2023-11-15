@@ -8,6 +8,8 @@
 #include "symbol.h"
 #include "scope.h"
 
+int decl_error = 0;
+
 struct decl * decl_create( char *name, struct type *type, struct expr *value, struct stmt *code, struct decl *next ) {
     struct decl * d = malloc(sizeof(*d));
     d->name = name;
@@ -64,4 +66,51 @@ void decl_resolve( struct decl *d ) {
         scope_exit();
     }
     decl_resolve(d->next);
+}
+
+void decl_typecheck(struct decl *d){
+    if(!d) return;
+    if(d->value) {
+        struct type *t = expr_typecheck(d->value);
+        if(!type_equals(t, d->symbol->type)){
+            printf("type error: cannot assign ");
+            type_print(t);
+            printf(" (");
+            expr_print(d->value);
+            printf(") to ");
+            type_print(d->symbol->type);
+            printf(" (%s)\n", d->symbol->name);
+            decl_error = 1;
+        }
+    }
+    if(d->code){
+        int return_flag = 0;
+        struct stmt * s = d->code;
+        while(s){
+            struct type *t = stmt_typecheck(s);
+            if(s->kind == STMT_RETURN) {
+                return_flag = 1;
+                if(!type_equals(t, d->type->subtype)){
+                    printf("type error: return type mismatch in function %s - returns ", d->symbol->name);
+                    expr_print(s->expr);
+                    printf(" which is type ");
+                    type_print(t);
+                    printf(" but should return type ");
+                    type_print(d->type->subtype);
+                    printf("\n");
+                    decl_error = 1;
+                }
+            }
+            s = s->next;
+        }
+        if(!return_flag && d->type->subtype->kind != TYPE_VOID){
+            printf("type error: no return statement in function %s\n", d->symbol->name);
+            decl_error = 1;
+        }
+    }
+    decl_typecheck(d->next);
+}
+
+int decl_type_error() {
+    return decl_error;
 }

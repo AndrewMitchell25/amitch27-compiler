@@ -5,6 +5,9 @@
 #include "expr.h"
 #include "indent.h"
 #include "scope.h"
+#include "type.h"
+
+int stmt_error = 0;
 
 struct stmt * stmt_create( stmt_t kind, struct decl *decl, struct expr *init_expr, struct expr *expr, struct expr *next_expr, struct stmt *body, struct stmt *else_body, struct stmt *next ){
     struct stmt * s = malloc(sizeof(*s));
@@ -133,4 +136,64 @@ void stmt_resolve( struct stmt *s ) {
         stmt_resolve(s->else_body);
     }
     stmt_resolve(s->next);
+}
+
+struct type * stmt_typecheck(struct stmt *s){
+    struct type *t;
+    switch(s->kind){
+        case STMT_DECL:
+            decl_typecheck(s->decl);
+            break;
+        case STMT_EXPR:
+            t = expr_typecheck(s->expr);
+            break;
+        case STMT_IF_ELSE:
+            t = expr_typecheck(s->expr);
+            if(t->kind != TYPE_BOOLEAN){
+                printf("ERROR\n");
+                //print error
+            }
+            stmt_typecheck(s->body);
+            stmt_typecheck(s->else_body);
+            break;
+        case STMT_FOR:
+             t = expr_typecheck(s->init_expr);
+             if(t && t->kind != TYPE_INTEGER){
+                printf("ERROR\n");
+                //error
+             }
+             t = expr_typecheck(s->expr);
+             if(t && t->kind != TYPE_BOOLEAN){
+                printf("ERROR\n");
+                //error
+             }
+             t = expr_typecheck(s->next_expr);
+             if(t && t->kind != TYPE_INTEGER){
+                printf("ERROR\n");
+                //error
+             }
+             stmt_typecheck(s->body);
+             break;
+        case STMT_PRINT:
+            t = expr_typecheck(s->expr);
+            break;
+        case STMT_RETURN:
+            t = expr_typecheck(s->expr);
+            if(!t){
+                t = type_create(TYPE_VOID, 0, 0, 0);
+            }
+            return(t);
+        case STMT_BLOCK:
+            stmt_typecheck(s->body);
+            break;
+        case STMT_STANDING_BLOCK:
+            stmt_typecheck(s->body);
+            break;
+    }
+    type_delete(t);
+    return 0;
+}
+
+int stmt_type_error() {
+    return stmt_error;
 }
