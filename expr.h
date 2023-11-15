@@ -68,6 +68,7 @@ int expr_evaluate( struct expr *e );
 void expr_print( struct expr *e );
 void expr_resolve( struct expr *e );
 struct type * expr_typecheck(struct expr *e);
+struct type *expr_array_init_type(struct expr *e);
 int expr_type_error();
 
 #endif

@@ -291,7 +291,7 @@ struct type * expr_typecheck(struct expr *e) {
                 type_print(left);
                 printf(" (");
                 expr_print(e->left);
-                printf(") to a ");
+                printf(") with a ");
                 type_print(right);
                 printf(" (");
                 expr_print(e->right);
@@ -302,9 +302,9 @@ struct type * expr_typecheck(struct expr *e) {
             break;
         case EXPR_CALL:
             if(left->kind != TYPE_FUNCTION) {
-                printf("type error: cannot call ");
+                printf("type error: cannot call (");
                 expr_print(e->left);
-                printf(" which is a ");
+                printf(") which is type ");
                 type_print(left);
                 printf(" not a function\n");
                 expr_error = 1;
@@ -321,7 +321,7 @@ struct type * expr_typecheck(struct expr *e) {
                     expr_error = 1;
                     p = 0;
                 } else if(!p) {
-                    printf("type error: too many arguments to function %s - ", e->left->symbol->name);
+                    printf("type error: too many arguments to function (%s) - ", e->left->symbol->name);
                     expr_print(r);
                     printf("\n");
                     expr_error = 1;
@@ -386,12 +386,12 @@ struct type * expr_typecheck(struct expr *e) {
             if(left->kind != TYPE_INTEGER) {
                 printf("type error: cannot");
                 if(e->kind == EXPR_PLUS_PLUS) {
-                    printf(" increment ");
+                    printf(" increment (");
                 } else {
-                    printf(" decrement ");
+                    printf(" decrement (");
                 }
                 expr_print(e->left);
-                printf(" which is a ");
+                printf(") which is a ");
                 type_print(left);
                 printf(" not an integer\n");
                 expr_error = 1;
@@ -415,19 +415,28 @@ struct type * expr_typecheck(struct expr *e) {
             break;
         case EXPR_SUBSCRIPT:
             if(left->kind != TYPE_ARRAY || right->kind != TYPE_INTEGER){
-                printf("type error: cannot index array ");
+                printf("type error: cannot index array (");
                 expr_print(e->left);
-                printf(" with ");
+                printf(") with (");
                 expr_print(e->right);
-                printf(" which is type ");
+                printf(") which is type ");
                 type_print(right);
                 printf(" and should be type integer\n");
                 expr_error = 1;
             }
-            result = type_create(left->subtype->kind, 0, 0, 0);
+            result = type_copy(left->subtype);
             break;
-        case EXPR_ARRAY_INIT:
-            result = type_create(TYPE_ARRAY, 0, 0, 0);
+        case EXPR_ARRAY_INIT: ;
+            struct type *eait = expr_array_init_type(e);
+            if(eait){
+                result = type_create(TYPE_ARRAY, eait, 0, 0);
+                type_delete(eait);
+            } else {
+                printf("type error: cannot initialize array to multiple types (");
+                expr_print(e);
+                printf(")\n");
+                result = type_create(TYPE_ARRAY, left, 0, 0);
+            }
             break;
         case EXPR_NEGATIVE:
         case EXPR_POSITIVE:
@@ -468,4 +477,27 @@ struct type * expr_typecheck(struct expr *e) {
 
 int expr_type_error() {
     return expr_error;
+}
+
+struct type * expr_array_init_type(struct expr *e) {
+    if(e->left && e->right){
+        struct type * et = expr_typecheck(e->left);
+        if(type_equals(et, expr_array_init_type(e->right))) {
+            return type_create(et->kind, 0, 0, 0);
+            type_delete(et);
+        } else {
+            return 0;
+        }
+    } else if(e->right){
+        struct type * et = expr_typecheck(e);
+        if(type_equals(et, expr_array_init_type(e->right))) {
+            return type_create(et->kind, 0, 0, 0);
+            type_delete(et);
+        } else {
+            return 0;
+        }
+    } else {
+        struct type * et = expr_typecheck(e);
+        return type_create(et->kind, 0, 0, 0);
+    }
 }

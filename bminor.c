@@ -4,6 +4,7 @@
 #include "token.h"
 #include "decl.h"
 #include "scope.h"
+#include "param_list.h"
 
 enum process {
     encode,
@@ -182,7 +183,8 @@ int main(int argc, char *argv[]) {
             if( scope_get_error() || 
                 expr_type_error() || 
                 decl_type_error() || 
-                stmt_type_error()) 
+                stmt_type_error() ||
+                param_list_type_error()) 
                 return 1; //TODO: OR TYPECHECK ERRORS
         } else {
             return 1;

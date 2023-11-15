@@ -139,6 +139,7 @@ void stmt_resolve( struct stmt *s ) {
 }
 
 struct type * stmt_typecheck(struct stmt *s){
+    if(!s) return 0;
     struct type *t;
     switch(s->kind){
         case STMT_DECL:

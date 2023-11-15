@@ -17,5 +17,6 @@ struct param_list * param_list_create( char *name, struct type *type, struct par
 void param_list_print( struct param_list *a );
 void param_list_resolve( struct param_list *a );
 int param_list_equals(struct param_list *a, struct param_list *b);
-
+void param_list_typecheck(struct param_list* p);
+int param_list_type_error();
 #endif

@@ -5,6 +5,8 @@
 #include "scope.h"
 #include "symbol.h"
 
+int param_list_error = 0;
+
 struct param_list * param_list_create( char *name, struct type *type, struct param_list *next ){
     struct param_list * p = malloc(sizeof(*p));
     p->name = name;
@@ -34,4 +36,15 @@ int param_list_equals(struct param_list *a, struct param_list *b) {
     if(!a && !b) return 1;
     if(!type_equals(a->type, b->type)) return 0;
     return param_list_equals(a->next, b->next);
+}
+
+void param_list_typecheck(struct param_list* p){
+    if(!p) return;
+    if(p->type->kind == TYPE_ARRAY && p->type->expr) {
+        printf("type error: array (%s) used as a parameter must have null size\n", p->name);
+    }
+}
+
+int param_list_type_error() {
+    return param_list_error;
 }

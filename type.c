@@ -47,7 +47,11 @@ int type_equals(struct type *a, struct type *b) {
     if(!a || !b) return 0;
     if(a->kind != b->kind) return 0;
     if(a->kind == TYPE_ARRAY) {
-        return type_equals(a->subtype, b->subtype);
+        if(a->subtype && a->subtype->kind == TYPE_INTEGER && !b->subtype) {
+            return 1;
+        } else {
+            return type_equals(a->subtype, b->subtype);
+        }
     }
     if(a->kind == TYPE_FUNCTION) {
         return (type_equals(a->subtype, b->subtype) && param_list_equals(a->params, b->params));
@@ -56,7 +60,7 @@ int type_equals(struct type *a, struct type *b) {
 }
 
 struct type *type_copy(struct type *t) {
-
+    return t;
 }
 
 void type_delete(struct type *t) {

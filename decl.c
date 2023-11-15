@@ -72,6 +72,15 @@ void decl_typecheck(struct decl *d){
     if(!d) return;
     if(d->value) {
         struct type *t = expr_typecheck(d->value);
+        if(d->type->kind == TYPE_ARRAY){
+            if(!d->type->expr){
+                printf("type error: declaration of array (%s) cannot have a null size\n", d->symbol->name);
+                decl_error = 1;
+            } else if(d->type->expr->kind != EXPR_INTEGER_LITERAL && d->symbol->kind == SYMBOL_GLOBAL) {
+                printf("type error: declaration of array (%s) must have a fixed size\n", d->symbol->name);
+                decl_error = 1;
+            }
+        }
         if(!type_equals(t, d->symbol->type)){
             printf("type error: cannot assign ");
             type_print(t);
@@ -84,12 +93,11 @@ void decl_typecheck(struct decl *d){
         }
     }
     if(d->code){
-        int return_flag = 0;
+        param_list_typecheck(d->type->params);
         struct stmt * s = d->code;
         while(s){
             struct type *t = stmt_typecheck(s);
             if(s->kind == STMT_RETURN) {
-                return_flag = 1;
                 if(!type_equals(t, d->type->subtype)){
                     printf("type error: return type mismatch in function %s - returns ", d->symbol->name);
                     expr_print(s->expr);
@@ -102,10 +110,6 @@ void decl_typecheck(struct decl *d){
                 }
             }
             s = s->next;
-        }
-        if(!return_flag && d->type->subtype->kind != TYPE_VOID){
-            printf("type error: no return statement in function %s\n", d->symbol->name);
-            decl_error = 1;
         }
     }
     decl_typecheck(d->next);
