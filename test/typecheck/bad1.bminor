@@ -1,0 +1,24 @@
+//function return problems
+
+main: function void () = {
+    return 1;
+}
+
+f: function integer () = {
+    return;
+}
+
+a: function float () = {
+    return 1;
+    return;
+}
+
+b: function integer() = {
+    print;
+}
+
+x: function void () = {
+    y: function void () = {
+        print;
+    }
+}

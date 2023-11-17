@@ -1,0 +1,9 @@
+//Things you can't do with arrays
+
+x: array [5] function integer () = {1, 2, 3};
+
+y: array [3+3] integer = {1, 2, 3, 4, 5, 6};
+
+main: function void () = {
+    z: array [5] integer = {1, 2, 3, 4, 5};
+}

@@ -1,0 +1,14 @@
+// Assigning expressions to variables
+
+a: integer = 4;
+
+foo: function integer () = {
+	return 3 * -7;
+}
+
+main: function boolean () = {
+	y:float = 2.0 * 3e7;
+	z:integer = a;
+	x:integer = z * 10 + -15 / foo();
+	return x <= a && x > z;
+}

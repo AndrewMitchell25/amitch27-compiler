@@ -1,0 +1,12 @@
+//Array operations
+
+test: function integer (a: integer) = {
+    return 2;
+}
+
+x: array [4] float = {4.0, 3e6, +3.2, -8.97};
+
+main: function void () = {
+    x[2] = 3.2 + 4e1;
+    x[test(test(2))] = 4.5;
+}

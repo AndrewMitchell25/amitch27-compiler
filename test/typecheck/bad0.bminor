@@ -1,0 +1,20 @@
+//incorrect number of function call arguments
+
+foo: function integer (a: integer) = {
+    foo(1, 2, 3, 4, 5);
+    return a;
+}
+
+bar: function integer (a: integer, b: integer, c: integer) = {
+    bar(a);
+    return a;
+}
+
+main: function integer (a: integer, b: float, c: integer, d: integer) = {
+    main(true, "hello", 'c', b);
+    return a;
+}
+
+test: function void (a: array [5] integer) = {
+    print a;
+}

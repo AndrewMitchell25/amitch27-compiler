@@ -1,0 +1,17 @@
+//Function prototype and parameter testing
+
+foo: function integer ();
+bar: function float (a: integer, b: integer);
+test: function float (a: array [] integer);
+
+foo: function integer () = {
+    return 1;
+}
+
+bar: function float (a: integer, b: integer) = {
+    return a ^ b;
+}
+
+test: function float (a: array [] integer) = {
+    return a[0] ^ 3;
+}

@@ -1,0 +1,18 @@
+//Scope testing and checking correct local value for different scopes
+z: integer;
+
+main: function void () = {
+	x: integer;
+	y: integer;
+	if(x<y) {
+		x: float;
+		y: float;
+		{
+			x: char;
+			y: char;
+			print x, y;
+		}
+		x = y^7;
+	}
+	x = y + z;
+}

@@ -1,0 +1,10 @@
+//Functions returning things they can't
+bar: function array [5] integer ();
+
+main: function array [5] integer () = {
+    print;
+}
+
+foo: function function integer () () = {
+    print;
+}

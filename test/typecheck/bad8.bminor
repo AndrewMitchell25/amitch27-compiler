@@ -1,0 +1,12 @@
+//Bad for loops
+
+main: function void () = {
+    for('c';"hello";true) {
+        print;
+    }
+    i: float;
+    s: array [5] integer;
+    for(i=3.2;s;) {
+        print;
+    }
+}

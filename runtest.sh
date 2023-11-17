@@ -1,9 +1,9 @@
 #!/bin/sh
 make
 
-for testfile in test/resolve/good*.bminor
+for testfile in test/typecheck/good*.bminor
 do
-	if ./bminor --resolve $testfile
+	if ./bminor --typecheck $testfile
 	then
 		echo "$testfile success (SUCCESS)"
 	else
@@ -11,9 +11,9 @@ do
 	fi
 done
 
-for testfile in test/resolve/bad*.bminor
+for testfile in test/typecheck/bad*.bminor
 do
-	if ./bminor --resolve $testfile
+	if ./bminor --typecheck $testfile
 	then
 		echo "$testfile success (FAILURE)"
 	else

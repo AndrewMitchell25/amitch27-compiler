@@ -308,14 +308,14 @@ struct type * expr_typecheck(struct expr *e) {
                 type_print(left);
                 printf(" not a function\n");
                 expr_error = 1;
-                result = type_create(TYPE_INTEGER, 0, 0, 0);
+                result = type_create(TYPE_UNDEFINED, 0, 0, 0);
                 break;
             }
             struct param_list * p = left->params;
             struct expr * r = e->right;
             while(r || p){
                 if(!r) {
-                    printf("type error: too few arguments to function %s - needs ", e->left->symbol->name);
+                    printf("type error: too few arguments to function (%s) - needs ", e->left->symbol->name);
                     param_list_print(p);
                     printf("\n");
                     expr_error = 1;
@@ -329,11 +329,11 @@ struct type * expr_typecheck(struct expr *e) {
                 } else {
                     struct type *tr = expr_typecheck(r);
                     if(!type_equals(tr, p->type)) {
-                        printf("type error: argument type mismatch when calling function %s - ", e->left->symbol->name);
+                        printf("type error: argument type mismatch when calling function (%s) - (", e->left->symbol->name);
                         expr_print(r->left);
-                        printf(" which is type ");
+                        printf(") which is type ");
                         type_print(tr);
-                        printf(" and %s which is type ", p->name);
+                        printf(" and (%s) which is type ", p->name);
                         type_print(p->type);
                         printf("\n");
                         expr_error = 1;
@@ -354,11 +354,11 @@ struct type * expr_typecheck(struct expr *e) {
         case EXPR_LESS:
         case EXPR_LESS_EQUAL:
             if(!type_equals(left, right)){
-                printf("type error: cannot compare ");
+                printf("type error: cannot compare type ");
                 type_print(left);
                 printf(" (");
                 expr_print(e->left);
-                printf(") to a ");
+                printf(") to type ");
                 type_print(right);
                 printf(" (");
                 expr_print(e->right);
@@ -368,11 +368,11 @@ struct type * expr_typecheck(struct expr *e) {
             if(left->kind == TYPE_VOID ||
                 left->kind == TYPE_ARRAY ||
                 left->kind == TYPE_FUNCTION) {
-                printf("type error: cannot compare ");
+                printf("type error: cannot compare type ");
                 type_print(left);
                 printf(" (");
                 expr_print(e->left);
-                printf(") to a ");
+                printf(") with type ");
                 type_print(right);
                 printf(" (");
                 expr_print(e->right);
@@ -391,7 +391,7 @@ struct type * expr_typecheck(struct expr *e) {
                     printf(" decrement (");
                 }
                 expr_print(e->left);
-                printf(") which is a ");
+                printf(") which is type ");
                 type_print(left);
                 printf(" not an integer\n");
                 expr_error = 1;
@@ -400,11 +400,11 @@ struct type * expr_typecheck(struct expr *e) {
             break;
         case EXPR_ASSIGN:
             if(!type_equals(left, right)) {
-                printf("type error: cannot assign ");
+                printf("type error: cannot assign type ");
                 type_print(right);
                 printf(" (");
                 expr_print(e->right);
-                printf(") to ");
+                printf(") to type ");
                 type_print(left);
                 printf(" (");
                 expr_print(e->left);
@@ -435,15 +435,16 @@ struct type * expr_typecheck(struct expr *e) {
                 printf("type error: cannot initialize array to multiple types (");
                 expr_print(e);
                 printf(")\n");
+                expr_error = 1;
                 result = type_create(TYPE_ARRAY, left, 0, 0);
             }
             break;
         case EXPR_NEGATIVE:
         case EXPR_POSITIVE:
             if(left->kind != TYPE_INTEGER && left->kind != TYPE_FLOAT) {
-                printf("type error: cannot make ");
+                printf("type error: cannot make (");
                 expr_print(e->left);
-                printf(" which is type ");
+                printf(") which is type ");
                 type_print(left);
                 if(e->kind == EXPR_NEGATIVE) {
                     printf(" negative\n");
@@ -456,9 +457,9 @@ struct type * expr_typecheck(struct expr *e) {
             break;
         case EXPR_NOT:
             if(left->kind != TYPE_BOOLEAN) {
-                printf("type error: cannot not ");
+                printf("type error: cannot not (");
                 expr_print(e->left);
-                printf(" which is type ");
+                printf(") which is type ");
                 type_print(left);
                 printf(" but should be type boolean\n");
                 expr_error = 1;
@@ -480,24 +481,11 @@ int expr_type_error() {
 }
 
 struct type * expr_array_init_type(struct expr *e) {
-    if(e->left && e->right){
-        struct type * et = expr_typecheck(e->left);
-        if(type_equals(et, expr_array_init_type(e->right))) {
-            return type_create(et->kind, 0, 0, 0);
-            type_delete(et);
-        } else {
-            return 0;
-        }
-    } else if(e->right){
-        struct type * et = expr_typecheck(e);
-        if(type_equals(et, expr_array_init_type(e->right))) {
-            return type_create(et->kind, 0, 0, 0);
-            type_delete(et);
-        } else {
-            return 0;
-        }
-    } else {
-        struct type * et = expr_typecheck(e);
-        return type_create(et->kind, 0, 0, 0);
+
+    struct type * left = expr_typecheck(e->left);
+    struct type * right = expr_typecheck(e->right);
+    if(type_equals(left, right) || !right) {
+        return type_create(left->kind, left->subtype, 0, 0);
     }
+    return 0;
 }

@@ -1,0 +1,8 @@
+//incorrect assignments
+main: function void () = {
+    b: boolean = -true;
+    a: integer;
+    x: integer = !a;
+    c: string = 'c';
+    c++;
+}

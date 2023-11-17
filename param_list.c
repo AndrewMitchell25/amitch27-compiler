@@ -42,6 +42,11 @@ void param_list_typecheck(struct param_list* p){
     if(!p) return;
     if(p->type->kind == TYPE_ARRAY && p->type->expr) {
         printf("type error: array (%s) used as a parameter must have null size\n", p->name);
+        param_list_error = 1;
+    }
+    if(p->type->kind == TYPE_FUNCTION) {
+        printf("type error: cannot use a function (%s) as a parameter for another function\n", p->name);
+        param_list_error = 1;
     }
 }
 

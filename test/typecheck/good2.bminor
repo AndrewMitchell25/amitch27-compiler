@@ -1,0 +1,15 @@
+//Testing comparisons
+
+foo: function integer (a: boolean) = {
+    if(a) return 8;
+    return 1;
+}
+
+main: function void () = {
+    x: integer = 5;
+    if(x <= 8){
+        print x;
+    } else if(x > foo(true)){
+        print foo(false);
+    }
+}

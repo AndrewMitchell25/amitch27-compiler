@@ -1,0 +1,12 @@
+//incorrect comparisons
+main: function void () = {
+    if(3 > 'c') print 3;
+    if(true <= 4) print 4;
+    if("hello") print 2;
+    x: array [5] integer;
+    y: array [5] integer;
+    if(x==y) print 2;
+    a: function void ();
+    b: function void ();
+    print a >= b;
+}

@@ -1,0 +1,10 @@
+//Complex array declarations
+
+z: array [2] array [3] string = { {"a","b","c"}, {"x","y","z"} };
+y: array [2] array [3] array [1] string = { {{"a"},{"b"},{"c"}}, {{"x"},{"y"},{"z"}} };
+iaar: array [4] integer = {3, 2, 1, 5};
+
+main: function void () = {
+    x: array [4] array [2] boolean;
+    x[0][0] = true;
+}

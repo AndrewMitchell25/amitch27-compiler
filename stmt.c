@@ -151,8 +151,12 @@ struct type * stmt_typecheck(struct stmt *s){
         case STMT_IF_ELSE:
             t = expr_typecheck(s->expr);
             if(t->kind != TYPE_BOOLEAN){
-                printf("ERROR\n");
-                //print error
+                printf("type error: cannot use type ");
+                type_print(t);
+                printf(" (");
+                expr_print(s->expr);
+                printf(") in an if statement\n");
+                stmt_error = 1;
             }
             stmt_typecheck(s->body);
             stmt_typecheck(s->else_body);
@@ -160,18 +164,30 @@ struct type * stmt_typecheck(struct stmt *s){
         case STMT_FOR:
              t = expr_typecheck(s->init_expr);
              if(t && t->kind != TYPE_INTEGER){
-                printf("ERROR\n");
-                //error
+                printf("type error: cannot use type ");
+                type_print(t);
+                printf(" (");
+                expr_print(s->init_expr);
+                printf(") as the first statement in a for loop\n");
+                stmt_error = 1;
              }
              t = expr_typecheck(s->expr);
              if(t && t->kind != TYPE_BOOLEAN){
-                printf("ERROR\n");
-                //error
+                printf("type error: cannot use type ");
+                type_print(t);
+                printf(" (");
+                expr_print(s->expr);
+                printf(") as the second statement in a for loop\n");
+                stmt_error = 1;
              }
              t = expr_typecheck(s->next_expr);
              if(t && t->kind != TYPE_INTEGER){
-                printf("ERROR\n");
-                //error
+                printf("type error: cannot use type ");
+                type_print(t);
+                printf(" (");
+                expr_print(s->next_expr);
+                printf(") as the third statement in a for loop\n");
+                stmt_error = 1;
              }
              stmt_typecheck(s->body);
              break;

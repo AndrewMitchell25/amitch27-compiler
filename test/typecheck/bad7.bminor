@@ -1,0 +1,7 @@
+//Functions as parameters to other functions
+
+foo: function void (x: function void ());
+
+main: function integer (a: function integer ()) = {
+    return a();
+}

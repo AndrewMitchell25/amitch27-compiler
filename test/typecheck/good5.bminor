@@ -1,0 +1,10 @@
+//global, local, and param variable
+x: integer = 5;
+
+test: function void (x: boolean) = {
+    print x;
+    x: char = 'c';
+    print x;
+}
+
+y: integer = x;

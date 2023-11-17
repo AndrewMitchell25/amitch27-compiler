@@ -1,0 +1,20 @@
+//Lots of declarations
+
+//try all types and simple declarations
+x: integer;
+y: integer = -123;
+f: float = 45e10;
+h: float = 4.4321;
+b: boolean = false;
+c: char    = 'q';
+s: string  = "hello bminor\n";
+a: array [5] integer;
+arr: array[7] array[5] integer;
+iarr: array [3] integer = {1,2,3,4};
+iaar: array [4] integer = {3, 2, 1, 5};
+barr: array [4] boolean = {true, false, true, true};
+main : function  void ( x: integer, l: integer ) = {
+    x = 6;	
+    barr: array [4-4+4] boolean;
+    a: array [5*3] integer;
+}

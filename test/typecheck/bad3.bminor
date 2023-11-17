@@ -1,0 +1,12 @@
+//incorrect arrays
+y: integer = 3;
+x:array [5] integer = {1,2,3,4,5};
+a:array [5] integer = {1,2,'c',4,5};
+b:array [5] char = {1,2,3,4,5};
+
+
+main: function void (a: array [5] integer) = {
+    z:array [3+3] integer;
+    x['h'] = 4;
+    x[true] = false;
+}

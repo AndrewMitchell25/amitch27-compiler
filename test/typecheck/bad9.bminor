@@ -1,0 +1,11 @@
+//using stuff without defining first
+
+main: function void () = {
+    x: integer = y + foo();
+    x = bar();
+    y = x;
+}
+
+foo: function integer() = {
+    return 3;
+}
