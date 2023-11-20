@@ -1,0 +1,1562 @@
+=====STUDENT TESTS=====
+====Good Tests====
+===[STUDENT TESTS/good0.bminor Input]===
+// Assigning expressions to variables
+
+a: integer = 4;
+
+foo: function integer () = {
+	return 3 * -7;
+}
+
+main: function boolean () = {
+	y:float = 2.0 * 3e7;
+	z:integer = a;
+	x:integer = z * 10 + -15 / foo();
+	return x <= a && x > z;
+}
+===[STUDENT TESTS/good0.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good0.bminor Output]===
+a resolves to global a
+z resolves to local 2
+foo resolves to global foo
+x resolves to local 3
+a resolves to global a
+x resolves to local 3
+z resolves to local 2
+
+
+
+
+===[STUDENT TESTS/good1.bminor Input]===
+//Scope testing and checking correct local value for different scopes
+z: integer;
+
+main: function void () = {
+	x: integer;
+	y: integer;
+	if(x<y) {
+		x: float;
+		y: float;
+		{
+			x: char;
+			y: char;
+			print x, y;
+		}
+		x = y^7;
+	}
+	x = y + z;
+}
+===[STUDENT TESTS/good1.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good1.bminor Output]===
+x resolves to local 1
+y resolves to local 2
+x resolves to local 5
+y resolves to local 6
+x resolves to local 3
+y resolves to local 4
+x resolves to local 1
+y resolves to local 2
+z resolves to global z
+
+
+
+
+===[STUDENT TESTS/good2.bminor Input]===
+//Testing comparisons
+
+foo: function integer (a: boolean) = {
+    if(a) return 8;
+    return 1;
+}
+
+main: function void () = {
+    x: integer = 5;
+    if(x <= 8){
+        print x;
+    } else if(x > foo(true)){
+        print foo(false);
+    }
+}
+===[STUDENT TESTS/good2.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good2.bminor Output]===
+a resolves to param 1
+x resolves to local 1
+x resolves to local 1
+x resolves to local 1
+foo resolves to global foo
+foo resolves to global foo
+
+
+
+
+===[STUDENT TESTS/good3.bminor Input]===
+//Function prototype and parameter testing
+
+foo: function integer ();
+bar: function float (a: integer, b: integer);
+test: function float (a: array [] integer);
+
+foo: function integer () = {
+    return 1;
+}
+
+bar: function float (a: integer, b: integer) = {
+    return a ^ b;
+}
+
+test: function float (a: array [] integer) = {
+    return a[0] ^ 3;
+}
+===[STUDENT TESTS/good3.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good3.bminor Output]===
+foo resolves to global foo
+bar resolves to global bar
+a resolves to param 1
+b resolves to param 2
+test resolves to global test
+a resolves to param 1
+
+
+
+
+===[STUDENT TESTS/good4.bminor Input]===
+//Array operations
+
+test: function integer (a: integer) = {
+    return 2;
+}
+
+x: array [4] float = {4.0, 3e6, +3.2, -8.97};
+
+main: function void () = {
+    x[2] = 3.2 + 4e1;
+    x[test(test(2))] = 4.5;
+}
+===[STUDENT TESTS/good4.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good4.bminor Output]===
+x resolves to global x
+x resolves to global x
+test resolves to global test
+test resolves to global test
+
+
+
+
+===[STUDENT TESTS/good5.bminor Input]===
+//global, local, and param variable
+x: integer = 5;
+
+test: function void (x: boolean) = {
+    print x;
+    x: char = 'c';
+    print x;
+}
+
+y: integer = x;
+===[STUDENT TESTS/good5.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good5.bminor Output]===
+x resolves to param 1
+x resolves to local 1
+x resolves to global x
+
+
+
+
+===[STUDENT TESTS/good6.bminor Input]===
+//Lots of declarations
+
+//try all types and simple declarations
+x: integer;
+y: integer = -123;
+f: float = 45e10;
+h: float = 4.4321;
+b: boolean = false;
+c: char    = 'q';
+s: string  = "hello bminor\n";
+a: array [5] integer;
+arr: array[7] array[5] integer;
+iarr: array [3] integer = {1,2,3,4};
+iaar: array [4] integer = {3, 2, 1, 5};
+barr: array [4] boolean = {true, false, true, true};
+main : function  void ( x: integer, l: integer ) = {
+    x = 6;	
+    barr: array [4-4+4] boolean;
+    a: array [5*3] integer;
+}
+===[STUDENT TESTS/good6.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good6.bminor Output]===
+x resolves to param 1
+
+
+
+
+===[STUDENT TESTS/good7.bminor Input]===
+//Complex array declarations
+
+z: array [2] array [3] string = { {"a","b","c"}, {"x","y","z"} };
+y: array [2] array [3] array [1] string = { {{"a"},{"b"},{"c"}}, {{"x"},{"y"},{"z"}} };
+iaar: array [4] integer = {3, 2, 1, 5};
+
+main: function void () = {
+    x: array [4] array [2] boolean;
+    x[0][0] = true;
+}
+
+===[STUDENT TESTS/good7.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good7.bminor Output]===
+x resolves to local 1
+
+
+
+
+===[STUDENT TESTS/good8.bminor Input]===
+// Complex array assignments
+
+x: array [5] integer;
+y: array [5] array [5] integer;
+z: array [5] array [5] array[5] integer;
+
+main: function void () =
+{
+	y[1] = x;
+	y = z[0];
+    z[1][2] = x;
+    z[0][2] = y[1];
+    z[0][0][0] = y[0][0];
+    z[3-2][x[1]][y[0][0]] = 2;
+}
+===[STUDENT TESTS/good8.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good8.bminor Output]===
+y resolves to global y
+x resolves to global x
+y resolves to global y
+z resolves to global z
+z resolves to global z
+x resolves to global x
+z resolves to global z
+y resolves to global y
+z resolves to global z
+y resolves to global y
+z resolves to global z
+x resolves to global x
+y resolves to global y
+
+
+
+
+===[STUDENT TESTS/good9.bminor Input]===
+//Super long example program from the parser example tests
+
+/*
+This program displays a square bouncing around on the screen.
+Click to reset the square in a new place.
+It makes use of the (included) C gfx library and the standard C library,
+and exercises, loops, comparisons, and logical operators.
+*/
+
+/* These are the functions in the gfx library. */
+gfx_open: function void ( width: integer, height: integer, title:string );
+gfx_point: function void ( x: integer, y: integer );
+gfx_line: function void ( x1:integer, y1:integer, x2:integer, y2:integer );
+gfx_color: function void ( red:integer, green: integer, blue:integer );
+gfx_clear: function void ();
+gfx_clear_color: function void ( red:integer, green: integer, blue:integer );
+gfx_wait: function char ();
+gfx_xpos: function integer ();
+gfx_ypos: function integer ();
+gfx_xsize: function integer ();
+gfx_ysize: function integer ();
+gfx_event_waiting: function boolean ();
+gfx_flush: function integer ();
+
+/* These functions come from the C standard library. */
+
+usleep: function void ( usecs: integer );
+rand: function integer();
+
+draw_box: function void ( x: integer, y:integer, size: integer ) =
+{
+	gfx_color(255,255,255);
+	gfx_line(x,y,x+size,y);
+	gfx_line(x+size,y,x+size,y+size);
+	gfx_line(x+size,y+size,x,y+size);
+	gfx_line(x,y+size,x,y);
+}
+
+/*
+Note that the precision multiplier indicates fixed-point
+match to keep track of sub-pixel position and velocity for the box.
+*/
+
+main: function integer () =
+{
+	precision: integer = 100;
+
+	xsize: integer = 500; // pixels
+	ysize: integer = 500; // pixels 
+
+	x: integer = precision * xsize / 2;
+	y: integer = precision * ysize / 2;
+
+	vx: integer = precision * 3;
+	vy: integer = precision * -5 ;
+
+	deltat: integer = 100;
+
+	gfx_open(xsize,ysize,"Bounce!");
+
+	for(;;) {
+		print "x: ", x, " y: ", y, " vx: ", vx, " vy: ", vy, "\n";
+
+		if(gfx_event_waiting()) {
+			c: char;
+			c = gfx_wait();
+			if(c=='q') return 0;
+			x = gfx_xpos()*precision;
+			y = gfx_ypos()*precision;
+			vx = 5*precision;
+		}
+
+		vy = vy + 1 * precision;
+
+		if(x<0 && vx<0) {
+			vx = -9*vx/10;
+		}	
+
+		if(x>(xsize*precision) && vx>0) {
+			vx = -9*vx/10;
+		}
+
+		if(y>(ysize*precision) && vy>0) {
+			vy = -9*vy/10;
+		}
+
+		x = x + vx*deltat/precision;
+		y = y + vy*deltat/precision;
+
+		gfx_clear();
+		draw_box(x/precision,y/precision,25);
+		gfx_flush();
+
+		usleep(deltat*precision);
+	}
+}
+===[STUDENT TESTS/good9.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[STUDENT TESTS/good9.bminor Output]===
+gfx_color resolves to global gfx_color
+gfx_line resolves to global gfx_line
+x resolves to param 1
+y resolves to param 2
+x resolves to param 1
+size resolves to param 3
+y resolves to param 2
+gfx_line resolves to global gfx_line
+x resolves to param 1
+size resolves to param 3
+y resolves to param 2
+x resolves to param 1
+size resolves to param 3
+y resolves to param 2
+size resolves to param 3
+gfx_line resolves to global gfx_line
+x resolves to param 1
+size resolves to param 3
+y resolves to param 2
+size resolves to param 3
+x resolves to param 1
+y resolves to param 2
+size resolves to param 3
+gfx_line resolves to global gfx_line
+x resolves to param 1
+y resolves to param 2
+size resolves to param 3
+x resolves to param 1
+y resolves to param 2
+precision resolves to local 1
+xsize resolves to local 2
+precision resolves to local 1
+ysize resolves to local 3
+precision resolves to local 1
+precision resolves to local 1
+gfx_open resolves to global gfx_open
+xsize resolves to local 2
+ysize resolves to local 3
+x resolves to local 4
+y resolves to local 5
+vx resolves to local 6
+vy resolves to local 7
+gfx_event_waiting resolves to global gfx_event_waiting
+c resolves to local 9
+gfx_wait resolves to global gfx_wait
+c resolves to local 9
+x resolves to local 4
+gfx_xpos resolves to global gfx_xpos
+precision resolves to local 1
+y resolves to local 5
+gfx_ypos resolves to global gfx_ypos
+precision resolves to local 1
+vx resolves to local 6
+precision resolves to local 1
+vy resolves to local 7
+vy resolves to local 7
+precision resolves to local 1
+x resolves to local 4
+vx resolves to local 6
+vx resolves to local 6
+vx resolves to local 6
+x resolves to local 4
+xsize resolves to local 2
+precision resolves to local 1
+vx resolves to local 6
+vx resolves to local 6
+vx resolves to local 6
+y resolves to local 5
+ysize resolves to local 3
+precision resolves to local 1
+vy resolves to local 7
+vy resolves to local 7
+vy resolves to local 7
+x resolves to local 4
+x resolves to local 4
+vx resolves to local 6
+deltat resolves to local 8
+precision resolves to local 1
+y resolves to local 5
+y resolves to local 5
+vy resolves to local 7
+deltat resolves to local 8
+precision resolves to local 1
+gfx_clear resolves to global gfx_clear
+draw_box resolves to global draw_box
+x resolves to local 4
+precision resolves to local 1
+y resolves to local 5
+precision resolves to local 1
+gfx_flush resolves to global gfx_flush
+usleep resolves to global usleep
+deltat resolves to local 8
+precision resolves to local 1
+
+
+
+
+====Bad Tests====
+===[STUDENT TESTS/bad0.bminor Input]===
+//incorrect number of function call arguments
+
+foo: function integer (a: integer) = {
+    foo(1, 2, 3, 4, 5);
+    return a;
+}
+
+bar: function integer (a: integer, b: integer, c: integer) = {
+    bar(a);
+    return a;
+}
+
+main: function integer (a: integer, b: float, c: integer, d: integer) = {
+    main(true, "hello", 'c', b);
+    return a;
+}
+
+test: function void (a: array [5] integer) = {
+    print a;
+}
+===[STUDENT TESTS/bad0.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad0.bminor Output]===
+foo resolves to global foo
+a resolves to param 1
+bar resolves to global bar
+a resolves to param 1
+a resolves to param 1
+main resolves to global main
+b resolves to param 2
+a resolves to param 1
+a resolves to param 1
+type error: too many arguments to function (foo) - 2,3,4,5
+type error: too few arguments to function (bar) - needs b: integer, c: integer
+type error: argument type mismatch when calling function (main) - (true) which is type boolean and (a) which is type integer
+type error: argument type mismatch when calling function (main) - ("hello") which is type string and (b) which is type float
+type error: argument type mismatch when calling function (main) - ('c') which is type char and (c) which is type integer
+type error: argument type mismatch when calling function (main) - (b) which is type float and (d) which is type integer
+type error: array (a) used as a parameter must have null size
+
+
+
+
+===[STUDENT TESTS/bad1.bminor Input]===
+//function return problems
+
+main: function void () = {
+    return 1;
+}
+
+f: function integer () = {
+    return;
+}
+
+a: function float () = {
+    return 1;
+    return;
+}
+
+b: function integer() = {
+    print;
+}
+
+x: function void () = {
+    y: function void () = {
+        print;
+    }
+}
+
+===[STUDENT TESTS/bad1.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad1.bminor Output]===
+type error: cannot return type integer (1) in a function (main) that returns void
+type error: cannot return type void () in a function (f) that returns integer
+type error: cannot return type integer (1) in a function (a) that returns float
+type error: cannot return type void () in a function (a) that returns float
+type error: cannot declare a function (y) inside another function
+
+
+
+
+===[STUDENT TESTS/bad2.bminor Input]===
+//incorrect assignments
+main: function void () = {
+    b: boolean = -true;
+    a: integer;
+    x: integer = !a;
+    c: string = 'c';
+    c++;
+}
+===[STUDENT TESTS/bad2.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad2.bminor Output]===
+a resolves to local 2
+c resolves to local 4
+type error: cannot make (true) which is type boolean negative
+type error: cannot not (a) which is type integer but should be type boolean
+type error: cannot assign boolean (!a) to integer (x)
+type error: cannot assign char ('c') to string (c)
+type error: cannot increment (c) which is type string not an integer
+
+
+
+
+===[STUDENT TESTS/bad3.bminor Input]===
+//incorrect arrays
+y: integer = 3;
+x:array [5] integer = {1,2,3,4,5};
+a:array [5] integer = {1,2,'c',4,5};
+b:array [5] char = {1,2,3,4,5};
+
+
+main: function void (a: array [5] integer) = {
+    z:array [3+3] integer;
+    x['h'] = 4;
+    x[true] = false;
+}
+===[STUDENT TESTS/bad3.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad3.bminor Output]===
+x resolves to global x
+x resolves to global x
+type error: cannot assign array [] integer ({1,2,3,4,5}) to array [5] char (b)
+type error: array (a) used as a parameter must have null size
+type error: cannot index array (x) with ('h') which is type char and should be type integer
+type error: cannot index array (x) with (true) which is type boolean and should be type integer
+type error: cannot assign type boolean (false) to type integer (x[true])
+
+
+
+
+===[STUDENT TESTS/bad4.bminor Input]===
+//incorrect comparisons
+main: function void () = {
+    if(3 > 'c') print 3;
+    if(true <= 4) print 4;
+    if("hello") print 2;
+    x: array [5] integer;
+    y: array [5] integer;
+    if(x==y) print 2;
+    a: function void ();
+    b: function void ();
+    print a >= b;
+}
+===[STUDENT TESTS/bad4.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad4.bminor Output]===
+x resolves to local 1
+y resolves to local 2
+a resolves to local 3
+b resolves to local 4
+type error: cannot compare type integer (3) to type char ('c')
+type error: cannot compare type boolean (true) to type integer (4)
+type error: cannot use type string ("hello") in an if statement
+type error: cannot compare type array [5] integer (x) with type array [5] integer (y)
+type error: cannot declare a function (a) inside another function
+type error: cannot declare a function (b) inside another function
+type error: cannot compare type function void () (a) with type function void () (b)
+
+
+
+
+===[STUDENT TESTS/bad5.bminor Input]===
+//Functions returning things they can't
+bar: function array [5] integer ();
+
+main: function array [5] integer () = {
+    print;
+}
+
+foo: function function integer () () = {
+    print;
+}
+===[STUDENT TESTS/bad5.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad5.bminor Output]===
+type error: cannot return type array [5] integer from a function (bar)
+type error: cannot return type array [5] integer from a function (main)
+type error: cannot return type function integer () from a function (foo)
+
+
+
+
+===[STUDENT TESTS/bad6.bminor Input]===
+//Things you can't do with arrays
+
+x: array [5] function integer () = {1, 2, 3};
+
+y: array [3+3] integer = {1, 2, 3, 4, 5, 6};
+
+main: function void () = {
+    z: array [5] integer = {1, 2, 3, 4, 5};
+}
+===[STUDENT TESTS/bad6.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad6.bminor Output]===
+type error: cannot declare array (x) of type function integer ()
+type error: cannot assign array [] integer ({1,2,3}) to array [5] function integer () (x)
+type error: cannot declare an array (y) with variable size
+type error: cannot declare local array (z) with initial values
+
+
+
+
+===[STUDENT TESTS/bad7.bminor Input]===
+//Functions as parameters to other functions
+
+foo: function void (x: function void ());
+
+main: function integer (a: function integer ()) = {
+    return a();
+}
+===[STUDENT TESTS/bad7.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad7.bminor Output]===
+a resolves to param 1
+type error: cannot use a function (x) as a parameter for another function
+type error: cannot use a function (a) as a parameter for another function
+
+
+
+
+===[STUDENT TESTS/bad8.bminor Input]===
+//Bad for loops
+
+main: function void () = {
+    for('c';"hello";true) {
+        print;
+    }
+    i: float;
+    s: array [5] integer;
+    for(i=3.2;s;) {
+        print;
+    }
+}
+===[STUDENT TESTS/bad8.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad8.bminor Output]===
+i resolves to local 1
+s resolves to local 2
+type error: cannot use type char ('c') as the first statement in a for loop
+type error: cannot use type string ("hello") as the second statement in a for loop
+type error: cannot use type boolean (true) as the third statement in a for loop
+type error: cannot use type float (i=3.2) as the first statement in a for loop
+type error: cannot use type array [5] integer (s) as the second statement in a for loop
+
+
+
+
+===[STUDENT TESTS/bad9.bminor Input]===
+//using stuff without defining first
+
+main: function void () = {
+    x: integer = y + foo();
+    x = bar();
+    y = x;
+}
+
+foo: function integer() = {
+    return 3;
+}
+===[STUDENT TESTS/bad9.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[STUDENT TESTS/bad9.bminor Output]===
+resolve error: y is not defined
+resolve error: foo is not defined
+x resolves to local 1
+resolve error: bar is not defined
+resolve error: y is not defined
+x resolves to local 1
+type error: cannot call (foo) which is type undefined not a function
+type error: cannot add type undefined (y) to type undefined (foo())
+type error: cannot assign undefined (y+foo()) to integer (x)
+type error: cannot call (bar) which is type undefined not a function
+type error: cannot assign type undefined (bar()) to type integer (x)
+type error: cannot assign type integer (x) to type undefined (y)
+
+
+
+
+=====HIDDEN TESTS=====
+====Good Tests====
+===[HIDDEN TESTS/good1.bminor Input]===
+/*
+Correct: The parameter name can vary as long as the type is the same.
+*/
+
+x: function integer(a:integer);
+
+x: function integer(b:integer) = {
+	return 0;
+}
+
+x: function integer(c:integer);
+
+===[HIDDEN TESTS/good1.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good1.bminor Output]===
+x resolves to global x
+x resolves to global x
+
+
+
+
+===[HIDDEN TESTS/good2.bminor Input]===
+/*
+Correct: Test various nested definitions.
+*/
+
+f: function void() = {
+	x: integer = 1;
+	{
+		print x;
+		x: integer = x + 1;
+		print x;
+	}
+	print x;
+}
+
+===[HIDDEN TESTS/good2.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good2.bminor Output]===
+x resolves to local 1
+x resolves to local 1
+x resolves to local 2
+x resolves to local 1
+
+
+
+
+===[HIDDEN TESTS/good3.bminor Input]===
+/*
+Correct: Test various function return types.
+*/
+
+A: function boolean(x: integer, y: integer);
+B: function integer(x: char);
+C: function char(a: string);
+
+main: function integer() = {
+	i: integer;
+	for (i = 0; i < 10; i++)
+		if (i % 2 == 0)
+			print i;
+		else
+			return i;
+
+	if (A(B('d') - 1, 10)) {
+		x: integer = 0;
+		return 2 * B('c') + x;
+	}
+
+	return B(C("hello")) % 3;
+}
+
+===[HIDDEN TESTS/good3.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good3.bminor Output]===
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+A resolves to global A
+B resolves to global B
+B resolves to global B
+x resolves to local 2
+B resolves to global B
+C resolves to global C
+
+
+
+
+===[HIDDEN TESTS/good4.bminor Input]===
+/*
+Correct: Test combinations of boolean operators.
+*/
+
+func: function void(
+		a: integer,
+		b: integer,
+		c: boolean,
+		d: boolean
+	) = {
+
+	print a -b;
+	print c && d;
+	print a + b * a - a ^ b /a;
+
+	print a < b && d;
+	print (a < b) || (c && d);
+}
+
+===[HIDDEN TESTS/good4.bminor Status]===
+return code: 1
+TEST NOT PASSED
+
+===[HIDDEN TESTS/good4.bminor Output]===
+a resolves to param 1
+b resolves to param 2
+c resolves to param 3
+d resolves to param 4
+a resolves to param 1
+b resolves to param 2
+a resolves to param 1
+a resolves to param 1
+b resolves to param 2
+a resolves to param 1
+a resolves to param 1
+b resolves to param 2
+d resolves to param 4
+a resolves to param 1
+b resolves to param 2
+c resolves to param 3
+d resolves to param 4
+type error: cannot divide type float (a^b) to type integer (a)
+type error: cannot subtract type integer (a+b*a) to type float (a^b/a)
+
+
+
+
+===[HIDDEN TESTS/good5.bminor Input]===
+/*
+Correct: Test array assignments.
+*/
+
+x:array [5] integer = {1,2,3,4,5};
+y:array [5] array [5] integer;
+
+main:function void () =
+{
+	y[1] = x;
+	count:integer;
+	for(count = 0; count < 5; count++)
+	{
+		y[count] = x;
+	} 	
+}
+
+===[HIDDEN TESTS/good5.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good5.bminor Output]===
+y resolves to global y
+x resolves to global x
+count resolves to local 1
+count resolves to local 1
+count resolves to local 1
+y resolves to global y
+count resolves to local 1
+x resolves to global x
+
+
+
+
+===[HIDDEN TESTS/good7.bminor Input]===
+/*
+Correct: Test if-expression and return-expression.
+*/
+
+main: function integer() = {
+	m: integer = 2;
+	n: boolean = true;
+
+	if (!n) return 0; else return -m;
+
+	print 10 * (-1 + m);
+}
+
+===[HIDDEN TESTS/good7.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good7.bminor Output]===
+n resolves to local 2
+m resolves to local 1
+m resolves to local 1
+
+
+
+
+===[HIDDEN TESTS/good8.bminor Input]===
+/*
+Correct: Boolean expression in several places.
+*/
+
+x: function integer(a:boolean) = {
+	if (a) for (;a;) print a;
+}
+
+===[HIDDEN TESTS/good8.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good8.bminor Output]===
+a resolves to param 1
+a resolves to param 1
+a resolves to param 1
+
+
+
+
+===[HIDDEN TESTS/good9.bminor Input]===
+/*
+Correct: A program to plot a quadratic function. 
+*/
+
+/* Make use of atoi from the standard library */
+
+atoi: function integer( s: string );
+
+quadratic: function integer ( a: integer, b: integer, c: integer, x: integer ) = {
+	return a*x*x + b*x + c*x;
+}
+
+main: function integer ( argc: integer, argv: array [] string ) =  {
+
+      if(argc<3) {
+          print "use: ", argv[0], "[a] [b] [c] [start] [end]\n";
+      }
+
+      a: integer = atoi(argv[0]);
+      b: integer = atoi(argv[1]);
+      c: integer = atoi(argv[2]);
+      start: integer = atoi(argv[3]);
+      end: integer = atoi(argv[4]);
+
+
+      x: integer;
+      
+      for(x=start;x<end;x++) {
+          print x, " ", quadratic(a,b,c,x), "\n";
+      }
+
+      return 0;
+}
+
+===[HIDDEN TESTS/good9.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good9.bminor Output]===
+a resolves to param 1
+x resolves to param 4
+x resolves to param 4
+b resolves to param 2
+x resolves to param 4
+c resolves to param 3
+x resolves to param 4
+argc resolves to param 1
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+x resolves to local 6
+start resolves to local 4
+x resolves to local 6
+end resolves to local 5
+x resolves to local 6
+x resolves to local 6
+quadratic resolves to global quadratic
+a resolves to local 1
+b resolves to local 2
+c resolves to local 3
+x resolves to local 6
+
+
+
+
+===[HIDDEN TESTS/good10.bminor Input]===
+/*
+
+Testing float typechecking
+
+*/
+
+main: function integer() = {
+    m: float = 3.1;
+    n: float = 5.2;
+    
+    x: float = m + n;
+
+    print x;
+}
+
+===[HIDDEN TESTS/good10.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good10.bminor Output]===
+m resolves to local 1
+n resolves to local 2
+x resolves to local 3
+
+
+
+
+===[HIDDEN TESTS/good6.bminor Input]===
+/*
+Correct: Test assignment of array literals.
+*/
+
+main: function void (a: integer) = {
+	x: array [1] boolean;
+	y: array [1] integer;
+	if (x[y[a]]) return;
+	{
+		z: integer;
+		zz: integer = z;
+	}
+}
+
+===[HIDDEN TESTS/good6.bminor Status]===
+return code: 0
+Test passed successfully!
+
+===[HIDDEN TESTS/good6.bminor Output]===
+x resolves to local 1
+y resolves to local 2
+a resolves to param 1
+z resolves to local 3
+
+
+
+
+====Bad Tests====
+===[HIDDEN TESTS/bad1.bminor Input]===
+/*
+Incorrect: Mismatched types in forward declaration
+*/
+
+x: function integer(a:char);
+x: function integer(a:integer) = {
+	return 0;
+}
+
+===[HIDDEN TESTS/bad1.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad1.bminor Output]===
+x resolves to global x
+resolve error: x already defined
+
+
+
+
+===[HIDDEN TESTS/bad2.bminor Input]===
+/*
+Incorrect: Variable redefined within a scope.
+*/
+
+f: function void() = {
+	x: integer = 1;
+	{
+		print x;
+		x: integer = x + 1;
+		print x;
+	}
+	x: integer = 2;
+	print x;
+}
+
+===[HIDDEN TESTS/bad2.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad2.bminor Output]===
+x resolves to local 1
+x resolves to local 1
+x resolves to local 2
+resolve error: x already defined
+x resolves to local 1
+
+
+
+
+===[HIDDEN TESTS/bad3.bminor Input]===
+/*
+Incorrect: Mismatched function return types.
+*/
+
+main: function void() = {
+	return i;
+}
+
+func: function integer() = {
+	return;
+}
+
+===[HIDDEN TESTS/bad3.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad3.bminor Output]===
+resolve error: i is not defined
+type error: cannot return type undefined (i) in a function (main) that returns void
+type error: cannot return type void () in a function (func) that returns integer
+
+
+
+
+===[HIDDEN TESTS/bad4.bminor Input]===
+/*
+Incorrect: Mismatched operators.
+*/
+
+
+func: function void(
+		a: integer,
+		b: integer,
+		c: boolean,
+		d: boolean
+	) = {
+
+	print a -c;
+	print c * d;
+	print a + b * a - a ^ b /d;
+
+	print a < b && a;
+	print (a < b) + (c && d);
+}
+
+===[HIDDEN TESTS/bad4.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad4.bminor Output]===
+a resolves to param 1
+c resolves to param 3
+c resolves to param 3
+d resolves to param 4
+a resolves to param 1
+b resolves to param 2
+a resolves to param 1
+a resolves to param 1
+b resolves to param 2
+d resolves to param 4
+a resolves to param 1
+b resolves to param 2
+a resolves to param 1
+a resolves to param 1
+b resolves to param 2
+c resolves to param 3
+d resolves to param 4
+type error: cannot subtract type integer (a) to type boolean (c)
+type error: cannot multiply type boolean (c) to type boolean (d)
+type error: cannot divide type float (a^b) to type boolean (d)
+type error: cannot subtract type integer (a+b*a) to type float (a^b/d)
+type error: cannot and boolean (a<b) with a integer (a)
+type error: cannot add type boolean (a<b) to type boolean (c&&d)
+
+
+
+
+===[HIDDEN TESTS/bad5.bminor Input]===
+/*
+Incorrect: Cannot subscript a value which is not an array.
+*/
+
+main: function void() = {
+	s : boolean = false;
+	c : char = s[1];
+	print c;
+}
+
+===[HIDDEN TESTS/bad5.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad5.bminor Output]===
+s resolves to local 1
+c resolves to local 2
+type error: cannot index array (s) with (1) which is type integer and should be type integer
+type error: cannot assign  (s[1]) to char (c)
+
+
+
+
+===[HIDDEN TESTS/bad6.bminor Input]===
+/*
+Incorrect: Cannot assign an array to an atomic type.
+*/
+
+main: function void () = {
+	// array of one boolean != boolean
+	x: array [1] boolean = {true};
+	if (x) return;
+}
+
+===[HIDDEN TESTS/bad6.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad6.bminor Output]===
+x resolves to local 1
+type error: cannot declare local array (x) with initial values
+type error: cannot use type array [1] boolean (x) in an if statement
+
+
+
+
+===[HIDDEN TESTS/bad7.bminor Input]===
+/*
+Incorrect: Improper operators on values.
+*/
+
+main: function integer() = {
+	m: integer = 2;
+	n: boolean = true;
+
+	// wrong negation
+	if (-n) return 0; else return !m;
+
+	// arithmetic on boolean
+	print 10 * (-1 + n);
+}
+
+===[HIDDEN TESTS/bad7.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad7.bminor Output]===
+n resolves to local 2
+m resolves to local 1
+n resolves to local 2
+type error: cannot make (n) which is type boolean negative
+type error: cannot not (m) which is type integer but should be type boolean
+type error: cannot add type integer (-1) to type boolean (n)
+
+
+
+
+===[HIDDEN TESTS/bad8.bminor Input]===
+/*
+Incorrect: Cannot use an integer in place of a boolean.
+*/
+
+x: function integer(a:integer) = {
+	if (a) return 10;
+	for (;a;) print a;
+}
+
+===[HIDDEN TESTS/bad8.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad8.bminor Output]===
+a resolves to param 1
+a resolves to param 1
+a resolves to param 1
+type error: cannot use type integer (a) in an if statement
+type error: cannot use type integer (a) as the second statement in a for loop
+
+
+
+
+===[HIDDEN TESTS/bad9.bminor Input]===
+/*
+Incorrect: Several type mismatches throughout.
+*/
+
+/* Make use of atoi from the standard library */
+
+atoi: function boolean ( s: string );
+
+quadratic: function void ( a: char, b: string, c: boolean, x: integer ) = {
+	return a*x*x + b*x + c*x;
+}
+
+main: function integer ( argc: integer, argv: array [] string ) =  {
+
+      if(argc<3) {
+          print "use: ", argv[0], "[a] [b] [c] [start] [end]\n";
+      }
+
+      a: integer = atoi(argv[0]);
+      b: integer = atoi(argv[1]);
+      c: integer = atoi(argv[2]);
+      start: integer = atoi(argv[3]);
+      end: integer = atoi(argv[4]);
+
+
+      x: integer;
+      
+      for(x=start;x<end;x++) {
+          print x, " ", quadratic(a,b,c,x), "\n";
+      }
+
+      return 0;
+}
+
+===[HIDDEN TESTS/bad9.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad9.bminor Output]===
+a resolves to param 1
+x resolves to param 4
+x resolves to param 4
+b resolves to param 2
+x resolves to param 4
+c resolves to param 3
+x resolves to param 4
+argc resolves to param 1
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+atoi resolves to global atoi
+argv resolves to param 2
+x resolves to local 6
+start resolves to local 4
+x resolves to local 6
+end resolves to local 5
+x resolves to local 6
+x resolves to local 6
+quadratic resolves to global quadratic
+a resolves to local 1
+b resolves to local 2
+c resolves to local 3
+x resolves to local 6
+type error: cannot multiply type char (a) to type integer (x)
+type error: cannot multiply type char (a*x) to type integer (x)
+type error: cannot multiply type string (b) to type integer (x)
+type error: cannot add type char (a*x*x) to type string (b*x)
+type error: cannot multiply type boolean (c) to type integer (x)
+type error: cannot add type char (a*x*x+b*x) to type boolean (c*x)
+type error: cannot return type char (a*x*x+b*x+c*x) in a function (quadratic) that returns void
+type error: cannot assign boolean (atoi(argv[0])) to integer (a)
+type error: cannot assign boolean (atoi(argv[1])) to integer (b)
+type error: cannot assign boolean (atoi(argv[2])) to integer (c)
+type error: cannot assign boolean (atoi(argv[3])) to integer (start)
+type error: cannot assign boolean (atoi(argv[4])) to integer (end)
+type error: argument type mismatch when calling function (quadratic) - (a) which is type integer and (a) which is type char
+type error: argument type mismatch when calling function (quadratic) - (b) which is type integer and (b) which is type string
+type error: argument type mismatch when calling function (quadratic) - (c) which is type integer and (c) which is type boolean
+
+
+
+
+===[HIDDEN TESTS/bad10.bminor Input]===
+/*
+Incorrect: Several type errors throughout.
+*/
+
+abs: function string (n: integer);
+
+digits: array [6] char = {
+	14,
+	8,
+	6168,
+	42,
+	0,
+	74546
+};
+
+main:function integer () = {
+	digits[4] = -468;
+	i: boolean = 0;
+	for (; abs(digits[i]) == digits[i];) {
+		print digits[i];
+		i = i + 1;
+		print ' ';
+	}
+	print '\n';
+        z: float = 1.0 + 2;
+	return 0;
+}
+
+===[HIDDEN TESTS/bad10.bminor Status]===
+return code: 1
+Test passed successfully!
+
+===[HIDDEN TESTS/bad10.bminor Output]===
+digits resolves to global digits
+abs resolves to global abs
+digits resolves to global digits
+i resolves to local 1
+digits resolves to global digits
+i resolves to local 1
+digits resolves to global digits
+i resolves to local 1
+i resolves to local 1
+i resolves to local 1
+type error: cannot assign array [] integer ({14,8,6168,42,0,74546}) to array [6] char (digits)
+type error: cannot assign type integer (-468) to type char (digits[4])
+type error: cannot assign integer (0) to boolean (i)
+type error: cannot index array (digits) with (i) which is type boolean and should be type integer
+type error: cannot index array (digits) with (i) which is type boolean and should be type integer
+type error: argument type mismatch when calling function (abs) - (digits[i]) which is type char and (n) which is type integer
+type error: cannot index array (digits) with (i) which is type boolean and should be type integer
+type error: cannot compare type string (abs(digits[i])) to type char (digits[i])
+type error: cannot index array (digits) with (i) which is type boolean and should be type integer
+type error: cannot add type float (1) to type integer (2)
+
+
+
+
+===== SUMMARIZED PRINTER RESULTS =====
+{
+  "student_tests": {
+    "Good": {
+      "correct": 10,
+      "incorrect": 0
+    },
+    "Bad": {
+      "correct": 10,
+      "incorrect": 0
+    }
+  },
+  "hidden_tests": {
+    "Good": {
+      "correct": 9,
+      "incorrect": 1
+    },
+    "Bad": {
+      "correct": 10,
+      "incorrect": 0
+    }
+  }
+}
+
+Printer Project
+---------------
+
+Continued correctness of the -scan, -parse, -print, and -resolve options (30/30 points)
+----------------------------------------------
+Scanning, parsing, printing, and resolving all seem to be correct.
+
+General correctness of the -typecheck option. (20/20 points)
+----------------------------------------------
+Typechecking looks to be done correctly
+
+Student Tests (20/20 points)
+------------------------------------------
+Nice test coverage
+
+Hidden Tests (19/20 points)
+------------------------------------------
+a ^ b should have an integer type if a and b are integers
+
+Coding Style (10/10 points)
+------------------------------------------
+Coding style looks quite nice. Well done!
+
+---------------
