@@ -3,6 +3,12 @@ CFLAGS=		-g -Wall -std=gnu99 -Iinclude -c
 
 all:		bminor
 
+label.o: label.c label.h
+	$(CC) $(CFLAGS) -o label.o label.c
+
+scratch.o: scratch.c scratch.h
+	$(CC) $(CFLAGS) -o scratch.o scratch.c
+
 hash_table.o: hash_table.c hash_table.h
 	$(CC) $(CFLAGS) -o hash_table.o hash_table.c
 
@@ -51,7 +57,7 @@ encoder.o: 	encoder.c encoder.h
 bminor.o: bminor.c 
 	$(CC) $(CFLAGS) -o $@ $<
 
-bminor: bminor.o encoder.o scanner.o token.o parser.o expr.o decl.o stmt.o type.o param_list.o indent.o scope.o symbol.o hash_table.o
+bminor: bminor.o encoder.o scanner.o token.o parser.o expr.o decl.o stmt.o type.o param_list.o indent.o scope.o symbol.o hash_table.o scratch.o label.o
 	$(CC) -Wall -std=gnu99 $^ -o $@
 
 

@@ -16,8 +16,10 @@ struct symbol {
 	struct type *type;
 	char *name;
 	int which;
+	int param_offset;
 };
 
 struct symbol * symbol_create( symbol_t kind, struct type *type, char *name );
 void symbol_print(struct symbol *s);
+const char * symbol_codegen( struct symbol *s );
 #endif

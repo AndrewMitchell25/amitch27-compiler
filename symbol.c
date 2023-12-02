@@ -21,3 +21,18 @@ void symbol_print(struct symbol *s){
         printf("param %d", s->which);
     }
 }
+
+const char * symbol_codegen( struct symbol *s ) {
+    if(!s) return 0;
+    if(s->kind == SYMBOL_GLOBAL) {
+        return s->name;
+    } else if(s->kind == SYMBOL_PARAM) {
+        char * name = malloc(sizeof(char) * 12);
+        sprintf(name, "-%d(%%rbp)", s->which * 8);
+        return name;
+    } else {
+        char * name = malloc(sizeof(char) * 12);
+        sprintf(name, "-%d(%%rbp)", (s->which + s->param_offset) * 8);
+        return name;
+    }
+}

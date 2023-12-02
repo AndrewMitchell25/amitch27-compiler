@@ -35,7 +35,8 @@ typedef enum {
 	EXPR_POSITIVE,
 	EXPR_NOT,
 	EXPR_SUBSCRIPT,
-	EXPR_ARRAY_INIT
+	EXPR_ARRAY_INIT,
+	EXPR_PRINT_ARG
 	/* many more kinds of exprs to add here */
 } expr_t;
 
@@ -53,6 +54,7 @@ struct expr {
 	struct symbol *symbol;
 	int has_parens;
 	int level;
+	int reg;
 };
 
 struct expr * expr_create( expr_t kind, struct expr *left, struct expr *right, int level );
@@ -70,5 +72,6 @@ void expr_resolve( struct expr *e );
 struct type * expr_typecheck(struct expr *e);
 struct type *expr_array_init_type(struct expr *e);
 int expr_type_error();
+void expr_codegen( struct expr *e );
 
 #endif

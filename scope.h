@@ -10,6 +10,7 @@ struct scope {
     struct scope *prev;
     int local;
     int param;
+    const char * func_name;
 };
 
 void scope_enter();
@@ -19,5 +20,7 @@ void scope_bind( const char *name, struct symbol *sym );
 struct symbol *scope_lookup( const char *name );
 struct symbol *scope_lookup_current( const char *name );
 int scope_get_error();
+int scope_get_params();
+int scope_get_locals();
 
 #endif

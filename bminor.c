@@ -12,7 +12,8 @@ enum process {
     parse,
     print,
     resolve,
-    typecheck
+    typecheck,
+    codegen
 };
 
 int main(int argc, char *argv[]) {
@@ -37,6 +38,9 @@ int main(int argc, char *argv[]) {
         }
         if(!strcmp(argv[i], "--typecheck")) {
             curr_process = typecheck;
+        }
+        if(!strcmp(argv[i], "--codegen")) {
+            curr_process = codegen;
         }
         i++;
     }
@@ -186,6 +190,34 @@ int main(int argc, char *argv[]) {
                 stmt_type_error() ||
                 param_list_type_error()) 
                 return 1; //TODO: OR TYPECHECK ERRORS
+        } else {
+            return 1;
+        }
+        return 0;
+    } else if (curr_process == codegen) {
+        extern int yyparse();
+        extern FILE* yyin;
+
+        FILE* fp = fopen(argv[i], "r");
+        if(!fp) {
+            fprintf(stderr, "Can't open file %s\n", argv[i]);
+            return 1;
+        }
+        yyin = fp;
+
+        int res = yyparse();
+        
+        if(!res) {
+            extern struct decl * parser_result;
+            decl_resolve(parser_result);
+            decl_typecheck(parser_result);
+            if( scope_get_error() || 
+                expr_type_error() || 
+                decl_type_error() || 
+                stmt_type_error() ||
+                param_list_type_error()) 
+                return 1;
+            decl_codegen(parser_result);
         } else {
             return 1;
         }

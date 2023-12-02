@@ -15,10 +15,13 @@ void scope_enter(){
         new_scope->prev = scope;
         if(level == 1){
             new_scope->local = 0;
+            new_scope->param = 0;
+            //new_scope->func_name = name;
         } else {
             new_scope->local = scope->local;
+            new_scope->param = scope->param;
+            //new_scope->func_name = scope->func_name;
         }
-        new_scope->param = 0;
         scope->next = new_scope;
         scope = new_scope;
         level++;
@@ -30,6 +33,7 @@ void scope_enter(){
         level = 1;
         scope->local = 0;
         scope->param = 0;
+        scope->func_name = 0;
     }
 
 }
@@ -49,6 +53,7 @@ void scope_bind( const char *name, struct symbol *sym ){
     if(sym->kind == SYMBOL_LOCAL) {
         scope->local++;
         sym->which = scope->local;
+        sym->param_offset = scope->param;
     } else if(sym->kind == SYMBOL_PARAM) {
         scope->param++;
         sym->which = scope->param;
@@ -89,3 +94,11 @@ struct symbol *scope_lookup_current( const char *name ){
 int scope_get_error() {
     return scope_error;
 }
+
+int scope_get_params() {
+    return scope->param;
+}
+
+int scope_get_locals() {
+    return scope->local;
+}   
