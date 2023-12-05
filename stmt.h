@@ -32,6 +32,6 @@ void stmt_print( struct stmt *s, int indent );
 void stmt_resolve( struct stmt *s );
 struct type * stmt_typecheck(struct stmt *s);
 int stmt_type_error();
-void stmt_codegen( struct stmt *s, const char * func_name );
+void stmt_codegen( FILE * file, struct stmt *s, const char * func_name );
 
 #endif

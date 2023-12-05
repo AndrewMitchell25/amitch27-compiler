@@ -217,7 +217,9 @@ int main(int argc, char *argv[]) {
                 stmt_type_error() ||
                 param_list_type_error()) 
                 return 1;
-            decl_codegen(parser_result);
+
+            FILE * file = fopen(argv[i+1], "w");
+            decl_codegen(file, parser_result);
         } else {
             return 1;
         }

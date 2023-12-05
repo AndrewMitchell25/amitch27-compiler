@@ -217,56 +217,56 @@ int stmt_type_error() {
     return stmt_error;
 }
 
-void stmt_codegen( struct stmt *s, const char * func_name  ) {
+void stmt_codegen( FILE * file, struct stmt *s, const char * func_name  ) {
     if(!s) return;
     switch(s->kind) {
         case STMT_EXPR:
-            expr_codegen(s->expr);
+            expr_codegen(file, s->expr);
             scratch_free(s->expr->reg);
             break;
         case STMT_RETURN:
-            expr_codegen(s->expr);
-            printf("MOVQ %s, %%rax\n", scratch_name(s->expr->reg));
-            printf("JMP .%s_epilogue\n", func_name);
+            expr_codegen(file, s->expr);
+            fprintf(file, "MOVQ %s, %%rax\n", scratch_name(s->expr->reg));
+            fprintf(file, "JMP .%s_epilogue\n", func_name);
             scratch_free(s->expr->reg);
             break;
         case STMT_DECL:
-            decl_codegen(s->decl);
+            decl_codegen(file, s->decl);
             break;
         case STMT_FOR:
-            expr_codegen(s->init_expr);
+            expr_codegen(file, s->init_expr);
             scratch_free(s->init_expr->reg);
             int top = label_create();
             int bottom = label_create();
-            printf("%s:\n", label_name(top));
-            expr_codegen(s->expr);
-            printf("CMP $0, %s\n", scratch_name(s->expr->reg));
-            printf("JE %s\n", label_name(bottom));
+            fprintf(file, "%s:\n", label_name(top));
+            expr_codegen(file, s->expr);
+            fprintf(file, "CMP $0, %s\n", scratch_name(s->expr->reg));
+            fprintf(file, "JE %s\n", label_name(bottom));
             scratch_free(s->expr->reg);
-            stmt_codegen(s->body, func_name);
-            expr_codegen(s->next_expr);
+            stmt_codegen(file, s->body, func_name);
+            expr_codegen(file, s->next_expr);
             scratch_free(s->next_expr->reg);
-            printf("JMP %s\n", label_name(top));
-            printf("%s:\n", label_name(bottom));
+            fprintf(file, "JMP %s\n", label_name(top));
+            fprintf(file, "%s:\n", label_name(bottom));
             break;
         case STMT_BLOCK:
-            stmt_codegen(s->body, func_name);
+            stmt_codegen(file, s->body, func_name);
             break;
         case STMT_STANDING_BLOCK:
-            stmt_codegen(s->body, func_name);
+            stmt_codegen(file, s->body, func_name);
             break;
         case STMT_IF_ELSE:
-            expr_codegen(s->expr);
+            expr_codegen(file, s->expr);
             int else_label = label_create();
             int done_label = label_create();
-            printf("CMP $0, %s\n", scratch_name(s->expr->reg));
+            fprintf(file, "CMP $0, %s\n", scratch_name(s->expr->reg));
             scratch_free(s->expr->reg);
-            printf("JE %s\n", label_name(else_label));
-            stmt_codegen(s->body, func_name);
-            printf("JMP %s\n", label_name(done_label));
-            printf("%s:\n", label_name(else_label));
-            stmt_codegen(s->else_body, func_name);
-            printf("%s:\n", label_name(done_label));
+            fprintf(file, "JE %s\n", label_name(else_label));
+            stmt_codegen(file, s->body, func_name);
+            fprintf(file, "JMP %s\n", label_name(done_label));
+            fprintf(file, "%s:\n", label_name(else_label));
+            stmt_codegen(file, s->else_body, func_name);
+            fprintf(file, "%s:\n", label_name(done_label));
             break;
         case STMT_PRINT: 
             ;
@@ -279,22 +279,22 @@ void stmt_codegen( struct stmt *s, const char * func_name  ) {
                 if(curr->kind == EXPR_ARG) {
                     curr->kind = EXPR_PRINT_ARG;
                 }
-                expr_codegen(curr);
+                expr_codegen(file, curr);
                 struct type * t = expr_typecheck(curr);
-                printf("MOVQ %s, %%rdi\n", scratch_name(curr->reg));
+                fprintf(file, "MOVQ %s, %%rdi\n", scratch_name(curr->reg));
                 scratch_free(curr->reg);
                 switch(t->kind){
                     case TYPE_INTEGER:
-                        printf("CALL print_integer\n");
+                        fprintf(file, "CALL print_integer\n");
                         break;
                     case TYPE_STRING:
-                        printf("CALL print_string\n");
+                        fprintf(file, "CALL print_string\n");
                         break;
                     case TYPE_BOOLEAN:
-                        printf("CALL print_boolean\n");
+                        fprintf(file, "CALL print_boolean\n");
                         break;
                     case TYPE_CHARACTER:
-                        printf("CALL print_character\n");
+                        fprintf(file, "CALL print_character\n");
                         break;
                     default:
                         break;
@@ -303,5 +303,5 @@ void stmt_codegen( struct stmt *s, const char * func_name  ) {
             }
             break;
     }
-    stmt_codegen(s->next, func_name);
+    stmt_codegen(file, s->next, func_name);
 }

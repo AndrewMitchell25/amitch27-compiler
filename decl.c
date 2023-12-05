@@ -162,93 +162,93 @@ int decl_type_error() {
 
 char * decl_arg_regs[6] = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
 
-void decl_codegen( struct decl *d ) {
+void decl_codegen( FILE * file, struct decl *d ) {
     if(!d) return;
     if(d->symbol->kind == SYMBOL_GLOBAL){
         if(d->type->kind != TYPE_FUNCTION) {
-            printf(".data\n");
+            fprintf(file, ".data\n");
         } else {
-            printf(".text\n");
+            fprintf(file, ".text\n");
         }
-        printf(".global %s\n", d->symbol->name);
+        fprintf(file, ".global %s\n", d->symbol->name);
         switch(d->type->kind) {
             case TYPE_INTEGER:
-                printf("%s: .quad ", d->symbol->name);
+                fprintf(file, "%s: .quad ", d->symbol->name);
                 if(d->value) {
-                    expr_print(d->value);
+                    fprintf(file, "%d", d->value->literal_value);
                 } else {
-                    printf("0");
+                    fprintf(file, "0");
                 }
-                printf("\n");
+                fprintf(file, "\n");
                 break;
             case TYPE_STRING:
-                printf("%s: .string ", d->symbol->name);
+                fprintf(file, "%s: .string ", d->symbol->name);
                 if(d->value) {
-                    printf("%s", d->value->string_literal);
+                    fprintf(file, "%s", d->value->string_literal);
                 } else {
-                    printf("\"\"");
+                    fprintf(file, "\"\"");
                 }
-                printf("\n");
+                fprintf(file, "\n");
                 break;
             case TYPE_BOOLEAN:
-                printf("%s: .quad ", d->symbol->name);
+                fprintf(file, "%s: .quad ", d->symbol->name);
                 if(d->value) {
-                    printf("%d", d->value->literal_value);
+                    fprintf(file, "%d", d->value->literal_value);
                 } else {
-                    printf("0");
+                    fprintf(file, "0");
                 }
-                printf("\n");
+                fprintf(file, "\n");
                 break;
             case TYPE_CHARACTER:
-                printf("%s: .quad ", d->symbol->name);
+                fprintf(file, "%s: .quad ", d->symbol->name);
                 if(d->value) {
-                    printf("%d", d->value->literal_value);
+                    fprintf(file, "%d", d->value->literal_value);
                 } else {
-                    printf("0");
+                    fprintf(file, "0");
                 }
-                printf("\n");
+                fprintf(file, "\n");
                 break;
             case TYPE_ARRAY:
                 break;
             case TYPE_FUNCTION:
-                printf("%s:\n", d->symbol->name);
+                fprintf(file, "%s:\n", d->symbol->name);
                 //prologue
-                printf("PUSHQ %%rbp\n");
-                printf("MOVQ %%rsp, %%rbp\n");
+                fprintf(file, "PUSHQ %%rbp\n");
+                fprintf(file, "MOVQ %%rsp, %%rbp\n");
                 //save arguments to stack
                 for(int i = 0; i < d->func_params; i++){
-                    printf("PUSHQ %s\n", decl_arg_regs[i]);
+                    fprintf(file, "PUSHQ %s\n", decl_arg_regs[i]);
                 }
                 //allocate local variables on stack
-                printf("SUBQ $%d, %%rsp\n", d->func_locals * 8);
+                fprintf(file, "SUBQ $%d, %%rsp\n", d->func_locals * 8);
 
                 //save callee saved registers
-                printf("PUSHQ %%rbx\n");
-                printf("PUSHQ %%r12\n");
-                printf("PUSHQ %%r13\n");
-                printf("PUSHQ %%r14\n");
-                printf("PUSHQ %%r15\n");
+                fprintf(file, "PUSHQ %%rbx\n");
+                fprintf(file, "PUSHQ %%r12\n");
+                fprintf(file, "PUSHQ %%r13\n");
+                fprintf(file, "PUSHQ %%r14\n");
+                fprintf(file, "PUSHQ %%r15\n");
                 
                 //body
-                printf("##############\n");
-                stmt_codegen(d->code, d->symbol->name);
-                printf("##############\n");
+                fprintf(file, "##############\n");
+                stmt_codegen(file, d->code, d->symbol->name);
+                fprintf(file, "##############\n");
                 //epilogue
-                printf(".%s_epilogue:\n", d->symbol->name);
-                printf("POPQ %%r15\n");
-                printf("POPQ %%r14\n");
-                printf("POPQ %%r13\n");
-                printf("POPQ %%r12\n");
-                printf("POPQ %%rbx\n");
-                printf("MOVQ %%rbp, %%rsp\n");
-                printf("POPQ %%rbp\n");
-                printf("RET\n");
+                fprintf(file, ".%s_epilogue:\n", d->symbol->name);
+                fprintf(file, "POPQ %%r15\n");
+                fprintf(file, "POPQ %%r14\n");
+                fprintf(file, "POPQ %%r13\n");
+                fprintf(file, "POPQ %%r12\n");
+                fprintf(file, "POPQ %%rbx\n");
+                fprintf(file, "MOVQ %%rbp, %%rsp\n");
+                fprintf(file, "POPQ %%rbp\n");
+                fprintf(file, "RET\n");
                 break;
         }
     } else if(d->symbol->kind == SYMBOL_LOCAL && d->value){
-        expr_codegen(d->value);
-        printf("MOVQ %s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
+        expr_codegen(file, d->value);
+        fprintf(file, "MOVQ %s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
         scratch_free(d->value->reg);
     }
-    decl_codegen(d->next);
+    decl_codegen(file, d->next);
 }

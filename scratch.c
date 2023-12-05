@@ -14,7 +14,7 @@ int scratch_alloc(){
     }
     if(i == 7) {
         printf("allocation error: no more free registers.\n");
-        return -1;
+        exit(EXIT_FAILURE);
     }
     inuse[i] = 1;
     return i;

@@ -23,7 +23,7 @@ void decl_print( struct decl *d, int indent );
 void decl_resolve( struct decl *d );
 void decl_typecheck(struct decl *d);
 int decl_type_error();
-void decl_codegen( struct decl *d );
+void decl_codegen( FILE * file, struct decl *d );
 #endif
 
 
