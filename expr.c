@@ -524,6 +524,8 @@ void expr_codegen( FILE * file, struct expr *e ) {
             }
             break;
         case EXPR_INTEGER_LITERAL:
+        case EXPR_BOOLEAN_LITERAL:
+        case EXPR_CHAR_LITERAL:
             e->reg = scratch_alloc();
             fprintf(file, "MOVQ $%d, %s\n", e->literal_value, scratch_name(e->reg));
             break;
@@ -598,9 +600,9 @@ void expr_codegen( FILE * file, struct expr *e ) {
             e->reg = e->left->reg;
             break;
         case EXPR_ASSIGN:
-            expr_codegen(file, e->left);
-            fprintf(file, "MOVQ %s, %s\n", scratch_name(e->left->reg), symbol_codegen(e->right->symbol));
-            e->reg = e->left->reg;
+            expr_codegen(file, e->right);
+            fprintf(file, "MOVQ %s, %s\n", scratch_name(e->right->reg), symbol_codegen(e->left->symbol));
+            e->reg = e->right->reg;
             break;
         case EXPR_SUBSCRIPT:
             expr_codegen(file, e->left);
@@ -636,6 +638,7 @@ void expr_codegen( FILE * file, struct expr *e ) {
         case EXPR_LESS_EQUAL:
         case EXPR_GREATER:
         case EXPR_GREATER_EQUAL:
+        //case EXPR_AND:
             expr_codegen(file, e->left);
             expr_codegen(file, e->right);
             fprintf(file, "CMP %s, %s\n", scratch_name(e->left->reg), scratch_name(e->right->reg));
@@ -663,6 +666,33 @@ void expr_codegen( FILE * file, struct expr *e ) {
             fprintf(file, "MOVQ $1, %s\n", scratch_name(e->reg));
             fprintf(file, "%s:\n", label_name(done_label));
             break;
+        case EXPR_NOT:
+            expr_codegen(file, e->left);
+            int zero = label_create();
+            int done = label_create();
+            fprintf(file, "CMP $0, %s\n", scratch_name(e->left->reg));
+            fprintf(file, "JE %s\n", label_name(zero));
+            fprintf(file, "MOVQ $0, %s\n", scratch_name(e->left->reg));
+            fprintf(file, "JMP %s\n", label_name(done));
+            fprintf(file, "%s:\n", label_name(zero));
+            fprintf(file, "MOVQ $1, %s\n", scratch_name(e->left->reg));
+            fprintf(file, "%s:\n", label_name(done));
+            e->reg = e->left->reg;
+            break;
+        case EXPR_POSITIVE:
+            break;
+        case EXPR_NEGATIVE:
+            expr_codegen(file, e->left);
+            e->reg = scratch_alloc();
+            fprintf(file, "MOVQ $0, %s\n", scratch_name(e->reg));
+            fprintf(file, "SUBQ %s, %s\n", scratch_name(e->left->reg), scratch_name(e->reg));
+            scratch_free(e->left->reg);
+            break;
+        /*default:
+            printf("runtime error: case not handled - ");
+            expr_print(e);
+            printf("\n");
+            exit(EXIT_FAILURE);*/
     }
     return;
 }

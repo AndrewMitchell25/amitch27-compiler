@@ -115,7 +115,8 @@ void decl_typecheck(struct decl *d){
                 d->value->kind != EXPR_CHAR_LITERAL &&
                 d->value->kind != EXPR_FLOAT_LITERAL &&
                 d->value->kind != EXPR_NAME &&
-                d->value->kind != EXPR_VALUE
+                d->value->kind != EXPR_VALUE &&
+                d->value->kind != EXPR_ARRAY_INIT
             )) {
             printf("type error: cannot initialize global variable (%s) to non-constant value ", d->symbol->name);
             expr_print(d->value);
@@ -209,6 +210,14 @@ void decl_codegen( FILE * file, struct decl *d ) {
                 fprintf(file, "\n");
                 break;
             case TYPE_ARRAY:
+                if(d->type->subtype->kind == TYPE_INTEGER){
+                    fprintf(file, "%s: .quad ", d->symbol->name);
+                    decl_array_init_print(file, d->value);
+                    fprintf(file, "\n");
+                } else {
+                    printf("error: array not implemented\n");
+                    exit(EXIT_FAILURE);
+                }
                 break;
             case TYPE_FUNCTION:
                 fprintf(file, "%s:\n", d->symbol->name);
@@ -244,6 +253,11 @@ void decl_codegen( FILE * file, struct decl *d ) {
                 fprintf(file, "POPQ %%rbp\n");
                 fprintf(file, "RET\n");
                 break;
+            default:
+                printf("runtime error: case not handled\n");
+                decl_print(d, 0);
+                printf("\n");
+                exit(EXIT_FAILURE);
         }
     } else if(d->symbol->kind == SYMBOL_LOCAL && d->value){
         expr_codegen(file, d->value);
@@ -251,4 +265,22 @@ void decl_codegen( FILE * file, struct decl *d ) {
         scratch_free(d->value->reg);
     }
     decl_codegen(file, d->next);
+}
+
+void decl_array_init_print(FILE * file, struct expr * e) {
+    if(e->kind == EXPR_ARRAY_INIT){
+        decl_array_init_print(file, e->left);
+        if(e->right){
+            fprintf(file, ", ");
+            decl_array_init_print(file, e->right);
+        }
+    } else if(e->kind == EXPR_ARG) {
+        decl_array_init_print(file, e->left);
+        if(e->right){
+            fprintf(file, ", ");
+            decl_array_init_print(file, e->right);
+        }
+    } else {
+        fprintf(file, "%d", e->literal_value);
+    }
 }
