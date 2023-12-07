@@ -518,7 +518,7 @@ void expr_codegen( FILE * file, struct expr *e ) {
                 curr = curr->right;
                 i++;
             }
-            if(i >= 6) {
+            if(i > 6) {
                 printf("runtime error: too many arguments");
                 exit(EXIT_FAILURE);
             }

@@ -98,6 +98,10 @@ void decl_typecheck(struct decl *d){
             printf("type error: cannot declare a function (%s) inside another function\n", d->symbol->name);
             decl_error = 1;
         }
+        if(d->func_params > 6) {
+            printf("type error: cannot have more than 6 parameters in function (%s)\n", d->symbol->name);
+            decl_error = 1;
+        }
         param_list_typecheck(d->type->params);
         if(d->type->subtype->kind == TYPE_FUNCTION || d->type->subtype->kind == TYPE_ARRAY) {
             printf("type error: cannot return type ");

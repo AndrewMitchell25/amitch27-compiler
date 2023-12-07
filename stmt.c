@@ -225,10 +225,12 @@ void stmt_codegen( FILE * file, struct stmt *s, const char * func_name  ) {
             scratch_free(s->expr->reg);
             break;
         case STMT_RETURN:
-            expr_codegen(file, s->expr);
-            fprintf(file, "MOVQ %s, %%rax\n", scratch_name(s->expr->reg));
+            if(s->expr) {
+                expr_codegen(file, s->expr);
+                fprintf(file, "MOVQ %s, %%rax\n", scratch_name(s->expr->reg));
+                scratch_free(s->expr->reg);
+            }
             fprintf(file, "JMP .%s_epilogue\n", func_name);
-            scratch_free(s->expr->reg);
             break;
         case STMT_DECL:
             decl_codegen(file, s->decl);
