@@ -40,9 +40,12 @@ void scope_enter(){
 void scope_exit(){
     struct scope* old_scope = scope;
     scope = old_scope->prev;
+    level--;
+    if(level != 1) {
+        scope->local = old_scope->local;
+    }
     hash_table_delete(old_scope->h);
     free(old_scope);
-    level--;
 }
 
 int scope_level(){

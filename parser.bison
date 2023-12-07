@@ -186,8 +186,9 @@ atomic
           {$$ = expr_create_float_literal(atof(yytext));}
      | TOKEN_STRING
           {char *str = strdup(yytext);
-               char *estr = malloc(strlen(str)); 
+               char *estr = malloc(strlen(str) + 10); 
                string_encode(str, estr);
+               free(str);
                $$ = expr_create_string_literal(estr);
           }
      | TOKEN_CHAR

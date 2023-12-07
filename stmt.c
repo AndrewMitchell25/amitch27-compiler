@@ -234,20 +234,30 @@ void stmt_codegen( FILE * file, struct stmt *s, const char * func_name  ) {
             decl_codegen(file, s->decl);
             break;
         case STMT_FOR:
-            expr_codegen(file, s->init_expr);
-            scratch_free(s->init_expr->reg);
+            if(s->init_expr) {
+                expr_codegen(file, s->init_expr);
+                scratch_free(s->init_expr->reg);
+            }    
             int top = label_create();
             int bottom = label_create();
-            fprintf(file, "%s:\n", label_name(top));
-            expr_codegen(file, s->expr);
-            fprintf(file, "CMP $0, %s\n", scratch_name(s->expr->reg));
-            fprintf(file, "JE %s\n", label_name(bottom));
-            scratch_free(s->expr->reg);
+            const char * top_name = label_name(top);
+            const char * bottom_name = label_name(bottom);
+            fprintf(file, "%s:\n", top_name);
+            if(s->expr) {
+                expr_codegen(file, s->expr);
+                fprintf(file, "CMP $0, %s\n", scratch_name(s->expr->reg));
+                fprintf(file, "JE %s\n", bottom_name);
+                scratch_free(s->expr->reg);
+            }
             stmt_codegen(file, s->body, func_name);
-            expr_codegen(file, s->next_expr);
-            scratch_free(s->next_expr->reg);
-            fprintf(file, "JMP %s\n", label_name(top));
-            fprintf(file, "%s:\n", label_name(bottom));
+            if(s->next_expr) {
+                expr_codegen(file, s->next_expr);
+                scratch_free(s->next_expr->reg);
+            }
+            fprintf(file, "JMP %s\n", top_name);
+            fprintf(file, "%s:\n", bottom_name);
+            free((void *)top_name);
+            free((void *)bottom_name);
             break;
         case STMT_BLOCK:
             stmt_codegen(file, s->body, func_name);
@@ -259,14 +269,18 @@ void stmt_codegen( FILE * file, struct stmt *s, const char * func_name  ) {
             expr_codegen(file, s->expr);
             int else_label = label_create();
             int done_label = label_create();
+            const char * else_name = label_name(else_label);
+            const char * done_name = label_name(done_label);
             fprintf(file, "CMP $0, %s\n", scratch_name(s->expr->reg));
             scratch_free(s->expr->reg);
-            fprintf(file, "JE %s\n", label_name(else_label));
+            fprintf(file, "JE %s\n", else_name);
             stmt_codegen(file, s->body, func_name);
-            fprintf(file, "JMP %s\n", label_name(done_label));
-            fprintf(file, "%s:\n", label_name(else_label));
+            fprintf(file, "JMP %s\n", done_name);
+            fprintf(file, "%s:\n", else_name);
             stmt_codegen(file, s->else_body, func_name);
-            fprintf(file, "%s:\n", label_name(done_label));
+            fprintf(file, "%s:\n", done_name);
+            free((void *)else_name);
+            free((void *)done_name);
             break;
         case STMT_PRINT: 
             ;

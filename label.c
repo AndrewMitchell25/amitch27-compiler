@@ -10,7 +10,7 @@ int label_create() {
 }
 
 const char * label_name( int label ){
-    char * name = malloc(sizeof(char) * 10);
+    char * name = malloc(sizeof(char) * 6);
     sprintf(name, ".L%d", label);
     return name;
 }

@@ -114,7 +114,7 @@ void decl_typecheck(struct decl *d){
                 d->value->kind != EXPR_BOOLEAN_LITERAL &&
                 d->value->kind != EXPR_CHAR_LITERAL &&
                 d->value->kind != EXPR_FLOAT_LITERAL &&
-                d->value->kind != EXPR_NAME &&
+                //d->value->kind != EXPR_NAME &&
                 d->value->kind != EXPR_VALUE &&
                 d->value->kind != EXPR_ARRAY_INIT
             )) {
@@ -220,38 +220,40 @@ void decl_codegen( FILE * file, struct decl *d ) {
                 }
                 break;
             case TYPE_FUNCTION:
-                fprintf(file, "%s:\n", d->symbol->name);
-                //prologue
-                fprintf(file, "PUSHQ %%rbp\n");
-                fprintf(file, "MOVQ %%rsp, %%rbp\n");
-                //save arguments to stack
-                for(int i = 0; i < d->func_params; i++){
-                    fprintf(file, "PUSHQ %s\n", decl_arg_regs[i]);
-                }
-                //allocate local variables on stack
-                fprintf(file, "SUBQ $%d, %%rsp\n", d->func_locals * 8);
+                if(d->code) {
+                    fprintf(file, "%s:\n", d->symbol->name);
+                    //prologue
+                    fprintf(file, "PUSHQ %%rbp\n");
+                    fprintf(file, "MOVQ %%rsp, %%rbp\n");
+                    //save arguments to stack
+                    for(int i = 0; i < d->func_params; i++){
+                        fprintf(file, "PUSHQ %s\n", decl_arg_regs[i]);
+                    }
+                    //allocate local variables on stack
+                    fprintf(file, "SUBQ $%d, %%rsp\n", d->func_locals * 8);
 
-                //save callee saved registers
-                fprintf(file, "PUSHQ %%rbx\n");
-                fprintf(file, "PUSHQ %%r12\n");
-                fprintf(file, "PUSHQ %%r13\n");
-                fprintf(file, "PUSHQ %%r14\n");
-                fprintf(file, "PUSHQ %%r15\n");
-                
-                //body
-                fprintf(file, "##############\n");
-                stmt_codegen(file, d->code, d->symbol->name);
-                fprintf(file, "##############\n");
-                //epilogue
-                fprintf(file, ".%s_epilogue:\n", d->symbol->name);
-                fprintf(file, "POPQ %%r15\n");
-                fprintf(file, "POPQ %%r14\n");
-                fprintf(file, "POPQ %%r13\n");
-                fprintf(file, "POPQ %%r12\n");
-                fprintf(file, "POPQ %%rbx\n");
-                fprintf(file, "MOVQ %%rbp, %%rsp\n");
-                fprintf(file, "POPQ %%rbp\n");
-                fprintf(file, "RET\n");
+                    //save callee saved registers
+                    fprintf(file, "PUSHQ %%rbx\n");
+                    fprintf(file, "PUSHQ %%r12\n");
+                    fprintf(file, "PUSHQ %%r13\n");
+                    fprintf(file, "PUSHQ %%r14\n");
+                    fprintf(file, "PUSHQ %%r15\n");
+                    
+                    //body
+                    fprintf(file, "##############\n");
+                    stmt_codegen(file, d->code, d->symbol->name);
+                    fprintf(file, "##############\n");
+                    //epilogue
+                    fprintf(file, ".%s_epilogue:\n", d->symbol->name);
+                    fprintf(file, "POPQ %%r15\n");
+                    fprintf(file, "POPQ %%r14\n");
+                    fprintf(file, "POPQ %%r13\n");
+                    fprintf(file, "POPQ %%r12\n");
+                    fprintf(file, "POPQ %%rbx\n");
+                    fprintf(file, "MOVQ %%rbp, %%rsp\n");
+                    fprintf(file, "POPQ %%rbp\n");
+                    fprintf(file, "RET\n");
+                }
                 break;
             default:
                 printf("runtime error: case not handled\n");
