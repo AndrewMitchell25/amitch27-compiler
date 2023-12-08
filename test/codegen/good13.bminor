@@ -1,0 +1,32 @@
+a: char = 'a';
+main: function integer () = {
+    b: char = 'b';
+    c: char = 'c';
+    c2: char = 'c';
+
+    if(!(c==a)) {
+        print "yes\n";
+    } else {
+        print "no\n";
+    }
+
+    if(c==c2) {
+        print "yes\n";
+    } else {
+        print "no\n";
+    }
+
+    if(c>a) {
+        print "yes\n";
+    } else {
+        print "no\n";
+    }
+
+    if(c==a) {
+        print "no\n";
+    } else {
+        print "yes\n";
+    }
+
+    return 0;
+}

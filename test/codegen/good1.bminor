@@ -1,0 +1,18 @@
+compute: function integer ( a: integer, b: integer, c: integer ) =
+{
+    x:integer = a+b+c;
+    y:integer = x-5;
+    if(false){
+        print x;
+    } else {
+        print y;
+    }
+    return y;
+}
+
+main: function integer () = {
+    x: integer = compute(4, 2, 3);
+    y: integer = compute(1, 2, 3);
+    print x, y, x+2, '\n';
+    return 0;
+}

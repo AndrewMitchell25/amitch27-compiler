@@ -313,6 +313,12 @@ void stmt_codegen( FILE * file, struct stmt *s, const char * func_name  ) {
                         fprintf(file, "CALL print_character\n");
                         break;
                     default:
+                        printf("runtime error: case not handled - printing ");
+                        type_print(t);
+                        printf(" (");
+                        expr_print(curr);
+                        printf(")\n");
+                        exit(EXIT_FAILURE);
                         break;
                 }
                 curr = curr->right;

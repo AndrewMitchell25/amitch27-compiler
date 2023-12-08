@@ -1,0 +1,14 @@
+f: function void (a: integer, b: integer, c: integer, d: integer, e: integer, f: integer) = {
+    print a, ' ', b, ' ', c, ' ', d, ' ', e, ' ', f, '\n';
+    return;
+}
+
+f2: function integer() = {
+    return 3;
+}
+
+main: function integer () = {
+    f(1, 2, 3, 4, 5, 6);
+    print f2(), '\n';
+    return 0;
+}

@@ -590,6 +590,12 @@ void expr_codegen( FILE * file, struct expr *e ) {
             fprintf(file, "INCQ %s\n", scratch_name(e->left->reg));
             if(e->left->kind == EXPR_NAME) {
                 fprintf(file, "MOVQ %s, %s\n", scratch_name(e->left->reg), symbol_codegen(e->left->symbol));
+            } else if(e->left->kind == EXPR_SUBSCRIPT) {
+                expr_codegen(file, e->left->left);
+                expr_codegen(file, e->left->right);
+                fprintf(file, "MOVQ %s, (%s, %s, 8)\n", scratch_name(e->left->reg), scratch_name(e->left->left->reg), scratch_name(e->left->right->reg));
+                scratch_free(e->left->left->reg);
+                scratch_free(e->left->right->reg);
             }
             e->reg = e->left->reg;
             break;
@@ -598,12 +604,26 @@ void expr_codegen( FILE * file, struct expr *e ) {
             fprintf(file, "DECQ %s\n", scratch_name(e->left->reg));
             if(e->left->kind == EXPR_NAME) {
                 fprintf(file, "MOVQ %s, %s\n", scratch_name(e->left->reg), symbol_codegen(e->left->symbol));
+            } else if(e->left->kind == EXPR_SUBSCRIPT) {
+                expr_codegen(file, e->left->left);
+                expr_codegen(file, e->left->right);
+                fprintf(file, "MOVQ %s, (%s, %s, 8)\n", scratch_name(e->left->reg), scratch_name(e->left->left->reg), scratch_name(e->left->right->reg));
+                scratch_free(e->left->left->reg);
+                scratch_free(e->left->right->reg);
             }
             e->reg = e->left->reg;
             break;
         case EXPR_ASSIGN:
             expr_codegen(file, e->right);
-            fprintf(file, "MOVQ %s, %s\n", scratch_name(e->right->reg), symbol_codegen(e->left->symbol));
+            if(e->left->kind == EXPR_SUBSCRIPT){
+                expr_codegen(file, e->left->left);
+                expr_codegen(file, e->left->right);
+                fprintf(file, "MOVQ %s, (%s, %s, 8)\n", scratch_name(e->right->reg), scratch_name(e->left->left->reg), scratch_name(e->left->right->reg));
+                scratch_free(e->left->left->reg);
+                scratch_free(e->left->right->reg);
+            } else {
+                fprintf(file, "MOVQ %s, %s\n", scratch_name(e->right->reg), symbol_codegen(e->left->symbol));
+            }
             e->reg = e->right->reg;
             break;
         case EXPR_SUBSCRIPT:

@@ -1,0 +1,12 @@
+i:char= 'i';
+
+d: function char () = {
+    return 'd';
+}
+
+main:function integer () =
+{
+	n:char ='n';
+	print 'h', i,' ', n, d(), '\n'; 
+	return 0;
+}

@@ -1,0 +1,10 @@
+//prints the command line arguments back
+
+main: function integer (argc: integer, argv: array [] string) = {
+    i: integer = 0;
+    for(;i<argc;i++){
+        print argv[i], ' ';
+    }
+    print '\n';
+    return 0;
+}

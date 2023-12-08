@@ -1,0 +1,19 @@
+f: function void (x: integer) = {
+    a: array [x] integer;
+    i: integer;
+    for(i=0; i<x;i++){
+        a[i] = i;
+    }
+    print x;
+    for(i=0; i<x;i++){
+        print a[i];
+    }
+    print x;
+    print '\n';
+    return;
+}
+
+main: function integer () = {
+    f(7);
+    return 0;
+}

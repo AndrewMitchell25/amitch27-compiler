@@ -1,0 +1,6 @@
+d: char = 'd';
+main: function integer () = {
+    s: string = " wor";
+    print 'h', "ello", s, 1, d, '\n';
+    return 0;
+}

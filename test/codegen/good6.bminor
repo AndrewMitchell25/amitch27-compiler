@@ -1,0 +1,10 @@
+a: array [4] integer = {1, 2, 3, 0};
+b: array [4] integer = {4, 3, 2, 1};
+c: char = 'h';
+t: boolean = true;
+
+main: function integer () = {
+    print b[a[3]];
+    print true, 'a', !(3>4), -10-4, '\n';
+    return 0;
+}

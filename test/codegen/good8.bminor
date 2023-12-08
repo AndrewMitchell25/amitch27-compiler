@@ -1,0 +1,4 @@
+main: function integer () = {
+    print true && true, ' ', true && false, ' ', false && false, ' ', false && true, ' ', true || true, ' ', false || true, ' ', true || false, ' ', false || false, '\n';
+    return 0;
+}

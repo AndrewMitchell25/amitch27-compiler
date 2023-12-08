@@ -1,0 +1,24 @@
+// tests for loops
+main: function integer () =
+{
+    i:integer = 0;
+	for(i = 0; i<3; i++)
+	{
+		print i, "\n";
+	}
+	i = 0;
+	for(; i<3;)
+	{
+		print i, "\n";
+        i++;
+	}
+    i = 3;
+    for(;;) {
+		print i, "\n";
+        if(i>0){
+            i--;
+        } else {
+            return i;
+        }
+    }
+}

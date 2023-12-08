@@ -1,0 +1,13 @@
+f: function integer (i: integer) = {
+    print i, ' ';
+    if(i==0) {
+        return 0;
+    }
+    return f(i--);
+}
+
+main: function integer () = {
+    f(10);
+    print '\n';
+    return 0;
+}

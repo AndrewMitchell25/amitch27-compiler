@@ -59,6 +59,7 @@ void decl_resolve( struct decl *d ) {
     symbol_t kind = scope_level() > 1 ? SYMBOL_LOCAL : SYMBOL_GLOBAL;
     d->symbol = symbol_create(kind,d->type,d->name);
     expr_resolve(d->value);
+    expr_resolve(d->type->expr);
     scope_bind(d->name, d->symbol);
     if(d->code) {
         scope_enter();
@@ -120,12 +121,30 @@ void decl_typecheck(struct decl *d){
                 d->value->kind != EXPR_FLOAT_LITERAL &&
                 //d->value->kind != EXPR_NAME &&
                 d->value->kind != EXPR_VALUE &&
-                d->value->kind != EXPR_ARRAY_INIT
+                d->value->kind != EXPR_ARRAY_INIT &&
+                d->value->kind != EXPR_PLUS_PLUS &&
+                d->value->kind != EXPR_MINUS_MINUS &&
+                d->value->kind != EXPR_POSITIVE &&
+                d->value->kind != EXPR_NEGATIVE
             )) {
             printf("type error: cannot initialize global variable (%s) to non-constant value ", d->symbol->name);
             expr_print(d->value);
             printf("\n");
             decl_error = 1;
+        } 
+        if(d->symbol->kind == SYMBOL_GLOBAL &&
+            (d->value->kind == EXPR_PLUS_PLUS ||
+                d->value->kind == EXPR_MINUS_MINUS ||
+                d->value->kind == EXPR_POSITIVE ||
+                d->value->kind == EXPR_NEGATIVE
+            )) {
+            if(d->value->left && (d->value->left->kind != EXPR_INTEGER_LITERAL && d->value->kind != EXPR_FLOAT_LITERAL)){
+                expr_print(d->value->left);
+                printf("type error: cannot initialize global variable (%s) to non-constant value ", d->symbol->name);
+                expr_print(d->value);
+                printf("\n");
+                decl_error = 1;
+            }
         }
         struct type *t = expr_typecheck(d->value);
         if(!type_equals(t, d->symbol->type)){

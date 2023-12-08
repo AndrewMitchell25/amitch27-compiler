@@ -1,0 +1,13 @@
+i: integer = 10;
+i2: integer;
+s: string = "hello";
+s2: string;
+b: boolean = true;
+b2: boolean;
+c: char = 'h';
+c2: char;
+main: function integer () = {
+    x: integer;
+    print i, s, c, '\n';
+    return 0;
+}

@@ -1,0 +1,6 @@
+//checking to make sure registers are freed with very long math equation
+//should print 11
+main: function integer () = {
+    print (1+2) * 4 / 2 - 3 + -2 + (5*2*1*1*1*1*1*1*1), '\n';
+    return 0;
+}

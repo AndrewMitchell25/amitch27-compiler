@@ -1,0 +1,21 @@
+//for loops
+
+main: function integer () = {
+    i: integer = 10;
+    for(i=0; i<=10; i++){
+        print "i ", i, "\n";
+    }
+    j:integer;
+    for(j=i; j>=0; j=j-2){
+        print "j ", j, "\n";
+    }
+
+    for(;;){
+        print j, "\n";
+        j++;
+        if(j > 10) {
+            return j;
+        }
+    }
+    return 0;
+}

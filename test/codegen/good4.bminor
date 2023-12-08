@@ -1,0 +1,38 @@
+main: function integer () = {
+    if(3 == 4) {
+        print "true\n";
+    } else {
+        print "false\n";
+    }
+    if(3 != 4) {
+        print "true\n";
+    } else {
+        print "false\n";
+    }
+    if(3 < 4) {
+        print "true\n";
+    } else {
+        print "false\n";
+    }
+    if(4 <= 4) {
+        print "true\n";
+    } else {
+        print "false\n";
+    }
+    if(3 > 4) {
+        print "true\n";
+    } else {
+        print "false\n";
+    }
+    if(3 >= 4) {
+        print "true\n";
+    } else {
+        print "false\n";
+    }
+    if(3 == 3 && 4==4) {
+        print "true\n";
+    } else {
+        print "false\n";
+    }
+    return 0;
+}

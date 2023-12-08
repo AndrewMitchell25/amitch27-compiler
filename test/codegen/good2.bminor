@@ -1,0 +1,6 @@
+s: string = "hello\n";
+main: function integer () = {
+    print 4+2, " ", 4-2, " ", 4*2, " ", 4/2, " ", 4++, " ", 4--, " ", 5%2, "\n";
+    print s;
+    return 0;
+}

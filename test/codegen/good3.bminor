@@ -1,0 +1,9 @@
+main: function integer () = {
+    s1: string = "hello";
+    s2: string = "hello";
+    if (s1 == s2)
+        print "compared contents\n";
+    else
+        print "compared addresses\n";
+    return 0;
+}
